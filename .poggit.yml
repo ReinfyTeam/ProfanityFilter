@@ -1,0 +1,8 @@
+--- # Open the HiveProfanityFilter CI at https://poggit.pmmp.io/ci/xqwtxon/HiveProfanityFilter
+build-by-default: true
+branches:
+- main
+projects:
+  HiveProfanityFilter:
+    path: ""
+...
