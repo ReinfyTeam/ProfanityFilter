@@ -1,2 +1,26 @@
 ---
+# Plugin
+outdated-config: "Your configuration is outdated. The configuration is renamed as 'old-config.yml'";
+outdated-plugin: "You are using an old version of plugin. Considering updating it to poggit or github releases."
+unable-to-check-update: "Unable check update at the moment. Please check your connection and try again."
+stopped-plugin: "The plugin is successfully stopped."
+# Profanity Command
+# /pf help <page>
+help-title: "--- Hive Profanity Filter ---"
+help-subtitle: "    -- Admin Commands --     "
+help-tip: "To see more commands pages, Type /pf help <page>!"
+help-page-1:
+- "/pf help - ProfanityFilter Help Command"
+- "/pf ui - Manage ProfanityFilter by GUI"
+- "/pf credits - View Plugin Creators & Contrubutors"
+- "/pf add <text> - Adds new profanityfilter banned words."
+- "/pf remove <text> - Removes profanityfilter banned words."
+help-page-2:
+- "/pf type <hide/block-with-message/block> - Changes the profanityfilter block option. (Please restart server to take effect.)"
+- "/pf stop - Stop the plugin work. (Only console.)"
+- "/pf check-update - Check plugin updates."
+# /pf credits
+credits-title: "--- Hive Profanity Filter ---"
+credits-subtitle: "  -- Public Contrubutors --  "
+credits-description: "This plugin was made by:"
 ...

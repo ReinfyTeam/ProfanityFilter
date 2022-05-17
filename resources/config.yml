@@ -1,6 +1,6 @@
-...
+---
 # Hive Profanity Filter
-A hive profanity best filter. A utility that controls swearing and hate speech.
+# A hive profanity best filter. A utility that controls swearing and hate speech.
 
 # Profanity Type
 # Options: "hide","block","block-with-message"
@@ -10,13 +10,9 @@ type: "block-with-message"
 # If "block-with-message" has selected, you can add your own message right here.
 block-message: "§cHey, Watch your Language!"
 
-# MultiWorld Support
+# PureChat Support
 # You can modify this option if you have multiworld installed on your plugins. If not dont change this.
-multiworld-support: true
-
-# If multiworld support is disabled. Ranks will not be shown and it will be used profanity own chat prefix.
-# As now we use our own chat format. Check plugin updates for changes.
-message-format: "{NAME} §r§l>§r {MESSAGE}"
+pc-support: true
 
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
@@ -28,3 +24,4 @@ lang: "en-us"
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
 config-version: "1.0.0"
+...
