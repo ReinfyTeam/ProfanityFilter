@@ -18,8 +18,8 @@ class Block implements Listener {
 	public function onChat(PlayerChatEvent $ev) :void {
 		$msg = $ev->getMessage();
 		$player = $ev->getPlayer();
-		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []));
-		if (in_array($words), $msg){
+		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []);
+		if (in_array($words) === $msg){
 			$ev->cancel();
 		}
 	}

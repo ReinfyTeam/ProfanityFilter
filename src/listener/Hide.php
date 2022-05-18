@@ -20,8 +20,8 @@ class Hide implements Listener {
 		$msg = $ev->getMessage();
 		$player = $ev->getPlayer();
 		$playerName = $player->getName();
-		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []));
-		if (in_array($words), $msg){
+		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []);
+		if (in_array($words) === $msg){
 			$ev->cancel();
 			// HIVE TRICK FOR HIDING MESSAGE ;)
 			// IT WILL DONT BROADCAST TO OTHER PLAYERS INSTEAD FROM YOU.
