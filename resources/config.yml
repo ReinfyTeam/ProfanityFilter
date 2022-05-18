@@ -11,11 +11,12 @@ type: "block-with-message"
 block-message: "§cHey, Watch your Language!"
 
 # PureChat Support
-# You can modify this option if you have multiworld installed on your plugins. If not dont change this.
-pc-support: true
+# You can modify this option if you have purechat installed on your plugins. If not dont change this.
+pc-support: false
 
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
+# and make file custom.yml in languages/ folder in plugin_data/HiveProfanityFilter/
 # You can make your own pull request for more languages.
 lang: "en-us"
 

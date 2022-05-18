@@ -17,10 +17,10 @@ class BlockWithMessage implements Listener {
 	public function onChat(PlayerChatEvent $ev) :void {
 		$msg = $ev->getMessage();
 		$player = $ev->getPlayer();
-		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []);
+		$words = array_map("strtolower", $this->config->profanityGet("banned-words"), []);
 		if (in_array($words) === $msg){
 			$ev->cancel();
-			$message = $this->lang->get($this->lang->getSelectedLang(), "block-message");
+			$message = $this->lang->translateMessage("block-message");
 			$player->sendMessage($message);
 		}
 	}

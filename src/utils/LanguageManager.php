@@ -26,6 +26,7 @@ class LanguageManager {
 		'ph-fl',
 	];
 	public function translateMessage(array|string $k) :array|string{
+		$this->config = new ConfigManager();
 		$lang = $this->getSelectedLang();
 		if(!file_exists(Loader::getInstance()->getDataFolder() . "languages/" . $lang . ".yml")){
 			$this->saveAllLang();
@@ -48,5 +49,16 @@ class LanguageManager {
 			Loader::getInstance()->saveResource("languages/" . $languages . ".yml");
 			
 		}
+	}
+	
+	public function getLangVersion(){
+		return $this->translateMessage("lang-version");
+	}
+	
+	public function checkCustomLang(){
+		if(strtolower($this->getSelectedLang()) === "custom"){
+			return Loader::getInstance()->saveResource("languages/custom.yml");
+		}
+		return false;
 	}
 }

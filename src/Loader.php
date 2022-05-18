@@ -19,12 +19,13 @@ class Loader extends PluginBase {
 		$this->lang = new LanguageManager();
 		$this->lang->saveAllLang();
 		$this->config->saveProfanity();
+		$this->config->checkConfig();
+		$this->lang->checkCustomLang();
 		//$this->check_updates();
 	}
 	public function onEnable() :void{
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();
-		$this->config->check_config();
 		$this->loadListeners();
 		$this->loadCommands();
 	}
@@ -53,11 +54,9 @@ class Loader extends PluginBase {
 	public static function getInstance(): Loader {
 		return Loader::$instance;
 	}
-	
-	public function getConfigVersion(){
+	public function getConfigVersion() {
 		return "0.0.1";
 	}
-	
 	protected function onDisable() :void {
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();

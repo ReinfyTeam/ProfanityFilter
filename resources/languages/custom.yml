@@ -1,4 +1,6 @@
 ---
+# Custom Config
+# Modify it if you want. :)
 outdated-config: "Your configuration is outdated. The configuration is renamed as old-config.yml"
 outdated-plugin: "You are using an old version of plugin. Considering updating it to poggit or github releases."
 config-notfound: "Creating config.yml..."

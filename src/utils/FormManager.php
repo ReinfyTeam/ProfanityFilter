@@ -6,6 +6,9 @@ use xqwtxon\HiveProfanityFilter\Loader;
 use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
 use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
 use pocketmine\player\Player;
+use xqwtxon\HiveProfanityFilter\libs\jojoe77777\FormAPI\SimpleForm;
+use xqwtxon\HiveProfanityFilter\libs\jojoe77777\FormAPI\CustomForm;
+use xqwtxon\HiveProfanityFilter\libs\jojoe77777\FormAPI\ModalForm;
 
 class FormManager {
 	public function __construct(){
@@ -15,6 +18,6 @@ class FormManager {
 	}
 	
 	public function manageProfanity(Player $player){
-		//TODO: FormAPI Virions
+		
 	}
 }
