@@ -23,5 +23,5 @@ lang: "en-us"
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: "1.0.0"
+config-version: "0.0.1"
 ...

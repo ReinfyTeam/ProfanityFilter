@@ -1,17 +1,17 @@
 <?php
 
-namespace xqwtxon\HiveProfanityFilter\type;
+namespace xqwtxon\HiveProfanityFilter\listener;
 
-use xqwtxon\HiveProfanityFilter\Main;
-use xqwtxon\HiveProfanityFilter\utils\language;
-use xqwtxon\HiveProfanityFilter\utils\config_manager;
+use xqwtxon\HiveProfanityFilter\Loader;
+use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
+use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\Event;
 
-class hide implements Listener {
+class Hide implements Listener {
 	private language $lang;
 	private config_manager $config;
-	public function __construct(Main $plugin){
+	public function __construct(Loader $plugin){
 		$this->lang = $lang;
 		$this->config = $config;
 	}
@@ -20,7 +20,7 @@ class hide implements Listener {
 		$msg = $ev->getMessage();
 		$player = $ev->getPlayer();
 		$playerName = $player->getName();
-		$words = array_map("strtolower", $this->config->banned_words()->get("banned-words"), []));
+		$words = array_map("strtolower", $this->config->profanity_get("banned-words"), []));
 		if (in_array($words), $msg){
 			$ev->cancel();
 			// HIVE TRICK FOR HIDING MESSAGE ;)

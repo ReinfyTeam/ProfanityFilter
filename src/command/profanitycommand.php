@@ -2,110 +2,88 @@
 
 namespace xqwtxon\HiveProfanityFilter\command;
 
-use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use xqwtxon\HiveProfanityFilter\Main;
-use xqwtxon\HiveProfanityFilter\utils\language;
-use xqwtxon\HiveProfanityFilter\utils\config_manager;
+use pocketmine\command\Command;
+use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
+use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
+use xqwtxon\HiveProfanityFilter\Loader;
 use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 
-class profanity_command extends Command {
-	// Constructors
-	private Main $plugin;
-	private language $lang;
-	private config_manager $config;
-	private gui_manager $ui
-	
-	private array $authors = [
-		"xqwtxon",
-		"z3nXxz"
-	];
-	
+class ProfanityCommand extends Command {
+	private ConfigManager $config;
+	private LanguageManager $lang;
+	private Loader $plugin;
 	public function __construct(){
-		$this->lang = $lang;
-		$this->config = $config;
-		$this->plugin = $plugin;
-		$this->ui = $ui;
-		$this->setPermission($this->plugin->getConfig()->get("profanity-command-perm"));
-		$this->usageMessage("/pf <help/sub_command>");
-		$this->setDescription("profanity-command-description");
+		$this->lang = new LanguageManager();
+		$this->config = new ConfigManager();
+		$this->plugin = Loader::getInstance();
+		$this->setPermission("profanity.command");
+		parent::__construct("pf", $this->lang->translateMessage("profanity-command-usage"), null, ["pf"]);
 	}
-	
+	private array $pluginCreators = [
+		'xqwtxon',
+		'z3nXxz',
+	];
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		
-		$translate = $this->lang;
-		$currentLang = $cfg->get("lang");
-		if(!$sender instanceof Player) return;
-		
-		if(!isset($args[0]){
-			$this->usageMessage();
+		if($sender instanceof Player){
+			$sender->sendMessage($this->lang->translateMessage("profanity-command-only-ingame"));
+			return;
 		}
-		switch($args[0]){
+		if(!isset($args[0])){
+			$sender->sendMessage($this->lang->translateMessage("profanity-command-usage"));
+			return;
+		}
+		
+		switch(strtolower($args[0])){
 			case "help":
-				$sender->sendMessage($translate->getKey($currentLang,"help-title"));
-				$sender->sendMessage($translate->getKey($currentLang,"help-subtitle"));
-				foreach($translate->getKey($currentLang,"help-page-1") as $page){
-					$sender->sendMessage($page);
-				}
-				break;
-			case "help 1":
-				$sender->sendMessage($translate->getKey($currentLang,"help-title"));
-				$sender->sendMessage($translate->getKey($currentLang,"help-subtitle"));
-				foreach(array_chunk($translate->getKey($currentLang,"help-page-1"), 5) as $page){
-					$sender->sendMessage($page);
-				}
-				break;
-			case "help 2":
-				$sender->sendMessage($translate->getKey($currentLang,"help-title"));
-				$sender->sendMessage($translate->getKey($currentLang,"help-subtitle"));
-				foreach(array_chunk($translate->getKey($currentLang,"help-page-2"), 3) as $page){
-					$sender->sendMessage($page);
+				$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("help-title"));
+				$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("help-subtitle"));
+				foreach($this->lang->translateMessage("help-page") as $commands){
+					$sender->sendMessage("- " . TextFormat::GREEN . $commands);
 				}
 				break;
 			case "ui":
-				$this->ui->manage_profanity($sender);
+				break;
+			case "banned-words":
+				$sender->sendMessage($this->lang->translateMessage("banned-words-description"));
+				foreach($this->config->profanityGet("banned-words") as $word){
+					$sender->sendMessage("- " . TextFormat::RED .  $word);
+				}
 				break;
 			case "credits":
-				$this->sendMessage($translate->getKey($currentLang,"credits-title"));
-				$this->sendMessage($translate->getKey($currentLang,"credits-subtitle"));
-				$this->sendMessage($translate->getKey($currentLang,"credits-description"));
-				foreach($authors){
-					$this->sendMessage("- " . $authors);
+				$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("credits-title"));
+				$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("credits-subtitle"));
+				$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("credits-description"));
+				foreach($this->pluginCreators as $author){
+					$sender->sendMessage("- ". TextFormat::GREEN . $author);
 				}
 				break;
-			case "stop":
-				$this->sendMessage($translate->getKey($currentLang,"stopped-plugin"));
-				$this->plugin->getServer()->getPluginManager()->disablePlugin($this->plugin);
-				break;
-			case "add":
-				if(!isset($args[1]) $this->sendMessage($translate->getKey($currentLang,"add-subcommand-usage"));
-				$this->config->banned_words->set($args[1]);
-				$this->sendMessage($translate->getKey($currentLang,"banned_words_added"));
-				break;
-			case "remove":
-				if(!isset($args[1]) $this->sendMessage($translate->getKey($currentLang,"remove-subcommand-usage"));
-				$this->config->banned_words->set("banned-words",$args[1]);
-				$this->sendMessage($translate->getKey($currentLang,"banned_words_remove"));
-				break;
-			case "check-update":
+			case "info":
+				$sender->sendMessage(TextFormat::GREEN . "This is " . $this->plugin->getFullName() . " by xqwtxon. Config Version: " . $this->plugin->getConfigVersion());
 				break;
 			case "type":
-				if(!isset($args[1]) $this->sendMessage($translate->getKey($currentLang,"type-subcommand-usage"));
+				if(!isset($args[1])){
+					$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-type-usage"));
+					return;
+				}
 				switch(strtolower($args[1])){
 					case "hide":
-						$this->plugin->getConfig()->set("type",strtolower($args[1]));
+						$sender->sendMessage(TextFormat::GREEN . $this->lang->translateMessage("profanity-command-type-success" . " hide"));
+						$this->plugin->getConfig()->set("type", "hide");
 						break;
 					case "block":
-						$this->plugin->getConfig()->set("type",strtolower($args[1]));
+						$sender->sendMessage(TextFormat::GREEN . $this->lang->translateMessage("profanity-command-type-success" . " block"));
+						$this->plugin->getConfig()->set("type", "block");
 						break;
 					case "block-with-message":
-						$this->plugin->getConfig()->set("type",strtolower($args[1]));
-						break;
-					default:
-						$this->sendMessage($translate->getKey($currentLang,"type-subcommand-usage"));
+						$sender->sendMessage(TextFormat::GREEN . $this->lang->translateMessage("profanity-command-type-success" . " block-with-message"));
+						$this->plugin->getConfig()->set("type", "block-with-message");
 						break;
 				}
-				$this->sendMessage($translate->getKey($currentLang,"banned_words_remove"));
+				break;
+			default:
+				$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage"));
 				break;
 		}
 	}
