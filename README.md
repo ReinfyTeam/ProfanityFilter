@@ -9,21 +9,23 @@ It is good for moderating and controls players speech every time. So, what are y
 It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>Click for detailed features.</summary>
-		<input type="checkbox" checked disabled>UI (FormAPI)</input>
-		<input type="checkbox" checked disabled>Profanity Command.</input>
-		<input type="checkbox" checked disabled>Profanity Filter Types!</input>
-		<input type="checkbox" checked disabled>Custom Languages!</input>
-		<input type="checkbox" checked disabled>Easy to configure.</input>
+
+		- [x] UI (FormAPI)<br>
+		- [x] Profanity Command.<br>
+		- [x]Profanity Filter Types!<br>
+		- [x] Custom Languages!<br>
+		- [x]Easy to configure.<br>
 	</details> 
 </p>
 
 <h1 align=left>TODO: 🎯</h1>
 <p align=left>
-		<input type="checkbox" disabled>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</input>
-		<input type="checkbox" disabled>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</input>
-		<input type="checkbox" disabled>/me, /say, /tell command message filter.</input>
-		<input type="checkbox" disabled>PureChat & GroupsAPI Support</input>
-		<input type="checkbox" disabled>InfoAPI Libs & Official Plugin API</input>
+
+		- [ ] Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)<br>
+		- [ ] Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)<br>
+		- [ ] /me, /say, /tell command message filter.<br>
+		- [ ] PureChat & GroupsAPI Support<br>
+		- [ ] InfoAPI Libs & Official Plugin API<br>
 </p>
 
 <h1 align=left>FAQ's 🤷‍</h1>
@@ -45,7 +47,7 @@ It is lightweight, easy to use, and easy to configure.
 	</details>
 	<br>
 	<details>
-		<summary>How to fix `Missing files in .../plugin_data/HiveProfanityFilter/languages/en-us.yml`</summary>
+		<summary>How to fix <code>Missing files in .../plugin_data/HiveProfanityFilter/languages/en-us.yml</code></summary>
 		<p>
 			Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.<br>
 			Or fix this by deleting <code>config.yml</code>.
@@ -58,10 +60,10 @@ It is lightweight, easy to use, and easy to configure.
 	You are encountered some bugs or issue? Tell us about it.<br>
 	We always open to handle your case about bugs or issue.<br>
 	We sure you the problem will fixed as soon as possible.<br>
-	<list>You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</list>
-	<list>Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></list>
-	<list>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</list>
-	<list>Submit the issue and be patient for a response for a solution to your problem :D</list>
+	- You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</list>
+	- Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></list>
+	- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</list>
+	- Submit the issue and be patient for a response for a solution to your problem :D</list>
 </p>
 
 <h1 align=center>Credits</h1>
