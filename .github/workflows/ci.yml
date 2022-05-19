@@ -18,22 +18,6 @@ jobs:
           install-path: "./dev/bin"
       - name: phpstan analyze
         run: make phpstan PHP="php -dphar.readonly=0 -dmemory_limit=256M"
-  suites:
-    name: suite tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        suite-name:
-          - sqlite
-          - mysql
-          - config-regen-currency
-          - import-economyapi-yaml
-        pocketmine-version:
-          - "4"
-          - "4.0.0"
-    steps:
-      - uses: actions/checkout@v2
-      - run: make suitetest/cases/${{matrix.suite-name}} DIFF="diff -y" POCKETMINE_VERSION=${{matrix.pocketmine-version}}
   fmt:
     name: code style check
     runs-on: ubuntu-latest
