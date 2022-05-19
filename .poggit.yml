@@ -5,7 +5,7 @@ branches:
 projects:
   HiveProfanityFilter:
     path: ""projects:
-    libs:
-      - src: jojoe77777/FormAPI/libFormAPI
-        version: ^2.1.0
+libs:
+   - src: jojoe77777/FormAPI/libFormAPI
+     version: ^2.1.0
 ...
