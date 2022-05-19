@@ -7,18 +7,17 @@ Do you want to block hate speech? Do you want to customize it? Do you want to pu
 Well you found this one. This plugin controls hate speech and punish certain players by violations.<br>
 It is good for moderating and controls players speech every time. So, what are you waiting for. Lets now use it!<br>
 It is lightweight, easy to use, and easy to configure.
-	<details>
-		<summary>Click for detailed features.</summary>
-		<input checked="" disabled="" type="checkbox">UI (FormAPI)<br>
-		<input checked="" disabled="" type="checkbox">Profanity Command.<br>
-		<input checked="" disabled="" type="checkbox">Profanity Filter Types!<br>
-		<input checked="" disabled="" type="checkbox">Custom Languages!<br>
-		<input checked="" disabled="" type="checkbox">Easy to configure.<br>
-	</details> 
+
+		- [x] UI (FormAPI)<br>
+		- [x] Profanity Command.<br>
+		- [x] Profanity Filter Types!<br>
+		- [x] Custom Languages!<br>
+		- [x] Easy to configure.<br>
+
 </p>
 
 
-<h1 align=left>TODO: 🎯</h1>
+<h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
 		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</li>
@@ -29,7 +28,7 @@ It is lightweight, easy to use, and easy to configure.
 		<ul>
 </p>
 
-<h1 align=left>FAQ's 🤷‍</h1>
+<h1>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
 		<summary>How to install plugin.</summary>
@@ -58,7 +57,7 @@ It is lightweight, easy to use, and easy to configure.
 	</details>
 </p>
 
-<h1 align=left>Found a Problem? 🧤</h1>
+<h1>Found a Problem? 🧤</h1>
 <p align=left>
 	You are encountered some bugs or issue? Tell us about it.<br>
 	We always open to handle your case about bugs or issue.<br>
