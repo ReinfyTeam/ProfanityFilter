@@ -4,6 +4,7 @@ branches:
 - main
 projects:
   HiveProfanityFilter:
+    lint: false
     path: ""
 libs:
    - src: jojoe77777/FormAPI/libFormAPI

@@ -23,7 +23,7 @@ class Updater {
 				$details = $obj->{'details'};
 				$download = $obj->{'download'};
 			}
-			$ver = "0.0.1-BETA";
+			$ver = "0.0.2-BETA";
 			if($version === $ver){
 				$this->plugin->getServer()->getLogger()->notice("[Updater] ". $this->lang->translateMessage("no-updates-found"));
 			} else {
