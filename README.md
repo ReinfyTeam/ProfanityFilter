@@ -73,7 +73,7 @@ It is lightweight, easy to use, and easy to configure.
 <br>
 <br>
 <h1>Found a Problem? 🧤</h1>
-<p align=left>
+<p align=center>
 	You are encountered some bugs or issue? Tell us about it.<br>
 	We always open to handle your case about bugs or issue.<br>
 	We sure you the problem will fixed as soon as possible.<br>
