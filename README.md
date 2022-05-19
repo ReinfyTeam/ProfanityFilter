@@ -10,13 +10,16 @@ Well you found this one. This plugin controls hate speech and punish certain pla
 It is good for moderating and controls players speech every time. So, what are you waiting for. Lets now use it!<br>
 It is lightweight, easy to use, and easy to configure.
 </p>
-
+<details>
+	<summary>Click for detailed plugin features!</summary>
+	
 - [x] UI (FormAPI)<br>
 - [x] Profanity Command.<br>
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
-
+	
+</details>
 
 
 
