@@ -9,32 +9,36 @@ It is good for moderating and controls players speech every time. So, what are y
 It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>Click for detailed features.</summary>
-		- [x] UI (FormAPI)<br>
-		- [x] Profanity Command.<br>
-		- [x]Profanity Filter Types!<br>
-		- [x] Custom Languages!<br>
-		- [x]Easy to configure.<br>
+		<input checked="" disabled="" type="checkbox">UI (FormAPI)<br>
+		<input checked="" disabled="" type="checkbox">Profanity Command.<br>
+		<input checked="" disabled="" type="checkbox">Profanity Filter Types!<br>
+		<input checked="" disabled="" type="checkbox">Custom Languages!<br>
+		<input checked="" disabled="" type="checkbox">Easy to configure.<br>
 	</details> 
 </p>
 
 
 <h1 align=left>TODO: 🎯</h1>
 <p align=left>
-		- [ ] Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)<br>
-		- [ ] Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)<br>
-		- [ ] /me, /say, /tell command message filter.<br>
-		- [ ] PureChat & GroupsAPI Support<br>
-		- [ ] InfoAPI Libs & Official Plugin API<br>
+		<ul>
+		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</li>
+		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
+		<li>/me, /say, /tell command message filter.</li>
+		<li>PureChat & GroupsAPI Support<br></li>
+		<li>InfoAPI Libs & Official Plugin API</li>
+		<ul>
 </p>
 
 <h1 align=left>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
 		<summary>How to install plugin.</summary>
-		- You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.
-		- Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.
-		- Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code>
-		- Then start your server by running it.</list>
+		<ul>
+		<li>You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.</li>
+		<li>Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.</li>
+		<li>Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code></li>
+		<li>Then start your server by running it.</li>
+		<ul>
 	</details>
 	<br>
 	<details>
