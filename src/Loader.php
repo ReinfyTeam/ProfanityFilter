@@ -57,7 +57,7 @@ class Loader extends PluginBase {
 		return Loader::$instance;
 	}
 	public function getConfigVersion() {
-		return "0.0.1";
+		return "0.0.2";
 	}
 	protected function onDisable() :void {
 		$this->config = new ConfigManager();

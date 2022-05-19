@@ -10,10 +10,6 @@ type: "block-with-message"
 # If "block-with-message" has selected, you can add your own message right here.
 block-message: "§cHey, Watch your Language!"
 
-# PureChat Support
-# You can modify this option if you have purechat installed on your plugins. If not dont change this.
-pc-support: false
-
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
 # and make file custom.yml in languages/ folder in plugin_data/HiveProfanityFilter/
@@ -24,5 +20,5 @@ lang: "en-us"
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: "0.0.1"
+config-version: "0.0.2"
 ...

@@ -16,7 +16,7 @@ class Updater {
 			$updateURL = "https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/main/version.json";
 			$json = @file_get_contents($updateURL);
 			if (($data = $json) === false) {
-				return $this->plugin->getLogger()->error("Unable to Check Update. Check your connection and try again.");
+				return $this->plugin->getLogger()->critical("Unable to Check Update. Check your connection and try again.");
 			} else {
 				$obj = json_decode($json);
 				$version = $obj->{'version'}; 
