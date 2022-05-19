@@ -13,26 +13,25 @@ class Updater {
 		$this->plugin = Loader::getInstance();
 	}
 	public function Update(){
-		try{
-			$updateURL = "https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/raw/blob/main/version.json";
-			$json = file_get_contents($updateURL);
-			$this->saveJson();
-			$obj = json_decode($json);
-			$version = $obj->{'version'}; 
-			$details = $obj->{'details'};
-			$download = $obj->{'download'};
-			if($version === "0.0.1-BETA"){
-				return $this->plugin->getServer()->getLogger()->info("[Updater] ". $this->lang->translateMessage("new-update-found"));
+			$updateURL = "https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/main/version.json";
+			$json = @file_get_contents($updateURL);
+			if (($data = $json) === false) {
+				return $this->plugin->getLogger()->error("Unable to Check Update. Check your connection and try again.");
 			} else {
-				return $this->plugin->getServer()->getLogger()->info("[Updater] ". $this->lang->translateMessage("no-updates-found"));
+				$obj = json_decode($json);
+				$version = $obj->{'version'}; 
+				$details = $obj->{'details'};
+				$download = $obj->{'download'};
 			}
-		}
-		catch(Exception $exeption){
-			return $this->plugin->getLogger()->error("Unable to Check Update. Check your connection and try again.");
-		}
-	}
-	
-	public function saveJson(){
-		return file_put_contents($this->config->getDataFolder() . "cache/version.json", $json);
+			$ver = "0.0.1-BETA";
+			if($version === $ver){
+				$this->plugin->getServer()->getLogger()->notice("[Updater] ". $this->lang->translateMessage("no-updates-found"));
+			} else {
+				$this->plugin->getServer()->getLogger()->warning("[Updater] ". $this->lang->translateMessage("new-update-found"));
+				$this->plugin->getServer()->getLogger()->warning("[Updater] Latest Version: ". $version);
+				$this->plugin->getServer()->getLogger()->warning("[Updater] Current Version: ". $ver);
+				$this->plugin->getServer()->getLogger()->warning("[Updater] Download: ". $download);
+				$this->plugin->getServer()->getLogger()->warning("[Updater] Details: ". $details);
+			}
 	}
 }

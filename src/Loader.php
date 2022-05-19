@@ -26,7 +26,7 @@ class Loader extends PluginBase {
 	public function onEnable() :void{
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();
-		$this->lang = new Updater();
+		$this->updater = new Updater();
 		$this->loadListeners();
 		$this->loadCommands();
 		$this->updater->Update();
