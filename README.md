@@ -7,15 +7,13 @@ Do you want to block hate speech? Do you want to customize it? Do you want to pu
 Well you found this one. This plugin controls hate speech and punish certain players by violations.<br>
 It is good for moderating and controls players speech every time. So, what are you waiting for. Lets now use it!<br>
 It is lightweight, easy to use, and easy to configure.
-
-		- [x] UI (FormAPI)<br>
-		- [x] Profanity Command.<br>
-		- [x] Profanity Filter Types!<br>
-		- [x] Custom Languages!<br>
-		- [x] Easy to configure.<br>
-
 </p>
 
+- [x] UI (FormAPI)<br>
+- [x] Profanity Command.<br>
+- [x] Profanity Filter Types!<br>
+- [x] Custom Languages!<br>
+- [x] Easy to configure.<br>
 
 <h1>TODO: 🎯</h1>
 <p align=left>
@@ -27,7 +25,7 @@ It is lightweight, easy to use, and easy to configure.
 		<li>InfoAPI Libs & Official Plugin API</li>
 		<ul>
 </p>
-
+<br>
 <h1>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
@@ -56,7 +54,7 @@ It is lightweight, easy to use, and easy to configure.
 		</p>
 	</details>
 </p>
-
+<br>
 <h1>Found a Problem? 🧤</h1>
 <p align=left>
 	You are encountered some bugs or issue? Tell us about it.<br>
