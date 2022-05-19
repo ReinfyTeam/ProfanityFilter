@@ -1,6 +1,8 @@
 <h1 align=center>HiveProfanityFilter 🤐<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo_I1YNhoqj3CjtaaK3UCCMc25Qfb2ZTxAvA&usqp=CAU" align="right"></h1>
 <p align=center>A best hive <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
 <p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
+
+
 <h1 align=center>Features 🎈</h1>
 <p align="center">
 Do you want to block hate speech? Do you want to customize it? Do you want to punish them?<br>
@@ -16,6 +18,9 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Easy to configure.<br>
 
 
+
+
+
 <h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
@@ -24,11 +29,15 @@ It is lightweight, easy to use, and easy to configure.
 		<li>/me, /say, /tell command message filter.</li>
 		<li>PureChat & GroupsAPI Support<br></li>
 		<li>InfoAPI Libs & Official Plugin API</li>
-		<ul>
+		</ul>
 </p>
 <br>
 
-
+			
+			
+			
+			
+			
 <h1>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
@@ -58,20 +67,22 @@ It is lightweight, easy to use, and easy to configure.
 	</details>
 </p>
 
-
+<br>
 <br>
 <h1>Found a Problem? 🧤</h1>
 <p align=left>
 	You are encountered some bugs or issue? Tell us about it.<br>
 	We always open to handle your case about bugs or issue.<br>
 	We sure you the problem will fixed as soon as possible.<br>
-
-	- You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!
-	- Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a>
-	- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.
-	- Submit the issue and be patient for a response for a solution to your problem :D
 </p>
+	<ul>
+		<li>You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</li>
+		<li>Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></li>
+		<li>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</li>
+		<li>Submit the issue and be patient for a response for a solution to your problem :D</li>
+	</ul>
 
 
+<br><br>
 <h1 align=center>Credits</h1>
 <p align=center>This plugin was made by <a href="https://github.com/xqwtxon/">@xqwtxon</a>!</p>
