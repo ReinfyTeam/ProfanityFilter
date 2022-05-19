@@ -9,7 +9,6 @@ It is good for moderating and controls players speech every time. So, what are y
 It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>Click for detailed features.</summary>
-
 		- [x] UI (FormAPI)<br>
 		- [x] Profanity Command.<br>
 		- [x]Profanity Filter Types!<br>
@@ -18,9 +17,9 @@ It is lightweight, easy to use, and easy to configure.
 	</details> 
 </p>
 
+
 <h1 align=left>TODO: 🎯</h1>
 <p align=left>
-
 		- [ ] Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)<br>
 		- [ ] Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)<br>
 		- [ ] /me, /say, /tell command message filter.<br>
@@ -32,10 +31,10 @@ It is lightweight, easy to use, and easy to configure.
 <p align=left>
 	<details>
 		<summary>How to install plugin.</summary>
-		<list>You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.</list>
-		<list>Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.</list>
-		<list>Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code></list>
-		<list>Then start your server by running it.</list>
+		- You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.
+		- Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.
+		- Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code>
+		- Then start your server by running it.</list>
 	</details>
 	<br>
 	<details>
@@ -60,10 +59,11 @@ It is lightweight, easy to use, and easy to configure.
 	You are encountered some bugs or issue? Tell us about it.<br>
 	We always open to handle your case about bugs or issue.<br>
 	We sure you the problem will fixed as soon as possible.<br>
-	- You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</list>
-	- Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></list>
-	- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</list>
-	- Submit the issue and be patient for a response for a solution to your problem :D</list>
+
+	- You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!
+	- Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a>
+	- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.
+	- Submit the issue and be patient for a response for a solution to your problem :D
 </p>
 
 <h1 align=center>Credits</h1>
