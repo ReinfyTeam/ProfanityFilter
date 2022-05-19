@@ -4,7 +4,7 @@ on:
   - pull_request
 jobs:
   phpstan:
-    name: phpstan analyze
+    name: PHPStan Analyze
     runs-on: ubuntu-latest
     strategy:
       matrix:

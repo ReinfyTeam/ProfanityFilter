@@ -38,7 +38,7 @@ class LanguageManager {
 			return $instance->get($k);
 	}
 	public function getSelectedLang(){
-		if(null !== Loader::getInstance()->getConfig()->get("lang")) {
+		if(Loader::getInstance()->getConfig()->get("lang") === null) {
 			throw new Exception("Failed to get selected languages in config.yml! Possible blank option provided. Please delete config.yml to fix this problem. Unable to find option: lang in config.yml returned: null");
 		}
 		if(Loader::getInstance()->getConfig()->get("lang") === null){

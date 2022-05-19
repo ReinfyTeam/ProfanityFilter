@@ -10,6 +10,7 @@ use xqwtxon\HiveProfanityFilter\listener\Hide;
 use xqwtxon\HiveProfanityFilter\listener\Block;
 use xqwtxon\HiveProfanityFilter\listener\BlockWithMessage;
 use xqwtxon\HiveProfanityFilter\command\ProfanityCommand;
+use xqwtxon\HiveProfanityFilter\Updater;
 
 class Loader extends PluginBase {
 	private static Loader $instance;
@@ -21,13 +22,14 @@ class Loader extends PluginBase {
 		$this->config->saveProfanity();
 		$this->config->checkConfig();
 		$this->lang->checkCustomLang();
-		//$this->check_updates();
 	}
 	public function onEnable() :void{
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();
+		$this->lang = new Updater();
 		$this->loadListeners();
 		$this->loadCommands();
+		$this->updater->Update();
 	}
 	private function loadCommands(){
 		$this->getServer()->getCommandMap()->register("HiveProfanityFilter", new ProfanityCommand());
