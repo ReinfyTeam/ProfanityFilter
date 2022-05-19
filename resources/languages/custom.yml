@@ -1,6 +1,7 @@
 ---
-# Custom Config
-# Modify it if you want. :)
+# Custom Configuration
+# You can change this if you want.
+# Dont forget modify lang option value to "custom" in config.yml
 outdated-config: "Your configuration is outdated. The configuration is renamed as old-config.yml"
 outdated-plugin: "You are using an old version of plugin. Considering updating it to poggit or github releases."
 config-notfound: "Creating config.yml..."
@@ -17,7 +18,8 @@ help-page:
 - "/pf type <hide/block-with-message/block> -- Changes the profanityfilter block option. (Please restart server to take effect.)"
 - "/pf banned-words/list -- View all list currently banned-words."
 profanity-command-only-ingame: "You can only use this at in-game!"
-profanity-command-usage: "Usage: /pf <help/subcommand> [args]"
+profanity-command-usage: "/pf <help/subcommand> [args]"
+profanity-command-usage-execute: "Usage: /pf <help/subcommand> [args]"
 banned-words-description: "These are currently banned words in config. It may cause some string like **** at in-game. So if you want to view them all, Check manualy banned-words config or in console."
 banned-words-description-2: "If you want to add more. Kindly add banned-words in profanity config."
 profanity-command-type-success-tip: "Please restart the server to take effect."
@@ -28,5 +30,14 @@ profanity-command-add-success: "Sucessfully added profanity banned-words the wor
 credits-title: "Hive Profanity Filter"
 credits-subtitle: "https://github.com/xqwtxon/HiveProfanityFilter"
 credits-description: "These are currently public contrubutors in plugin."
-lang-version: "0.0.1"
+ui-pf-manage-title: "HiveProfanityFilter"
+ui-pf-manage-description: "Here you can manage here."
+ui-pf-manage-button-1: "View Banned Words"
+ui-pf-manage-button-2: "Change Profanity Filter"
+ui-pf-manage-button-3: "Exit"
+ui-pf-manage-button-4: "Hide"
+ui-pf-manage-button-5: "Block"
+ui-pf-manage-button-6: "Block With Message"
+ui-pf-manage-button-return: "Return"
+ui-pf-manage-type-profanity-description: "Here you can change type of profanityfilter.\nPlease restart your server to take effect."
 ...

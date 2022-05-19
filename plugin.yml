@@ -1,14 +1,19 @@
 ---
 name: HiveProfanityFilter
-version: 0.0.1
+version: 0.0.1-BETA
 main: xqwtxon\HiveProfanityFilter\Loader
 api: 4.0.0
 src-namespace-prefix: xqwtxon\HiveProfanityFilter
 description: "A best hive profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat."
 website: "https://github.com/xqwtxon/HiveProfanityFilter"
-author: "xqwtxon"
+authors: 
+- "xqwtxon"
+- "z3nXxz"
 permissions:
       profanity.command:
            description: ProfanityFilter Operator Permission
            default: op
+libs:
+    - src: jojoe77777/FormAPI/libFormAPI
+      version: 2.1.0
 ...

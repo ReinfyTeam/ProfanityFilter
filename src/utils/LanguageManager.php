@@ -23,7 +23,6 @@ class LanguageManager {
 	}
 	private array $langs = [
 		'en-us',
-		'ph-fl',
 	];
 	public function translateMessage(array|string $k) :array|string{
 		$this->config = new ConfigManager();
@@ -39,6 +38,16 @@ class LanguageManager {
 			return $instance->get($k);
 	}
 	public function getSelectedLang(){
+		if(null !== Loader::getInstance()->getConfig()->get("lang")) {
+			throw new Exception("Failed to get selected languages in config.yml! Possible blank option provided. Please delete config.yml to fix this problem. Unable to find option: lang in config.yml returned: null");
+		}
+		if(Loader::getInstance()->getConfig()->get("lang") === null){
+			return $defaultLang;
+		}
+		if(Loader::getInstance()->getConfig()->get("lang") === "custom"){
+			//@delete($this->config->getDataFolder() . "languages/" . "en-us.yml");
+			return "custom";
+		}
 		return Loader::getInstance()->getConfig()->get("lang");
 	}
 	public function saveAllLang(){
@@ -47,17 +56,14 @@ class LanguageManager {
 		}
 		foreach($this->langs as $languages){
 			Loader::getInstance()->saveResource("languages/" . $languages . ".yml");
-			
 		}
-	}
-	
-	public function getLangVersion(){
-		return $this->translateMessage("lang-version");
 	}
 	
 	public function checkCustomLang(){
 		if(strtolower($this->getSelectedLang()) === "custom"){
 			return Loader::getInstance()->saveResource("languages/custom.yml");
+		} else {
+			return true;
 		}
 		return false;
 	}

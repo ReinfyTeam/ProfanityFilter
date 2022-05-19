@@ -8,6 +8,7 @@ use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
 use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
 use xqwtxon\HiveProfanityFilter\Loader;
 use pocketmine\player\Player;
+use xqwtxon\HiveProfanityFilter\utils\FormManager;
 use pocketmine\utils\TextFormat;
 
 class ProfanityCommand extends Command {
@@ -17,9 +18,10 @@ class ProfanityCommand extends Command {
 	public function __construct(){
 		$this->lang = new LanguageManager();
 		$this->config = new ConfigManager();
+		$this->ui = new FormManager();
 		$this->plugin = Loader::getInstance();
 		$this->setPermission("profanity.command");
-		parent::__construct("pf", $this->lang->translateMessage("profanity-command-usage"), null, ["pf"]);
+		parent::__construct("pf", "HiveProfanityFilter Command", $this->lang->translateMessage("profanity-command-usage"), ["pf"]);
 	}
 	private array $pluginCreators = [
 		'xqwtxon',
@@ -27,7 +29,7 @@ class ProfanityCommand extends Command {
 	];
 	public function execute(CommandSender $sender, string $commandLabel, array $args){
 		if(!isset($args[0])){
-			$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage"));
+			$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage-execute"));
 			return;
 		}
 		
@@ -96,12 +98,12 @@ class ProfanityCommand extends Command {
 						$this->plugin->saveConfig();
 						break;
 					default:
-						$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-type-usage"));
+						$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage-execute"));
 						break;
 				}
 				break;
 			default:
-				$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage"));
+				$sender->sendMessage(TextFormat::RED . $this->lang->translateMessage("profanity-command-usage-execute"));
 				break;
 		}
 	}
