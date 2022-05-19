@@ -15,6 +15,7 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
 
+
 <h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
@@ -26,6 +27,8 @@ It is lightweight, easy to use, and easy to configure.
 		<ul>
 </p>
 <br>
+
+
 <h1>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
@@ -54,6 +57,8 @@ It is lightweight, easy to use, and easy to configure.
 		</p>
 	</details>
 </p>
+
+
 <br>
 <h1>Found a Problem? 🧤</h1>
 <p align=left>
@@ -66,6 +71,7 @@ It is lightweight, easy to use, and easy to configure.
 	- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.
 	- Submit the issue and be patient for a response for a solution to your problem :D
 </p>
+
 
 <h1 align=center>Credits</h1>
 <p align=center>This plugin was made by <a href="https://github.com/xqwtxon/">@xqwtxon</a>!</p>
