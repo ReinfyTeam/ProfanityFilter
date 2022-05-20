@@ -44,6 +44,8 @@ class Watchdog implements Listener {
 	}
 	
 	public function onJoin(PlayerJoinEvent $ev) :void{
+		//RESET THEIR MAX VIOLATIONS IN CONFIG
+		//PREVENTS TO BE KICKED.
 		$this->cache->set($ev->getPlayer()->getName(), 0);
 	}
 }
