@@ -36,7 +36,7 @@ class Updater {
 				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update check found: No Update Found.");
 				$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 			} else {
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . $this->lang->translateMessage("new-update-ver-text") . $version . $this->lang->translateMessage("new-update-ver-released-date") . $date);
+				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
 				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Details: ". $details);
 				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Download: ". $download);
 			}
@@ -66,7 +66,7 @@ class Updater {
 				$sender->sendMessage(TextFormat::CYAN . "[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 			} else {
 				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check found new update.");
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . $this->lang->translateMessage("new-update-ver-text") . $version . $this->lang->translateMessage("new-update-ver-released-date") . $date);
+				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
 				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Details: ". $details);
 				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Download: ". $download);
 			}
@@ -97,7 +97,7 @@ class Updater {
 			$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 		} else {
 				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check found new update.");
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . $this->lang->translateMessage("new-update-ver-text") . $version . $this->lang->translateMessage("new-update-ver-released-date") . $date);
+				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
 				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Details: ". $details);
 				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Download: ". $download);
 		}
@@ -121,7 +121,7 @@ class Updater {
 		if($version === $this->plugin->getPluginVersion()){
 			$sender->sendMessage("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 		} else {
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . $this->lang->translateMessage("new-update-ver-text") . $version . $this->lang->translateMessage("new-update-ver-released-date") . $date);
+				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " .$this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
 				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Details: ". $details);
 				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Download: ". $download);
 		}
