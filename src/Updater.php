@@ -24,7 +24,7 @@ class Updater {
 				$download = $obj->{'download'};
 				$date = $obj->{'date-release'};
 			}
-			$ver = "0.0.2-BETA";
+			$ver = "0.0.1-BETA";
 			if($version === $ver){
 				$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 			} else {
