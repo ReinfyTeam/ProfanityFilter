@@ -1,0 +1,4 @@
+---
+# Violation Cache
+# It is used for player cache for violations, it will reset if they got kicked.
+...

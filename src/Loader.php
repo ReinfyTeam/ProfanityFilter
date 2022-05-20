@@ -6,11 +6,14 @@ namespace xqwtxon\HiveProfanityFilter;
 use pocketmine\plugin\PluginBase;
 use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
 use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
+use xqwtxon\HiveProfanityFilter\utils\KickManager;
+use xqwtxon\HiveProfanityFilter\utils\FormManager;
 use xqwtxon\HiveProfanityFilter\listener\Hide;
 use xqwtxon\HiveProfanityFilter\listener\Block;
 use xqwtxon\HiveProfanityFilter\listener\BlockWithMessage;
 use xqwtxon\HiveProfanityFilter\command\ProfanityCommand;
 use xqwtxon\HiveProfanityFilter\Updater;
+use xqwtxon\HiveProfanityFilter\Watchdog;
 
 class Loader extends PluginBase {
 	private static Loader $instance;
@@ -27,6 +30,7 @@ class Loader extends PluginBase {
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();
 		$this->updater = new Updater();
+		$this->getServer()->getPluginManager()->registerEvents(new Watchdog(), $this);
 		$this->loadListeners();
 		$this->loadCommands();
 		$this->updater->Update();
@@ -57,7 +61,10 @@ class Loader extends PluginBase {
 		return Loader::$instance;
 	}
 	public function getConfigVersion() {
-		return "0.0.2";
+		return "0.0.3";
+	}
+	public function getPluginVersion() {
+		return "0.0.3-BETA";
 	}
 	protected function onDisable() :void {
 		$this->config = new ConfigManager();

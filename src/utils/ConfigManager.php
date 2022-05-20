@@ -21,6 +21,7 @@ class ConfigManager {
 			Loader::getInstance()->getLogger()->debug($this->lang->translateMessage("config-notfound"));
 			Loader::getInstance()->saveResource("config.yml");
 			Loader::getInstance()->saveConfig();
+			Loader::getInstance()->getConfig()->reload();
 		}
 		if (!is_dir(Loader::getInstance()->getDataFolder())){
 			Loader::getInstance()->getLogger()->debug($this->lang->translateMessage("plugin-dir-notfound"));

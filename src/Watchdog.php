@@ -1,0 +1,44 @@
+<?php
+
+namespace xqwtxon\HiveProfanityFilter;
+
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerChatEvent;
+use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
+use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
+use xqwtxon\HiveProfanityFilter\utils\CacheManager;
+use xqwtxon\HiveProfanityFilter\utils\KickManager;
+use xqwtxon\HiveProfanityFilter\Loader;
+
+class Watchdog implements Listener {
+	private KickManager $kicker;
+	private ConfigManager $config;
+	private CacheManager $cache;
+	private LanguageManager $lang;
+	public function __construct(){
+		$this->plugin = Loader::getInstance();
+		$this->lang = new LanguageManager();
+		$this->config = new ConfigManager();
+		$this->cache = new CacheManager();
+		$this->kicker = new KickManager();
+	}
+	public function onChat(PlayerChatEvent $ev) :void{
+		$player = $ev->getPlayer();
+		$violation = $this->cache->get($player->getName());
+		$maxViolations = $this->plugin->getConfig()->get("max-violation");
+		$type = $this->plugin->getConfig()->get("punishment-type");
+		$message = $this->plugin->getConfig()->get("kick-message");
+		if($type === "kick"){
+			if($violations > $maxViolations){
+				$this->kicker->kick($p, $message);
+				$this->cache->set($player->getName(), 0);
+				$this->cache->saveCache();
+			}
+		}
+		if($type === "ban"){
+			if($violations > $maxViolations){
+				//TODO: ban players when reached max violations.
+			}
+		}
+	}
+}

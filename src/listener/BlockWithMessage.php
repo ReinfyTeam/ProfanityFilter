@@ -10,6 +10,8 @@ use pocketmine\event\Event;
 use pocketmine\event\Listener;
 
 class BlockWithMessage implements Listener {
+	private LanguageManager $lang;
+	private ConfigManager $config;
 	public function __construct(Loader $plugin){
 		$this->lang = new LanguageManager();
 		$this->config = new ConfigManager();
