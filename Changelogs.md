@@ -24,5 +24,5 @@ This is major beta update for v1.0.0
 - New Players Cache, will added on `cache/violations.yml` it will store violations numbers.
 - Fixed Syntax, like in `version.json`
 - Added `date-release` option on `version.json`
-- New `/pf update` to update again :D
+- New `/pf update` to update plugin again :D
 - New Languages in `en-us.yml`
