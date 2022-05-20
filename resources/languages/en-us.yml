@@ -1,7 +1,9 @@
 ---
 outdated-config: "Your configuration is outdated. The configuration is renamed as old-config.yml"
 outdated-plugin: "You are using an old version of plugin. Considering updating it to poggit or github releases."
-new-update-found: "New Update found!"
+new-update-found: "Your version of HiveProfanityFilter is out of date."
+new-update-ver-text: "Version"
+new-update-ver-released-date: "was released on"
 no-updates-found: "No Updates found! Enjoy!"
 config-notfound: "Creating config.yml..."
 unable-to-check-update: "Unable check update at the moment. Please check your connection and try again."

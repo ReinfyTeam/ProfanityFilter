@@ -22,16 +22,15 @@ class Updater {
 				$version = $obj->{'version'}; 
 				$details = $obj->{'details'};
 				$download = $obj->{'download'};
+				$date = $obj->{'date-release'};
 			}
-			$ver = "0.0.2-BETA";
+			$ver = "0.0.1-BETA";
 			if($version === $ver){
-				$this->plugin->getServer()->getLogger()->notice("[Updater] ". $this->lang->translateMessage("no-updates-found"));
+				$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
 			} else {
-				$this->plugin->getServer()->getLogger()->warning("[Updater] ". $this->lang->translateMessage("new-update-found"));
-				$this->plugin->getServer()->getLogger()->warning("[Updater] Latest Version: ". $version);
-				$this->plugin->getServer()->getLogger()->warning("[Updater] Current Version: ". $ver);
-				$this->plugin->getServer()->getLogger()->warning("[Updater] Download: ". $download);
-				$this->plugin->getServer()->getLogger()->warning("[Updater] Details: ". $details);
+				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . $this->lang->translateMessage("new-update-ver-text") . $version . $this->lang->translateMessage("new-update-ver-released-date") . $date);
+				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Details: ". $details);
+				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Download: ". $download);
 			}
 	}
 }
