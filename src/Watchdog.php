@@ -4,6 +4,7 @@ namespace xqwtxon\HiveProfanityFilter;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
 use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
 use xqwtxon\HiveProfanityFilter\utils\CacheManager;
@@ -40,5 +41,9 @@ class Watchdog implements Listener {
 				//TODO: ban players when reached max violations.
 			}
 		}
+	}
+	
+	public function onJoin(PlayerJoinEvent $ev) :void{
+		$this->cache->set($ev->getPlayer()->getName(), 0);
 	}
 }
