@@ -42,7 +42,7 @@ class Updater extends AsyncTask {
 				$json = Internet::getUrl(self::GITHUB_RELEASE_URL, 10, [], $err);
 				$release = json_decode($mirror->getBody(), true);
 				if(version_compare($currentVersion, $release["version"], ">=")){
-					continue;
+					//NOOP
 				}
 				$highestVersion = $release["version"];
 				$artifactURL = $release["download"];
@@ -51,7 +51,7 @@ class Updater extends AsyncTask {
 			
 			foreach($releases as $release){
 				if(version_compare($currentVersion, $release["version"], ">=")){
-					continue;
+					//NOOP
 				}
 				$highestVersion = $release["version"];
 				$artifactURL = $release["artifact_url"];

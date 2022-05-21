@@ -21,7 +21,6 @@ help-page:
 - "/pf credits -- View Plugin Creators & Contrubutors"
 - "/pf type <current/hide/block-with-message/block> -- Changes the profanityfilter block option. (Please restart server to take effect.)"
 - "/pf banned-words/list -- View all list currently banned-words."
-- "/pf update -- Update the plugin via in-game."
 profanity-command-only-ingame: "You can only use this at in-game!"
 profanity-command-usage: "/pf <help/subcommand> [args]"
 profanity-command-usage-execute: "Usage: /pf <help/subcommand> [args]"
