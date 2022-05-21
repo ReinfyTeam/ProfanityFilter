@@ -5,125 +5,79 @@ namespace xqwtxon\HiveProfanityFilter;
 use xqwtxon\HiveProfanityFilter\Loader;
 use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
 use xqwtxon\HiveProfanityFilter\utils\ConfigManager;
-use pocketmine\utils\TextFormat;
+use pocketmine\utils\Internet;
+use pocketmine\scheduler\AsyncTask;
+use pocketmine\Server;
+use pocketmine\player\Player;
+use pocketmine\VersionInfo;
+use function is_array;
+use function json_decode;
+use function version_compare;
+use function vsprintf;
 
-class Updater {
-	public function __construct(){
-		$this->config = new ConfigManager();
-		$this->lang = new LanguageManager();
-		$this->plugin = Loader::getInstance();
+/*
+ *	A class that updates plugin.
+ * As of Sat 05/21/2022 10:49:29.36, we are now using asynctask method for updating plugin.
+ */
+class Updater extends AsyncTask {
+	
+	private const POGGIT_RELEASE_URL = "https://poggit.pmmp.io/releases.min.json?name=";
+	private const GITHUB_RELEASE_URL = "https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/main/version.json";
+	
+	public function __construct(private string $pluginName, private string $pluginVersion){
+		//NOOP
 	}
-	public function Update(){
-			$json = @file_get_contents($this->getDefaultUpdater());
-			if (($data = $json) === false) {
-				return $this->plugin->getServer()->getLogger()->critical("[Update Checker] ". $this->lang->translateMessage("update-error"));
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check failed due to 'Could not resolve host: {$this->getDefaultUpdater}'");
-			} else {
-				$obj = json_decode($json);
-				try {
-					$version = $obj->{'version'}; 
-					$details = $obj->{'details'};
-					$download = $obj->{'download'};
-					$date = $obj->{'date-release'};
-				}
-				catch(Exception $exception){
-					$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("update-error"));
-					$this->plugin->getServer()->getLogger()->debug("[Update Checker] ". $this->lang->translateMessage("update-checking-mirrors"));
-					$this->otherMirror("https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/update-mirror-1/version.json");
-				}
+	
+	public function onRun() :void{
+		$json = Internet::getUrl(self::POGGIT_RELEASE_URL . $this->pluginName, 10, [], $err);
+		$currentVersion = $this->pluginVersion;
+		$artifactURL = "";
+		$api = "";
+		if($json !== null){
+			
+			try {
+				$release = json_decode($json->getBody(), true);
 			}
-			if($version === $this->plugin->getPluginVersion()){
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update check found: No Update Found.");
-				$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
-			} else {
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Details: ". $details);
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Download: ". $download);
-			}
-	}
-	public function CommandUpdate($sender){
-			$json = @file_get_contents($this->getDefaultUpdater());
-			if (($data = $json) === false) {
-				return $sender->sendMessage(TextFormat::RED . "[Update Checker] ". $this->lang->translateMessage("update-error"));
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check failed due to 'Could not resolve host: {$this->getDefaultUpdater}'");
-			} else {
-				$obj = json_decode($json);
-				try {
-					$version = $obj->{'version'}; 
-					$details = $obj->{'details'};
-					$download = $obj->{'download'};
-					$date = $obj->{'date-release'};
+			catch(Exception $error){
+				$json = Internet::getUrl(self::GITHUB_RELEASE_URL, 10, [], $err);
+				$release = json_decode($mirror->getBody(), true);
+				if(version_compare($currentVersion, $release["version"], ">=")){
+					continue;
 				}
-				catch(Exception $exception){
-					$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check failed due to 'invalid provided json.'");
-					$sender->sendMessage(TextFormat::RED . "[Update Checker] ". $this->lang->translateMessage("update-error"));
-					$sender->sendMessage(TextFormat::DARK_RED . "[Update Checker] ". $this->lang->translateMessage("update-checking-mirrors"));
-					$this->otherCommandMirror("https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/update-mirror-1/version.json");
+				$highestVersion = $release["version"];
+				$artifactURL = $release["download"];
+				$api = VersionInfo::BASE_VERSION . " to " . $release["api"];
+			}
+			
+			foreach($releases as $release){
+				if(version_compare($currentVersion, $release["version"], ">=")){
+					continue;
 				}
+				$highestVersion = $release["version"];
+				$artifactURL = $release["artifact_url"];
+				$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
 			}
-			if($version === $this->plugin->getPluginVersion()){
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Checker found: No updates found.");
-				$sender->sendMessage(TextFormat::CYAN . "[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
-			} else {
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check found new update.");
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Details: ". $details);
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Download: ". $download);
-			}
-	}
-	public function getDefaultUpdater(){
-		return "https://raw.githubusercontent.com/xqwtxon/HiveProfanityFilter/main/version.json";
-	}
-	public function otherMirror(string $url) :mixed{
-		$json = @file_get_contents($url);
-		if(($data = $json) === false){
-			$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check failed due to 'Could not resolve host: {$url}'");
-			return $this->plugin->getLogger()->critical("[Update Checker] ". $this->lang->translateMessage("update-error"));
 		}
-			$obj = json_decode($json);
-				try {
-					$version = $obj->{'version'}; 
-					$details = $obj->{'details'};
-					$download = $obj->{'download'};
-					$date = $obj->{'date-release'};
-				}
-				catch(Exception $exception){
-					$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check failed due to 'invalid provided json.'");
-					$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("update-error"));
-					$this->plugin->getServer()->getLogger()->debug("[Update Checker] ". $this->lang->translateMessage("update-error-checking-mirrors"));
-				}
-		if($version === $this->plugin->getPluginVersion()){
-			$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Checker found: No updates found.");
-			$this->plugin->getServer()->getLogger()->notice("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
-		} else {
-				$this->plugin->getServer()->getLogger()->debug("[Update Checker] Update Check found new update.");
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " . $this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Details: ". $details);
-				$this->plugin->getServer()->getLogger()->warning("[Update Checker] Download: ". $download);
-		}
+		
+		$this->setResult([$highestVersion, $artifactURL, $api, $err]);
 	}
-	public function otherCommandMirror($sender, string $url) :mixed{
-		$json = @file_get_contents($url);
-		if(($data = $json) === false){
-			return $sender->sendMessage("[Update Checker] Unable to Check Update. Check your connection and try again.");
+	
+	public function onCompletion() :void{
+		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
+		if($plugin === null){
+			return;
 		}
-			$obj = json_decode($json);
-				try {
-					$version = $obj->{'version'}; 
-					$details = $obj->{'details'};
-					$download = $obj->{'download'};
-					$date = $obj->{'date-release'};
-				}
-				catch(Exception $exception){
-					$sender->sendMessage("[Update Checker] ". $this->lang->translateMessage("update-error"));
-					$sender->sendMessage("[Update Checker] ". $this->lang->translateMessage("update-error-checking-mirrors"));
-				}
-		if($version === $this->plugin->getPluginVersion()){
-			$sender->sendMessage("[Update Checker] ". $this->lang->translateMessage("no-updates-found"));
-		} else {
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] ". $this->lang->translateMessage("new-update-found") . " " .$this->lang->translateMessage("new-update-ver-text") . " " . $version . " " . $this->lang->translateMessage("new-update-ver-released-date") . " " . $date);
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Details: ". $details);
-				$sender->sendMessage(TextFormat::YELLOW . "[Update Checker] Download: ". $download);
+		
+		[$highestVersion, $artifactURL, $api, $err] = $this->getResult();
+		if($err !== null){
+			$plugin->getLogger()->error(vsprintf($this->lang->get("update-error"), [$err]));
+			return;
+		}
+		
+		if($highestVersion !== $this->pluginVersion){
+			$plugin->getLogger()->notice(vsprintf($this->lang->get("new-update-found"), [$highestVersion, $api]));
+			$plugin->getLogger()->notice(vsprintf($this->lang->get("new-update-details"), [$api]));
+			$plugin->getLogger()->notice(vsprintf($this->lang->get("new-update-download"), [$artifactURL]));
 		}
 	}
 }

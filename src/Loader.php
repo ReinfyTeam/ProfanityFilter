@@ -30,7 +30,6 @@ class Loader extends PluginBase {
 	public function onEnable() :void{
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();
-		$this->updater = new Updater();
 		$this->cache = new CacheManager();
 		if(!is_dir($this->getDataFolder() . "cache/")){
 			@mkdir($this->getDataFolder() . "cache/");
@@ -40,7 +39,7 @@ class Loader extends PluginBase {
 		$this->getServer()->getPluginManager()->registerEvents(new Watchdog(), $this);
 		$this->loadListeners();
 		$this->loadCommands();
-		$this->updater->Update();
+		$this->checkUpdate();
 	}
 	private function loadCommands(){
 		$this->getServer()->getCommandMap()->register("HiveProfanityFilter", new ProfanityCommand());
@@ -71,9 +70,11 @@ class Loader extends PluginBase {
 	public function getConfigVersion() {
 		return "0.0.3";
 	}
-	public function getPluginVersion() {
-		return "0.0.3-BETA";
+	
+	private function checkUpdate(bool $isEntry = false) :void{
+		$this->getServer()->getAsyncPool()->submitTask(new Updater($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 	}
+	
 	protected function onDisable() :void {
 		$this->config = new ConfigManager();
 		$this->lang = new LanguageManager();

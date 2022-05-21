@@ -22,11 +22,11 @@ class Hide implements Listener {
 		$player = $ev->getPlayer();
 		$playerName = $player->getName();
 		$words = array_map("strtolower", $this->config->profanityGet("banned-words"), []);
-		if (in_array($words) === $msg){
+		if (str_contains(strtolower(in_array($words))) === str_contains(strtolower($msg))){
 			$ev->cancel();
 			// HIVE TRICK FOR HIDING MESSAGE ;)
 			// IT WILL DONT BROADCAST TO OTHER PLAYERS INSTEAD FROM YOU.
-			$player->sendMessage($chat_format . " " . $message);
+			$player->sendMessage($chat_format);
 		}
 	}
 	
