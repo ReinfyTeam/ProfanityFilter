@@ -1,0 +1,43 @@
+---
+# These are currently banned words in the filter.
+# You can add more if you want it.
+# or you can make pull request to add it.
+banned-words:
+- arse
+- ass
+- asshole
+- bastard
+- bitch
+- bollocks
+- brotherfucker
+- bugger
+- bullshit
+- child-fucker
+- Christ on a bike
+- Christ on a cracker
+- cocksucker
+- crap
+- cunt
+- effing
+- fatherfucker
+- frigger
+- fuck
+- hell
+- holy shit
+- horseshit
+- Jesus fuck
+- Jesus wept
+- motherfucker
+- nigga
+- nigger
+- piss
+- prick
+- shit
+- shit ass
+- sisterfucker
+- slut
+- son of a bitch
+- son of a whore
+- sweet Jesus
+- twat
+...

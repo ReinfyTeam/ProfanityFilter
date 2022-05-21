@@ -1,0 +1,7 @@
+---
+name: HiveProfanityFilter
+version: 0.0.1
+main: xqwtxon\HiveProfanityFilter\Main
+api: 4.2.6
+src-namespace-prefix: xqwtxon\HiveProfanityFilter
+...
