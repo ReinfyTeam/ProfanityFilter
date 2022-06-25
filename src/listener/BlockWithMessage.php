@@ -20,7 +20,7 @@ class BlockWithMessage implements Listener {
 		$msg = $ev->getMessage();
 		$player = $ev->getPlayer();
 		$words = array_map("strtolower", $this->config->profanityGet("banned-words"), []);
-		if (str_contains(strtolower(in_array($words))) === str_contains(strtolower($msg))){
+		if ($this->plugin->containsProfanity($msg)){
 			$ev->cancel();
 			$message = $this->lang->translateMessage("block-message");
 			$player->sendMessage($message);

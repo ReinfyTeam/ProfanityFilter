@@ -81,13 +81,6 @@ class ProfanityCommand extends Command {
 					return;
 				}
 				switch(strtolower($args[1])){
-					case "hide":
-						$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("profanity-command-type-success-tip"));
-						$sender->sendMessage(TextFormat::GREEN . $this->lang->translateMessage("profanity-command-type-success") . " hide");
-						$this->plugin->getConfig()->set("type", "hide");
-						$this->plugin->saveConfig();
-						$this->plugin->getConfig()->reload();
-						break;
 					case "block":
 						$sender->sendMessage(TextFormat::YELLOW . $this->lang->translateMessage("profanity-command-type-success-tip"));
 						$sender->sendMessage(TextFormat::GREEN . $this->lang->translateMessage("profanity-command-type-success") . " block");

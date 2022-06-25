@@ -1,4 +1,25 @@
 <?php
+
+/*  					
+ *					   _
+ * 					  | |                  
+ * __  ____ ___      _| |___  _____  _ __  
+ * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
+ *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
+ * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
+ *         | |                             
+ *         |_|                             
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author xqwtxib
+ * @link http://xqwtxon.ml/
+ *
+*/
+
 declare(strict_types=1);
 
 namespace xqwtxon\HiveProfanityFilter;
@@ -9,7 +30,6 @@ use xqwtxon\HiveProfanityFilter\utils\CacheManager;
 use xqwtxon\HiveProfanityFilter\utils\LanguageManager;
 use xqwtxon\HiveProfanityFilter\utils\KickManager;
 use xqwtxon\HiveProfanityFilter\utils\FormManager;
-use xqwtxon\HiveProfanityFilter\listener\Hide;
 use xqwtxon\HiveProfanityFilter\listener\Block;
 use xqwtxon\HiveProfanityFilter\listener\BlockWithMessage;
 use xqwtxon\HiveProfanityFilter\command\ProfanityCommand;
@@ -46,9 +66,6 @@ class Loader extends PluginBase {
 	}
 	private function loadListeners(){
 		switch(strtolower($this->getConfig()->get("type"))){
-			case "hide":
-				$this->getServer()->getPluginManager()->registerEvents(new Hide($this), $this);
-				break;
 			case "block-with-message":
 				$this->getServer()->getPluginManager()->registerEvents(new BlockWithMessage($this), $this);
 				break;
@@ -80,5 +97,17 @@ class Loader extends PluginBase {
 		$this->lang = new LanguageManager();
 		$this->lang->saveAllLang();
 		$this->config->saveProfanity();
+	}
+	
+	public function containsProfanity(string $msg): bool {
+		$profanities = (array) $this->config->profanityGet("banned-words");
+		$filterCount = sizeof($profanities);
+		for ($i = 0; $i < $filterCount; $i++) {
+			$condition = preg_match('/' . $profanities[$i] . '/iu', $msg) > 0;
+			if ($condition) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

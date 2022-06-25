@@ -1,5 +1,27 @@
 <?php
 
+/*  					
+ *					   _
+ * 					  | |                  
+ * __  ____ ___      _| |___  _____  _ __  
+ * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
+ *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
+ * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
+ *         | |                             
+ *         |_|                             
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author xqwtxib
+ * @link http://xqwtxon.ml/
+ *
+*/
+
+declare(strict_types=1);
+
 namespace xqwtxon\HiveProfanityFilter;
 
 use pocketmine\event\Listener;
@@ -23,6 +45,7 @@ class Watchdog implements Listener {
 		$this->cache = new CacheManager();
 		$this->kicker = new KickManager();
 	}
+	
 	public function onChat(PlayerChatEvent $ev) :void{
 		$player = $ev->getPlayer();
 		$violation = $this->cache->get($player->getName());
@@ -48,4 +71,6 @@ class Watchdog implements Listener {
 		//PREVENTS TO BE KICKED.
 		$this->cache->set($ev->getPlayer()->getName(), 0);
 	}
+	
+	
 }
