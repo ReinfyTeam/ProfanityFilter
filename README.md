@@ -1,5 +1,5 @@
-<h1 align=center>HiveProfanityFilter 🤐<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo_I1YNhoqj3CjtaaK3UCCMc25Qfb2ZTxAvA&usqp=CAU" align="right"></h1>
-<p align=center>A best hive <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
+<h1 align=center>ProfanityFilter 🤐</h1>
+<p align=center>A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
 <p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
 
 
