@@ -18,6 +18,7 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
+- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/HiveProfanityFilter/wiki))
 	
 </details>
 
@@ -30,8 +31,6 @@ It is lightweight, easy to use, and easy to configure.
 		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</li>
 		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
 		<li>/me, /say, /tell command message filter.</li>
-		<li>PureChat & GroupsAPI Support<br></li>
-		<li>InfoAPI Libs & Official Plugin API</li>
 		</ul>
 </p>
 <br>
