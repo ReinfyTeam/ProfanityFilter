@@ -26,7 +26,7 @@ use pocketmine\event\Listener;
 
 class EventListener implements Listener {
     
-    private string $type
+    private string $type;
     
     public function __construct(string $type){
         $this->plugin = Loader::getInstance();
