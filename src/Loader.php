@@ -23,11 +23,16 @@
 namespace ProfanityFilter;
 
 use pocketmine\plugin\PluginBase;
+use ProfanityFilter\DefaultCommand;
+use ProfanityFilter\EventListener;
 
 class Loader extends PluginBase {
     
     /** @var Loader $instance **/
     private Loader $instance;
+    
+    /** @var int $punishment **/
+    private int $punishment = 0;
     
     
     public function onLoad() :void {
@@ -46,7 +51,7 @@ class Loader extends PluginBase {
     }
     
     private function checkConfig() :void {
-        $log = $this->getLogger()->;
+        $log = $this->getLogger();
 	    $pluginConfigResource = $this->getResource("config.yml");
 	    $pluginConfig = yaml_parse(stream_get_contents($pluginConfigResource));
 	    fclose($pluginConfigResource);
@@ -68,10 +73,10 @@ class Loader extends PluginBase {
     private function loadListener() : void {
         switch($this->getConfig()->get("type")){
             case "block":
-                $this->getServer()->getPluginManager()->registerEvents(new EventListener("block", $this);
+                $this->getServer()->getPluginManager()->registerEvents(new EventListener("block"), $this);
                 break;
             case "hide":
-                $this->getServer()->getPluginManager()->registerEvents(new EventListener("hide", $this);
+                $this->getServer()->getPluginManager()->registerEvents(new EventListener("hide"), $this);
                 break;
             default:
                 $this->getLogger()->critical("Invalid Profanity Type. Please check instruction on your configuration.");
@@ -83,4 +88,15 @@ class Loader extends PluginBase {
     private function registerCommands() : void {
         $this->getServer()->getCommandMap()->register($this->getDescription()->getName(), new DefaultCommand());
     }
+    
+    /*
+     * Format Message. Dont call it directly.
+     *
+     * @param string $message
+     * @return string
+    */
+    protected function formatMessage(string $message) : string {
+        $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
+        return $message;
+    } 
 }

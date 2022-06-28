@@ -1,21 +1,21 @@
 ---
-# Hive Profanity Filter
-# A hive profanity best filter. A utility that controls swearing and hate speech.
-# It is licensed on CC-BY-NC-SA by Creative Commons
+# Profanity Filter
+# A profanity best filter. A utility that controls swearing and hate speech.
+# It is licensed on LGPL-2.0 LICENSE
 # Copyright (c) by @xqwtxon
 
 # Profanity Type
-# Options: "hide","block","block-with-message"
-# Check https://github.com/xqwtxon/HiveProfanityFilter/blob/main/ProfanityType.md 
+# Options: "block","hide"
+# Check https://github.com/xqwtxon/HiveProfanityFilter/wiki/Profanity-Types
 # for more information about profanity types.
-type: "block-with-message"
+type: "block"
 
-# If "block-with-message" has selected, you can add your own message right here.
+# If "block" has selected, you can add your own message right here.
 block-message: §cHey, Watch your Language!
 
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
-# and make file custom.yml in languages/ folder in plugin_data/HiveProfanityFilter/
+# and make file custom.yml in languages/ folder in plugin_data/ProfanityFilter/
 # You can make your own pull request for more languages.
 lang: en-us
 
@@ -31,7 +31,7 @@ max-violations: 5
 # Kick Violation Message
 # However it cool if theres a message will leaved if player
 # violates.
-kick-message: You have been kicked for reason 'Profanity'.
+kick-message: You have been {type} for reason 'Profanity'.
 
 
 
