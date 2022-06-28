@@ -1,7 +1,4 @@
-.branch
-.build
 .idea
 .DS_Store
 .git
 .template
-main.bat
