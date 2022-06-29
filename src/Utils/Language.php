@@ -15,7 +15,7 @@ class Language {
   }
   
   public function getLanguage() : Config {
-    return (new Config($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml"));
+    return new Config($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml");
   }
   
   public function getSelectedLanguage() :string {
