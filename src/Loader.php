@@ -46,6 +46,7 @@ class Loader extends PluginBase {
         Loader::$instance = $this;
         $this->checkConfig();
         $this->checkUpdate();
+        $this->saveResources();
     }
     
     public function onEnable() :void {
@@ -110,6 +111,14 @@ class Loader extends PluginBase {
     
     private function checkUpdate() :void {
          $this->getServer()->getAsyncPool()->submitTask(new UpdateTask());
+    }
+    
+    private function saveResources() :void {
+          foreach($this->getResources() as $resource){
+               $this->saveResource($resource->getFilename());
+          }
+}
+
     }
     
     /*
