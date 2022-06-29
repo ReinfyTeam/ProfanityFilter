@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace xqwtxon\HiveProfanityFilter\libs\jojoe77777\FormAPI;
+namespace ProfanityFilter\Utils\Forms;
 
 use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;
