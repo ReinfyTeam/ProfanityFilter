@@ -105,7 +105,7 @@ class Loader extends PluginBase {
      * @return string
     */
     protected function formatMessage(string $message) : string {
-        $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
+         $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
         return $message;
     } 
     
@@ -114,11 +114,9 @@ class Loader extends PluginBase {
     }
     
     private function saveResources() :void {
-          foreach($this->getResources() as $resource){
+         foreach($this->getResources() as $resource){
                $this->saveResource($resource->getFilename());
-          }
-}
-
+         }
     }
     
     /*
