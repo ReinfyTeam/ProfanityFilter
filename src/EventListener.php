@@ -59,7 +59,7 @@ class EventListener implements Listener {
                         $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
                         break;
                     case "kick":
-                        ->plugin->punishment = 0;
+                        $this->plugin->punishment = 0;
                         $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
                         break;
                     default:
@@ -72,3 +72,4 @@ class EventListener implements Listener {
         }
     }
 }
+#
