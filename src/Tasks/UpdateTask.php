@@ -71,7 +71,7 @@ class UpdateTask extends AsyncTask{
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if($err !== null){
-			$plugin->getServer()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]))
+			$plugin->getServer()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			return;
 		}
 

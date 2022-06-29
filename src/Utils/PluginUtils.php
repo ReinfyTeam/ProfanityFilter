@@ -35,7 +35,7 @@ final class PluginUtils {
    * @return string
   */
   public static function colorise(string $message): string {
-       $message = str_replace("&", "§", $message):
+       $message = str_replace("&", "§", $message);
        $message = str_replace("{BLACK}", TextFormat::BLACK, $message);
         $message = str_replace("{DARK_BLUE}", TextFormat::DARK_BLUE, $message);
         $message = str_replace("{DARK_GREEN}", TextFormat::DARK_GREEN, $message);

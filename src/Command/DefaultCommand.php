@@ -81,7 +81,7 @@ class DefaultCommand extends Command {
                     break;
                case "list":
                case "words":
-               case "banned-words"
+               case "banned-words":
                     $sender->sendMessage($this->language->translateMessage("banned-words-description"));
                     foreach($this->plugin->getProfanity()->get("banned-words") as $word){
                          $sender->sendMessage("- " . $word);
