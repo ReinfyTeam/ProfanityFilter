@@ -1,8 +1,8 @@
 <?php
 
 /*  					
- *					   _
- * 					  | |                  
+ *			        _
+ * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
  * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
  *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
@@ -19,6 +19,8 @@
  * @link https://github.com/xqwtxon/
  *
 */
+
+declare(strict_types=1);
 
 namespace ProfanityFilter;
 
@@ -50,7 +52,7 @@ final class PluginAPI {
     
     /*
      * It is being used to remove profanities on message.
-     * Retuns string convert to **** characters.
+     * Returns string convert to **** characters.
      * @param string $message
      * @param array $words
      * @return string
@@ -58,7 +60,7 @@ final class PluginAPI {
     
     public static function removeProfanity(string $message, $words) : string {
         foreach($words as $profanity){
-            $message = str_replace($profanity, str_repeat("*", str_word_count($profanity)), $words); // best method ive maked
+            $message = str_replace($profanity, str_repeat("*", str_word_count($profanity)), $words);
         }
         
         return $message;

@@ -1,8 +1,8 @@
 <?php
 
 /*  					
- *					   _
- * 					  | |                  
+ *			        _
+ * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
  * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
  *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
@@ -20,16 +20,25 @@
  *
 */
 
+declare(strict_types=1);
+
 namespace ProfanityFilter\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\player\Player;
 use ProfanityFilter\Utils\Language;
 use ProfanityFilter\Loader;
 
 class DefaultCommand extends Command {
+     
+     /** @var Loader $plugin **/
+     private Loader $plugin;
+     
      public function __construct(){
           $this->plugin = Loader::getInstance();
+          $this->language = new Language();
+          parent::__construct("profanityfilter", "ProfanityFilter Management", $this->lang->translateMessage("profanity-command-usage"), ["pf"]);
      }
      
      /*
@@ -40,7 +49,91 @@ class DefaultCommand extends Command {
      */
      public function execute(CommandSender $sender, string $commandLabel, array $args) :void {
           if(!isset($args[0])){
-               $sender->sendMessage($this->language->translateMessage("command-usage"))
+               $sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+               return;
           }
+          
+          switch($args[0]){
+               case "help":
+                    $sender->sendMessage($this->language->translateMessage("help-title"));
+                    $sender->sendMessage($this->language->translateMessage("help-subtitle"));
+                    foreach($this->language->translateMessage("help-title") as $command){
+                         $sender->sendMessage("- " . $command);
+                    }
+                    break;
+               case "ui":
+               case "gui":
+               case "form":
+                    if(!$sender instanceof Player){
+                         $sender->sendMessage($this->language->translateMessage("profanity-command-only-ingame"));
+                    } else {
+                         $this->sendForm($sender);
+                    }
+                    break;
+               case "info":
+               case "credits":
+                    $sender->sendMessage($this->language->translateMessage("credits-title"));
+                    $sender->sendMessage($this->language->translateMessage("credits-subtitle"));
+                    $sender->sendMessage($this->language->translateMessage("credits-description"));
+                    foreach($this->plugin->getDescription()->getAuthors() as $author){
+                         $sender->sendMessage("- " . $author);
+                    }
+                    break;
+               case "list":
+               case "words":
+               case "banned-words"
+                    $sender->sendMessage($this->language->translateMessage("banned-words-description"));
+                    foreach($this->plugin->getProfanity()->get("banned-words") as $word){
+                         $sender->sendMessage("- " . $word);
+                    }
+                    $sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
+                    break;
+               default:
+                    $sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+                    break;
+          }
+     }
+     
+     /*
+      * Profanity Form Interface.
+      * @param Player $player
+      * @return void
+     */
+     private function sendForm(Player $player) :void {
+          $form = new SimpleForm(function(Player $player, $data){
+               if($data === null) return;
+               
+               switch($data){
+                    
+               }
+          });
+          
+          $form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
+          $form->setContent($this->language->translateMessage("ui-pf-manage-description"));
+          $form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
+          $form->addButton($this->language->translateMessage("ui-pf-manage-button-exit"));
+          $player->sendForm($form);
+     }
+     
+     /*
+      * Profanity Form Interface.
+      * @param Player $player
+      * @return void
+     */
+     private function viewList(Player $player) :void {
+          $form = new SimpleForm(function(Player $player, $data){
+               if($data === null) return;
+               
+               switch($data){
+                    case 0:
+                         $this->sendForm($player);
+                         break;
+               }
+          });
+          
+          $form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
+          $form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
+          $form->addButton($this->plugin->getProfanity()->get("banned-words"));
+          $player->sendForm($form);
      }
 }

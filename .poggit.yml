@@ -1,12 +1,10 @@
---- # Open the HiveProfanityFilter CI at https://poggit.pmmp.io/ci/xqwtxon/HiveProfanityFilter
+--- # Open the ProfanityFilter CI at https://poggit.pmmp.io/ci/xqwtxon/ProfanityFilter
 build-by-default: true
 branches:
 - main
 projects:
-  HiveProfanityFilter:
+  ProfanityFilter:
     lint: false
     path: ""
-libs:
-   - src: jojoe77777/FormAPI/libFormAPI
-     version: ^2.1.0
+    icon: "ProfanityFilter.png"
 ...

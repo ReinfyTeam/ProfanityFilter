@@ -28,9 +28,8 @@ It is lightweight, easy to use, and easy to configure.
 <h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
-		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</li>
-		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
-		<li>/me, /say, /tell command message filter.</li>
+		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>)</li>
+		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
 		</ul>
 </p>
 <br>
@@ -45,8 +44,9 @@ It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>How to install plugin.</summary>
 		<ul>
-		<li>You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.</li>
-		<li>Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.</li>
+		<li>You must have <a href="https://doc
+		pmmp.io/">pocketmine server</a> running on your platform.</li>
+		<li>Download plugin on <a href="https://poggit.pmmp.io/p/ProfanityFilter">poggit</a>.</li>
 		<li>Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code></li>
 		<li>Then start your server by running it.</li>
 		<ul>
@@ -55,13 +55,13 @@ It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>How to fix missing class.</summary>
 		<p>
-			Well, as pocketmine 4.0 is released. This plugin uses <code>src-namespace-prefix</code>.<br>
+			Well, as pocketmine 4.0.0 is released. This plugin uses <code>src-namespace-prefix</code>.<br>
 			If you are experience this issue. Move up your pocketmine-mp to latest version that can be download here in <a href="https://github.com/pmmp/PocketMine-MP/releases">pocketmine releases</a>
 		</p>
 	</details>
 	<br>
 	<details>
-		<summary>How to fix <code>Missing files in .../plugin_data/HiveProfanityFilter/languages/en-us.yml</code></summary>
+		<summary>How to fix <code>Missing files in .../plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
 		<p>
 			Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.<br>
 			Or fix this by deleting <code>config.yml</code>.
@@ -79,7 +79,7 @@ It is lightweight, easy to use, and easy to configure.
 </p>
 	<ul>
 		<li>You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</li>
-		<li>Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></li>
+		<li>Create an <a href="https://github.com/xqwtxon/ProfanityFilter/issues">Issue</a></li>
 		<li>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</li>
 		<li>Submit the issue and be patient for a response for a solution to your problem :D</li>
 	</ul>

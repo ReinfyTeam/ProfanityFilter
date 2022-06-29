@@ -1,8 +1,8 @@
 <?php
 
 /*  					
- *					   _
- * 					  | |                  
+ *			        _
+ * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
  * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
  *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
@@ -20,12 +20,18 @@
  *
 */
 
+declare(strict_types=1);
+
 namespace ProfanityFilter;
 
 use pocketmine\plugin\PluginBase;
+use pocketmime\utils\Config;
+use pocketmine\Server;
 use ProfanityFilter\DefaultCommand;
 use ProfanityFilter\EventListener;
 use ProfanityFilter\Utils\Language;
+use ProfanityFilter\Tasks\UpdateTask;
+use function yaml_parse;
 
 class Loader extends PluginBase {
     
@@ -53,8 +59,9 @@ class Loader extends PluginBase {
     }
     
     private function checkConfig() :void {
-        $log = $this->getLogger();
+         $log = $this->getLogger();
 	    $pluginConfigResource = $this->getResource("config.yml");
+	    $lang = new Language();
 	    $pluginConfig = yaml_parse(stream_get_contents($pluginConfigResource));
 	    fclose($pluginConfigResource);
 	    $config = $this->getConfig();
@@ -65,8 +72,7 @@ class Loader extends PluginBase {
 	    	return;
 	    }
         if($config->get("config-version") === $pluginConfig["config-version"]) return;
-	    $log->notice("Your configuration is outdated!");
-	    $log->info("Your old config.yml is renamed as old-config.yml");
+	    $log->notice($lang->translateMessage("outdated-config"));
 	    @rename($this->getDataFolder(). 'config.yml', 'old-config.yml');
 	    @unlink($this->getDataFolder() . "old-config.yml");
 	    $this->saveResource("config.yml");
@@ -101,4 +107,16 @@ class Loader extends PluginBase {
         $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
         return $message;
     } 
+    
+    private function checkUpdate() :void {
+         $this->getServer()->getAsyncPool()->submitTask(new UpdateTask());
+    }
+    
+    /*
+     * Get Profanity List. Do not call it directly.
+     * @return Config
+    */
+    protected function getProfanity() : Config {
+         return new Config($this->getDataFolder() . "banned-words.yml");
+    }
 }

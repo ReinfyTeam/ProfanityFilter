@@ -17,7 +17,7 @@ block-message: §cHey, Watch your Language!
 # You can make your own plugin language by option: "custom"
 # and make file custom.yml in languages/ folder in plugin_data/ProfanityFilter/
 # You can make your own pull request for more languages.
-lang: en-us
+lang: english
 
 # Max Violation
 # Player Violation Punishment

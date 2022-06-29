@@ -1,8 +1,8 @@
 <?php
 
 /*  					
- *					   _
- * 					  | |                  
+ *			        _
+ * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
  * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
  *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
@@ -19,6 +19,8 @@
  * @link https://github.com/xqwtxon/
  *
 */
+
+declare(strict_types=1);
 
 namespace ProfanityFilter\Utils;
 
@@ -44,7 +46,7 @@ class Language {
   
   /*
    * Translate Message from Language Configuration
-   * Do not call ot directly.
+   * Do not call it directly.
    *
    * @param string $message
    * @return string
