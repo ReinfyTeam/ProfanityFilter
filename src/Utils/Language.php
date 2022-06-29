@@ -1,5 +1,25 @@
 <?php
 
+/*  					
+ *					   _
+ * 					  | |                  
+ * __  ____ ___      _| |___  _____  _ __  
+ * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
+ *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
+ * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
+ *         | |                             
+ *         |_|                             
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author xqwtxon
+ * @link https://github.com/xqwtxon/
+ *
+*/
+
 namespace ProfanityFilter\Utils;
 
 use pocketmine\utils\Config;
@@ -36,7 +56,7 @@ class Language {
     if(is_null($this->getLanguage())) throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml");
     
     /** Check if option is exist. **/
-    if(!isset($lang->get($option))) throw new \Exception("Trying to access on null.")
+    if(!isset($lang->get($option))) throw new \Exception("Trying to access on null.");
     
     return $lang->get($option);
   }
