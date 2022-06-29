@@ -56,7 +56,7 @@ class Language {
     if(is_null($this->getLanguage())) throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml");
     
     /** Check if option is exist. **/
-    if(!isset($lang->get($option))) throw new \Exception("Trying to access on null.");
+    if($lang->get($option) !== null) throw new \Exception("Trying to access on null.");
     
     return $lang->get($option);
   }
