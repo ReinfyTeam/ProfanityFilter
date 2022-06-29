@@ -25,6 +25,7 @@ namespace ProfanityFilter;
 use pocketmine\plugin\PluginBase;
 use ProfanityFilter\DefaultCommand;
 use ProfanityFilter\EventListener;
+use ProfanityFilter\Utils\Language;
 
 class Loader extends PluginBase {
     
@@ -44,6 +45,7 @@ class Loader extends PluginBase {
     public function onEnable() :void {
         $this->registerCommands();
         $this->loadListeners();
+        (new Language())->init();
     }
     
     public static function getInstance() : Loader {
