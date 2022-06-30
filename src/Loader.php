@@ -25,9 +25,9 @@ declare(strict_types=1);
 namespace ProfanityFilter;
 
 use pocketmine\plugin\PluginBase;
-use pocketmime\utils\Config;
+use pocketmine\utils\Config;
 use pocketmine\Server;
-use ProfanityFilter\DefaultCommand;
+use ProfanityFilter\Command\DefaultCommand;
 use ProfanityFilter\EventListener;
 use ProfanityFilter\Utils\Language;
 use ProfanityFilter\Tasks\UpdateTask;
@@ -36,10 +36,10 @@ use function yaml_parse;
 class Loader extends PluginBase {
     
     /** @var Loader $instance **/
-    private Loader $instance;
+    private static Loader $instance;
     
     /** @var int $punishment **/
-    private int $punishment = 0;
+    public int $punishment = 0;
     
     
     public function onLoad() :void {
@@ -79,7 +79,7 @@ class Loader extends PluginBase {
 	    $this->saveResource("config.yml");
     }
     
-    private function loadListener() : void {
+    private function loadListeners() : void {
         switch($this->getConfig()->get("type")){
             case "block":
                 $this->getServer()->getPluginManager()->registerEvents(new EventListener("block"), $this);
@@ -104,26 +104,37 @@ class Loader extends PluginBase {
      * @param string $message
      * @return string
     */
-    protected function formatMessage(string $message) : string {
+    public function formatMessage(string $message) : string { // TODO: Move this in the event class
          $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
         return $message;
     } 
     
     private function checkUpdate() :void {
-         $this->getServer()->getAsyncPool()->submitTask(new UpdateTask());
-    }
-    
-    private function saveResources() :void {
-         foreach($this->getResources() as $resource){
-               $this->saveResource($resource->getFilename());
-         }
+         $this->getServer()->getAsyncPool()->submitTask(new UpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
     }
     
     /*
      * Get Profanity List. Do not call it directly.
      * @return Config
     */
-    protected function getProfanity() : Config {
-         return new Config($this->getDataFolder() . "banned-words.yml");
+    public function getProfanity() : Config {
+         return new Config($this->getDataFolder() . "profanity.yml", Config::YAML);
+    }
+    
+    /*
+     * Initilize the resource in the context.
+     * @return void
+    */
+    private function saveResources(): void {
+         if(!file_exists($this->getDataFolder() . "languages/")){
+              @mkdir($this->getDataFolder() . "languages/");
+         }
+         if(!file_exists($this->getDataFolder() . "banned-words.yml")){
+         $this->saveResource("banned-words.yml");
+         }
+         
+         foreach($this->getResources() as $file){
+               $this->saveResource($file->getFileName());
+         }
     }
 }

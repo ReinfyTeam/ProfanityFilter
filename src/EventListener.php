@@ -26,6 +26,7 @@ namespace ProfanityFilter;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ProfanityFilter\Loader;
 use ProfanityFilter\Utils\Language;
 
@@ -47,7 +48,7 @@ class EventListener implements Listener {
     public function onChat(PlayerChatEvent $ev): void {
         $message = $ev->getMessage();
         $player = $ev->getPlayer();
-        $words = $this->plugin->getProfanity->get("banned-words");
+        $words = $this->plugin->getProfanity()->get("banned-words");
         if(PluginAPI::detectProfanity($message, $words)){
             switch($this->type){
                 case "block":

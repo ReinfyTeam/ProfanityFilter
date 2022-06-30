@@ -27,7 +27,9 @@ namespace ProfanityFilter\Command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
+use pocketmine\utils\Config;
 use ProfanityFilter\Utils\Language;
+use ProfanityFilter\Utils\Forms\SimpleForm;
 use ProfanityFilter\Loader;
 
 class DefaultCommand extends Command {
@@ -38,7 +40,7 @@ class DefaultCommand extends Command {
      public function __construct(){
           $this->plugin = Loader::getInstance();
           $this->language = new Language();
-          parent::__construct("profanityfilter", "ProfanityFilter Management", $this->lang->translateMessage("profanity-command-usage"), ["pf"]);
+          parent::__construct("profanityfilter", "ProfanityFilter Management", "/profanityfilter <help/subcommand>", ["pf"]);
      }
      
      /*
@@ -57,7 +59,7 @@ class DefaultCommand extends Command {
                case "help":
                     $sender->sendMessage($this->language->translateMessage("help-title"));
                     $sender->sendMessage($this->language->translateMessage("help-subtitle"));
-                    foreach($this->language->translateMessage("help-title") as $command){
+                    foreach($this->language->translateMessage("help-page") as $command){
                          $sender->sendMessage("- " . $command);
                     }
                     break;

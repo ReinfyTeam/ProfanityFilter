@@ -18,18 +18,22 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
-- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/HiveProfanityFilter/wiki))
+- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/ProfanityFilter/wiki))
 	
 </details>
 
+<h1>Screenshots 📷</h1>
+<p align=center>
+<img src="assets/chat-filter.jpg" align="center"><br>
+<img src="assets/punish-from-player.jpg" align="center">
+</p>
 
 
-
-<h1>TODO: 🎯</h1>
+<h1>TODO 🎯</h1>
 <p align=left>
 		<ul>
 		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>)</li>
-		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
+		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/ProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
 		</ul>
 </p>
 <br>

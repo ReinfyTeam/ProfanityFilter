@@ -65,9 +65,7 @@ class UpdateTask extends AsyncTask{
 	public function onCompletion() : void{
 	     $lang = new Language();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
-		if($plugin === null){
-			return;
-		}
+		if($plugin === null) return;
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if($err !== null){
@@ -76,9 +74,9 @@ class UpdateTask extends AsyncTask{
 		}
 
 		if($highestVersion !== $this->pluginVersion){
-			$plugin->getServer()->getLogger()->error($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
+			$plugin->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
 		} else {
-		     $plugin->getServer()->getLogger()->error($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
+		     $plugin->getServer()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
 	}
 }

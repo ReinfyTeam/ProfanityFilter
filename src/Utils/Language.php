@@ -37,7 +37,7 @@ class Language {
   }
   
   public function getLanguage() : Config {
-    return new Config($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml");
+    return new Config($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml");
   }
   
   public function getSelectedLanguage() :string {
@@ -48,26 +48,24 @@ class Language {
    * Translate Message from Language Configuration
    * Do not call it directly.
    *
-   * @param string $message
-   * @return string
+   * @param mixed $option
+   * @return mixed
   */
-  public function translateMessage(string $option) :string  {
+  public function translateMessage(mixed $option) :mixed {
     $lang = $this->getLanguage();
     
     /** Check if selected language is missing. **/
-    if(is_null($this->getLanguage())) throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml");
+    if(is_null($this->getLanguage())) throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml");
     
     /** Check if option is exist. **/
-    if($lang->get($option) !== null) throw new \Exception("Trying to access on null.");
+    if($lang->get($option) === null) throw new \Exception("Trying to access on null.");
     
     return $lang->get($option);
   }
   
-  protected function init() :void {
-    if(!file_exist($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml")){
+  public function init() :void {
+    if(!file_exists($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml")){
       $this->plugin->saveResource("languages/" . $this->getSelectedLanguage() . ".yml");
-    } else {
-      $this->getLanguage()->save();
     }
   }
 }
