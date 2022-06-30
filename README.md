@@ -48,7 +48,7 @@ It is lightweight, easy to use, and easy to configure.
 		<summary>How to install plugin.</summary>
 		<ul>
 		<li>You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.</li>
-		<li>Download plugin on <a href="https://poggit.pmmp.io/p/HiveProfanityFilter">poggit</a>.</li>
+		<li>Download plugin on <a href="https://poggit.pmmp.io/p/ProfanityFilter">poggit</a>.</li>
 		<li>Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code></li>
 		<li>Then start your server by running it.</li>
 		<ul>
@@ -81,7 +81,7 @@ It is lightweight, easy to use, and easy to configure.
 </p>
 	<ul>
 		<li>You can still contact us by <a href="https://discord.gg/v2rNeHaptd">discord</a>!</li>
-		<li>Create an <a href="https://github.com/xqwtxon/HiveProfanityFilter/issues">Issue</a></li>
+		<li>Create an <a href="https://github.com/xqwtxon/ProfanityFilter/issues">Issue</a></li>
 		<li>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</li>
 		<li>Submit the issue and be patient for a response for a solution to your problem :D</li>
 	</ul>
