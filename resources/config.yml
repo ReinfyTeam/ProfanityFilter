@@ -42,5 +42,5 @@ ban-duration: "7d"
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.3
+config-version: 0.0.4
 ...

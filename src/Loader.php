@@ -32,6 +32,8 @@ use ProfanityFilter\EventListener;
 use ProfanityFilter\Utils\Language;
 use ProfanityFilter\Tasks\UpdateTask;
 use function yaml_parse;
+use DateTime;
+use DateInterval;
 
 class Loader extends PluginBase {
     
@@ -46,13 +48,13 @@ class Loader extends PluginBase {
         Loader::$instance = $this;
         $this->checkConfig();
         $this->checkUpdate();
+        (new Language())->init();
         $this->saveResources();
     }
     
     public function onEnable() :void {
         $this->registerCommands();
         $this->loadListeners();
-        (new Language())->init();
     }
     
     public static function getInstance() : Loader {
@@ -135,6 +137,7 @@ class Loader extends PluginBase {
          if(!file_exists($this->getDataFolder() . "languages/")){
               @mkdir($this->getDataFolder() . "languages/");
          }
+         $this->saveResource("languages/english.yml");
          if(!file_exists($this->getDataFolder() . "banned-words.yml")){
          $this->saveResource("banned-words.yml");
          }
