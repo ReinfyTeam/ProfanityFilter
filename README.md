@@ -24,7 +24,11 @@ It is lightweight, easy to use, and easy to configure.
 	
 </details>
 
-
+<h1>Screenshots 📷</h1>
+<p align=center>
+<img src="assets/chat-filter.jpg" align="center"><br><br>
+<img src="assets/punish-from-player.jpg" align="center">
+</p>
 
 
 <h1>TODO: 🎯</h1>
