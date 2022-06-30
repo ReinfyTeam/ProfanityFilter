@@ -1,5 +1,7 @@
 <h1 align=center>ProfanityFilter 🤐</h1>
-<p align=center>A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
+<p align=center>
+<a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://github.com/xqwtxon/ProfanityFilter/blob/main/ProfanityFilter.png" align="center" size="200"></a><br>
+A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
 <p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
 
 
@@ -22,18 +24,15 @@ It is lightweight, easy to use, and easy to configure.
 	
 </details>
 
-<h1>Screenshots 📷</h1>
-<p align=center>
-<img src="assets/chat-filter.jpg" align="center"><br><br>
-<img src="assets/punish-from-player.jpg" align="center">
-</p>
 
 
-<h1>TODO 🎯</h1>
+
+<h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
-		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>)</li>
-		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/ProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/ProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
+		<li>Other Country Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>)</li>
+		<li>Other Country Profanity Languages (You can make <a href="https://github.com/xqwtxon/HiveProfanityFilter/pulls">pull request</a>, but english only for <a href="https://github.com/xqwtxon/HiveProfanityFilter/blob/main/resources/banned-words.yml">global</a>)</li>
+		<li>/me, /say, /tell command message filter.</li>
 		</ul>
 </p>
 <br>
@@ -48,8 +47,7 @@ It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>How to install plugin.</summary>
 		<ul>
-		<li>You must have <a href="https://doc
-		pmmp.io/">pocketmine server</a> running on your platform.</li>
+		<li>You must have <a href="https://pmmp.io/">pocketmine server</a> running on your platform.</li>
 		<li>Download plugin on <a href="https://poggit.pmmp.io/p/ProfanityFilter">poggit</a>.</li>
 		<li>Move your downloaded plugin to pocketmine server files, and move it to <code>plugin_data</code></li>
 		<li>Then start your server by running it.</li>
@@ -59,7 +57,7 @@ It is lightweight, easy to use, and easy to configure.
 	<details>
 		<summary>How to fix missing class.</summary>
 		<p>
-			Well, as pocketmine 4.0.0 is released. This plugin uses <code>src-namespace-prefix</code>.<br>
+			Well, as pocketmine 4.0 is released. This plugin uses <code>src-namespace-prefix</code>.<br>
 			If you are experience this issue. Move up your pocketmine-mp to latest version that can be download here in <a href="https://github.com/pmmp/PocketMine-MP/releases">pocketmine releases</a>
 		</p>
 	</details>
