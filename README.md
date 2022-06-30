@@ -24,7 +24,7 @@ It is lightweight, easy to use, and easy to configure.
 
 <h1>Screenshots 📷</h1>
 <p align=center>
-<img src="assets/chat-filter.jpg" align="center"><br>
+<img src="assets/chat-filter.jpg" align="center"><br><br>
 <img src="assets/punish-from-player.jpg" align="center">
 </p>
 
