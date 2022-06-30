@@ -20,7 +20,7 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
-- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/HiveProfanityFilter/wiki))
+- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/ProfanityFilter/wiki))
 	
 </details>
 
@@ -63,7 +63,7 @@ It is lightweight, easy to use, and easy to configure.
 	</details>
 	<br>
 	<details>
-		<summary>How to fix <code>Missing files in .../plugin_data/HiveProfanityFilter/languages/en-us.yml</code></summary>
+		<summary>How to fix <code>Missing files in .../plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
 		<p>
 			Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.<br>
 			Or fix this by deleting <code>config.yml</code>.
