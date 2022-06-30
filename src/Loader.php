@@ -38,8 +38,8 @@ class Loader extends PluginBase {
     /** @var Loader $instance **/
     private static Loader $instance;
     
-    /** @var int $punishment **/
-    public int $punishment = 0;
+    /** @var array $punishment **/
+    public array $punishment = [];
     
     
     public function onLoad() :void {
@@ -68,7 +68,7 @@ class Loader extends PluginBase {
 	    $config = $this->getConfig();
 		
 	    if($pluginConfig == false) {
-	    	$log->critical("Invalid Configuration Syntax, Please remove your config.yml to fix.");
+	    	$log->critical("Invalid Configuration Syntax, Please remove your update the plugin.");
 	    	$this->getServer()->getPluginManager()->disablePlugin($this);
 	    	return;
 	    }
@@ -104,8 +104,14 @@ class Loader extends PluginBase {
      * @param string $message
      * @return string
     */
-    public function formatMessage(string $message) : string { // TODO: Move this in the event class
-         $message = str_replace("{type}", $this->getConfig()->get("type"), $message);
+    public function formatMessage(string $message, ?Player $player = null) : string { // TODO: Move this in the event class
+         $message = str_replace("{type}", $this->getConfig()->get("punishment-type") . "ed", $message);
+         
+         if($player === null) return $message;
+         
+         $message = str_replace("{player_name}", $player->getName(), $message);
+         $message = str_replace("{player_ping}", $player->getNetworkSession()->getPing(), $message);
+         
         return $message;
     } 
     
@@ -136,5 +142,64 @@ class Loader extends PluginBase {
          foreach($this->getResources() as $file){
                $this->saveResource($file->getFileName());
          }
+    }
+    
+    public function getDuration() {
+         if($this->getConfig()->get("ban-duration") === "Forever"){
+              return null;
+         } else {
+               return $this->stringToTimestamp($this->getConfig()->get("ban-duration"));
+         }
+    }
+    /*
+     * Convert String to Timestamp
+     *
+     * @param string $string
+     * @return ?array
+    */
+    private function stringToTimestamp(string $string): ?array
+    {
+        /**
+         * Rules:
+         * Integers without suffix are considered as seconds
+         * "s" is for seconds
+         * "m" is for minutes
+         * "h" is for hours
+         * "d" is for days
+         * "w" is for weeks
+         * "mo" is for months
+         * "y" is for years
+         */
+        if (trim($string) === "") {
+            return null;
+        }
+        $t = new DateTime();
+        preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $string, $found);
+        if (count($found[0]) < 1) {
+            return null;
+        }
+        $found[2] = preg_replace("/[^0-9]/", "", $found[0]);
+        foreach ($found[2] as $k => $i) {
+            switch ($c = $found[1][$k]) {
+                case "y":
+                case "w":
+                case "d":
+                    $t->add(new DateInterval("P" . $i . strtoupper($c)));
+                    break;
+                case "mo":
+                    $t->add(new DateInterval("P" . $i . strtoupper(substr($c, 0, strlen($c) - 1))));
+                    break;
+                case "h":
+                case "m":
+                case "s":
+                    $t->add(new DateInterval("PT" . $i . strtoupper($c)));
+                    break;
+                default:
+                    $t->add(new DateInterval("PT" . $i . "S"));
+                    break;
+            }
+            $string = str_replace($found[0][$k], "", $string);
+        }
+        return [$t, ltrim(str_replace($found[0], "", $string))];
     }
 }

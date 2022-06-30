@@ -4,6 +4,8 @@
 # It is licensed on LGPL-2.0 LICENSE
 # Copyright (c) by @xqwtxon
 
+# Please use & instead of using §, you can use {COLOR} if you want.
+
 # Profanity Type
 # Options: "block","hide"
 # Check https://github.com/xqwtxon/HiveProfanityFilter/wiki/Profanity-Types
@@ -11,7 +13,7 @@
 type: "block"
 
 # If "block" has selected, you can add your own message right here.
-block-message: §cHey, Watch your Language!
+block-message: "&cHey, Watch your Language!"
 
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
@@ -32,7 +34,9 @@ max-violations: 5
 # However it cool if theres a message will leaved if player
 # violates.
 kick-message: You have been {type} for reason 'Profanity'.
-
+# If punisment-type is ban. Here you can type, what duration do you want to apply them.
+# Example: 1d 2hr 5s (1 day, 2 hours, 5 seconds)
+ban-duration: "7d"
 
 
 

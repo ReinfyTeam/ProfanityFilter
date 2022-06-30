@@ -29,6 +29,7 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ProfanityFilter\Loader;
 use ProfanityFilter\Utils\Language;
+use ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
     
@@ -37,6 +38,7 @@ class EventListener implements Listener {
     public function __construct(string $type){
         $this->plugin = Loader::getInstance();
         $this->type = $type;
+        $this->duration = Loader::getInstance()->getDuration();
     }
     
     /*
@@ -53,7 +55,7 @@ class EventListener implements Listener {
             switch($this->type){
                 case "block":
                     $ev->cancel();
-                    $player->sendMessage($this->plugin->getConfig()->get("block-message"));
+                    $player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
                     break;
                 case "hide":
                     $ev->setMessage(PluginAPI::removeProfanity($message, $words));
@@ -63,23 +65,23 @@ class EventListener implements Listener {
                     break;
             }
             
-            if($this->plugin->punishment === $this->plugin->getConfig()->get("max-violations")){
+            if($this->plugin->punishment[$player->getName()] === $this->plugin->getConfig()->get("max-violations")){
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
-                        $this->plugin->punishment = 0;
-                        $player->getServer()->getNameBans()->
-                        $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
+                        $this->plugin->punishment[$player->getName()] = 0;
+                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
+                        $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":
-                        $this->plugin->punishment = 0;
-                        $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
+                        $this->plugin->punishment[$player->getName()] = 0;
+                        $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     default:
                         throw new \Excemption("Cannot Identify the type of punishment in config.yml");
                         break;
                 }
             } else {
-                $this->plugin->punishment++;
+                $this->plugin->punishment[$player->getName()]++;
             }
         }
     }
@@ -91,14 +93,14 @@ class EventListener implements Listener {
      * @return void
     */
     public function onCommand(PlayerCommandPreprocessEvent $ev) :void {
-         $message = $ev->getMessage();
-         $player = $ev->getPlayer();
-         $words = $this->plugin->getProfanity()->get("banned-words");
-         if(PluginAPI::detectProfanity($message, $words)){
-              switch($this->type){
+        $message = $ev->getMessage();
+        $player = $ev->getPlayer();
+        $words = $this->plugin->getProfanity()->get("banned-words");
+        if(PluginAPI::detectProfanity($message, $words)){
+            switch($this->type){
                 case "block":
                     $ev->cancel();
-                    $player->sendMessage($this->plugin->getConfig()->get("block-message"));
+                    $player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
                     break;
                 case "hide":
                     $ev->setMessage(PluginAPI::removeProfanity($message, $words));
@@ -108,24 +110,24 @@ class EventListener implements Listener {
                     break;
             }
             
-            if($this->plugin->punishment === $this->plugin->getConfig()->get("max-violations")){
+            if($this->plugin->punishment[$player->getName()] === $this->plugin->getConfig()->get("max-violations")){
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
-                        $this->plugin->punishment = 0;
-                        $player->getServer()->getNameBans()->
-                        $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
+                        $this->plugin->punishment[$player->getName()] = 0;
+                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
+                        $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":
-                        $this->plugin->punishment = 0;
-                        $player->kick($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message")));
+                        $this->plugin->punishment[$player->getName()] = 0;
+                        $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     default:
                         throw new \Excemption("Cannot Identify the type of punishment in config.yml");
                         break;
                 }
             } else {
-                $this->plugin->punishment++;
+                $this->plugin->punishment[$player->getName()]++;
             }
-         }
+        }
     }
 }
