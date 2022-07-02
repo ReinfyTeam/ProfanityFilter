@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Utils;
+namespace ProfanityFilter\Utils;
 
 use pocketmine\utils\Config;
 use ProfanityFilter\Loader;

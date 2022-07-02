@@ -22,15 +22,15 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Command;
+namespace ProfanityFilter\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
-use xqwtxon\ProfanityFilter\Utils\Language;
-use xqwtxon\ProfanityFilter\Utils\Forms\SimpleForm;
-use xqwtxon\ProfanityFilter\Loader;
+use ProfanityFilter\Utils\Language;
+use ProfanityFilter\Utils\Forms\SimpleForm;
+use ProfanityFilter\Loader;
 
 class DefaultCommand extends Command {
      

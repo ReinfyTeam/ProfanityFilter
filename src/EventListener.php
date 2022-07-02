@@ -22,14 +22,14 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter;
+namespace ProfanityFilter;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use xqwtxon\ProfanityFilter\Loader;
-use xqwtxon\ProfanityFilter\Utils\Language;
-use xqwtxon\ProfanityFilter\Utils\PluginUtils;
+use ProfanityFilter\Loader;
+use ProfanityFilter\Utils\Language;
+use ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
     
@@ -69,7 +69,7 @@ class EventListener implements Listener {
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
                         $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
-                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
+                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":
@@ -114,7 +114,7 @@ class EventListener implements Listener {
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
                         $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
-                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
+                        $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":

@@ -22,7 +22,7 @@
 
 declare(strict_types = 1);
 
-namespace xqwtxon\ProfanityFilter\Utils\Forms;
+namespace ProfanityFilter\Utils\Forms;
 
 use pocketmine\plugin\PluginBase;
 
