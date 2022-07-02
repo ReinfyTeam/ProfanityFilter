@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter;
+namespace xqwtxon\ProfanityFilter;
 
 use function preg_match;
 use function str_replace;

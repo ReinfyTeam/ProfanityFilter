@@ -22,18 +22,18 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter\Tasks;
+namespace xqwtxon\ProfanityFilter\Tasks;
 
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use ProfanityFilter\Utils\Language;
+use xqwtxon\ProfanityFilter\Utils\Language;
 use function is_array;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
 
-class UpdateTask extends AsyncTask{
+final class UpdateTask extends AsyncTask{
 
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
