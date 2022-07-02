@@ -4,7 +4,7 @@ version: 0.0.1
 main: xqwtxon\ProfanityFilter\Loader
 api: 4.0.0
 src-namespace-prefix: xqwtxon\ProfanityFilter
-description: "A best hive profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat."
+description: "A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat."
 website: "https://github.com/xqwtxon/ProfanityFilter"
 authors: 
 - "xqwtxon"
