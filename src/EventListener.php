@@ -65,15 +65,15 @@ class EventListener implements Listener {
                     break;
             }
             
-            if($this->plugin->punishment[$player->getName()] === $this->plugin->getConfig()->get("max-violations")){
+            if(($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")){
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
-                        $this->plugin->punishment[$player->getName()] = 0;
+                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
                         $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":
-                        $this->plugin->punishment[$player->getName()] = 0;
+                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     default:
@@ -81,7 +81,7 @@ class EventListener implements Listener {
                         break;
                 }
             } else {
-                $this->plugin->punishment[$player->getName()]++;
+                $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;
             }
         }
     }
@@ -110,15 +110,15 @@ class EventListener implements Listener {
                     break;
             }
             
-            if($this->plugin->punishment[$player->getName()] === $this->plugin->getConfig()->get("max-violations")){
+            if(($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")){
                 switch($this->plugin->getConfig()->get("punishment-type")){
                     case "ban":
-                        $this->plugin->punishment[$player->getName()] = 0;
+                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
                         $player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration, $player->getServer()->getName());
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     case "kick":
-                        $this->plugin->punishment[$player->getName()] = 0;
+                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
                         $player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
                         break;
                     default:
@@ -126,7 +126,7 @@ class EventListener implements Listener {
                         break;
                 }
             } else {
-                $this->plugin->punishment[$player->getName()]++;
+                $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;
             }
         }
     }
