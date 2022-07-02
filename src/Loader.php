@@ -22,15 +22,15 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter;
+namespace xqwtxon\ProfanityFilter;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\Server;
-use ProfanityFilter\Command\DefaultCommand;
-use ProfanityFilter\EventListener;
-use ProfanityFilter\Utils\Language;
-use ProfanityFilter\Tasks\UpdateTask;
+use xqwtxon\ProfanityFilter\Command\DefaultCommand;
+use xqwtxon\ProfanityFilter\EventListener;
+use xqwtxon\ProfanityFilter\Utils\Language;
+use xqwtxon\ProfanityFilter\Tasks\UpdateTask;
 use function yaml_parse;
 use DateTime;
 use DateInterval;

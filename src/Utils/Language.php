@@ -22,10 +22,10 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter\Utils;
+namespace xqwtxon\ProfanityFilter\Utils;
 
 use pocketmine\utils\Config;
-use ProfanityFilter\Loader;
+use xqwtxon\ProfanityFilter\Loader;
 
 class Language {
   

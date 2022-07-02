@@ -22,7 +22,7 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter\Utils;
+namespace xqwtxon\ProfanityFilter\Utils;
 
 use pocketmine\utils\TextFormat;
 

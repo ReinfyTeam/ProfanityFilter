@@ -22,14 +22,14 @@
 
 declare(strict_types=1);
 
-namespace ProfanityFilter;
+namespace xqwtxon\ProfanityFilter;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use ProfanityFilter\Loader;
-use ProfanityFilter\Utils\Language;
-use ProfanityFilter\Utils\PluginUtils;
+use xqwtxon\ProfanityFilter\Loader;
+use xqwtxon\ProfanityFilter\Utils\Language;
+use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
     

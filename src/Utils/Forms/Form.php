@@ -22,7 +22,7 @@
 
 declare(strict_types = 1);
 
-namespace ProfanityFilter\Utils\Forms;
+namespace xqwtxon\ProfanityFilter\Utils\Forms;
 
 use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;
