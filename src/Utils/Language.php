@@ -60,7 +60,7 @@ class Language {
     /** Check if option is exist. **/
     if($lang->get($option) === null) throw new \Exception("Trying to access on null.");
     
-    return $lang->get($option);
+    return PluginUtils::colorize($lang->get($option));
   }
   
   public function init() :void {

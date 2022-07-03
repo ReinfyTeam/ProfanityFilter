@@ -27,6 +27,9 @@ namespace xqwtxon\ProfanityFilter;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\Server;
+use pocketmine\permission\Permission;
+use pocketmine\permission\DefaultPermissions;
+use pocketmine\permission\PermissionManager;
 use xqwtxon\ProfanityFilter\Command\DefaultCommand;
 use xqwtxon\ProfanityFilter\EventListener;
 use xqwtxon\ProfanityFilter\Utils\Language;
@@ -50,6 +53,7 @@ class Loader extends PluginBase {
         $this->checkUpdate();
         (new Language())->init();
         $this->saveResources();
+        $this->loadPermission();
     }
     
     public function onEnable() :void {
@@ -74,7 +78,9 @@ class Loader extends PluginBase {
 	    	$this->getServer()->getPluginManager()->disablePlugin($this);
 	    	return;
 	    }
+	    
         if($config->get("config-version") === $pluginConfig["config-version"]) return;
+        
 	    $log->notice($lang->translateMessage("outdated-config"));
 	    @rename($this->getDataFolder(). 'config.yml', 'old-config.yml');
 	    @unlink($this->getDataFolder() . "old-config.yml");
@@ -204,5 +210,24 @@ class Loader extends PluginBase {
             $string = str_replace($found[0][$k], "", $string);
         }
         return [$t, ltrim(str_replace($found[0], "", $string))];
+    }
+    
+    private function loadPermission() :void {
+         $this->registerPermission(($this->getConfig()->get("command-permission") ?? "profanityfilter.command"));
+         $this->registerPermission(($this->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"));
+    }
+    
+    /*
+     * Register Permission on Plugin
+     * Custom Permission in Config.yml
+     *
+     * @param $perm
+     * @return void
+    */
+    private function registerPermission($perm) :void {
+         $permission = new Permission($perm);
+         $permManager = PermissionManager::getInstance();
+         $permManager->addPermission($permission);
+         $permManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission->getName(), true);
     }
 }

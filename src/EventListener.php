@@ -51,6 +51,7 @@ class EventListener implements Listener {
         $message = $ev->getMessage();
         $player = $ev->getPlayer();
         $words = $this->plugin->getProfanity()->get("banned-words");
+        if($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) return;
         if(PluginAPI::detectProfanity($message, $words)){
             switch($this->type){
                 case "block":
@@ -96,6 +97,7 @@ class EventListener implements Listener {
         $message = $ev->getMessage();
         $player = $ev->getPlayer();
         $words = $this->plugin->getProfanity()->get("banned-words");
+        if($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) return;
         if(PluginAPI::detectProfanity($message, $words)){
             switch($this->type){
                 case "block":

@@ -4,7 +4,8 @@ branches:
 - main
 projects:
   ProfanityFilter:
-    lint: false
+    lint:
+      phpstan: false
     path: ""
     icon: "ProfanityFilter.png"
 ...

@@ -38,9 +38,15 @@ kick-message: You have been {type} for reason 'Profanity'.
 # Example: 1d 2hr 5s (1 day, 2 hours, 5 seconds)
 ban-duration: "7d"
 
-
+# Custom Permissions!
+# This is working for plugins that manage permissions.
+# Bypass Player by using Permission
+bypass-permission: profanityfilter.bypass
+# Command Operator Permission
+command-permission: profanityfilter.command
+# This is sets to all as operator only.
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.4
+config-version: 0.0.5
 ...
