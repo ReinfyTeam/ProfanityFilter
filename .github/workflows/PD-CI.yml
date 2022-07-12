@@ -17,4 +17,4 @@ jobs:
           php-version: ${{matrix.php-version}}
           install-path: "./dev/bin"
       - name: phpstan analyze
-        run: vendor/bin/phpstan PHP="php -dphar.readonly=0 -dmemory_limit=256M"
+        run: make phpstan PHP="php -dphar.readonly=0 -dmemory_limit=256M"
