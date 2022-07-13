@@ -10,7 +10,7 @@ authors:
 - "xqwtxon"
 - "z3nXxz"
 permissions:
-      profanity.command:
+      profanityfilter.command:
            description: ProfanityFilter Operator Permission
            default: op
 ...
