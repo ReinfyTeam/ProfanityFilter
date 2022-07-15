@@ -33,11 +33,17 @@ use xqwtxon\ProfanityFilter\Utils\Language;
 use xqwtxon\ProfanityFilter\Utils\Forms\SimpleForm;
 use xqwtxon\ProfanityFilter\Loader;
 use xqwtxon\ProfanityFilter\Utils\PluginUtils;
+use pocketmine\plugin\Plugin;
+use pocketmine\plugin\PluginOwned;
 
-class DefaultCommand extends Command {
+class DefaultCommand extends Command implements PluginOwned {
      
      /** @var Loader $plugin **/
      private Loader $plugin;
+
+     public function getOwningPlugin() : Plugin{
+		return $this->plugin;
+	}
      
      public function __construct(){
           $this->plugin = Loader::getInstance();
