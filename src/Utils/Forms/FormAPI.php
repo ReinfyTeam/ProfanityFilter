@@ -1,6 +1,6 @@
 <?php
 
-/*  					
+/**  					
  *			        _
  * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
@@ -18,14 +18,13 @@
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
  *
-*/
+ */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace ProfanityFilter\Utils\Forms;
 
 use pocketmine\plugin\PluginBase;
 
-class FormAPI extends PluginBase{
-
+class FormAPI extends PluginBase {
 }

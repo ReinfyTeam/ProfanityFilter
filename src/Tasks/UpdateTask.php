@@ -1,6 +1,6 @@
 <?php
 
-/*  					
+/**  					
  *			        _
  * 				  | |                  
  * __  ____ ___      _| |___  _____  _ __  
@@ -18,7 +18,7 @@
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
  *
-*/
+ */
 
 declare(strict_types=1);
 
@@ -33,24 +33,24 @@ use function json_decode;
 use function version_compare;
 use function vsprintf;
 
-class UpdateTask extends AsyncTask{
+class UpdateTask extends AsyncTask {
 
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
-	public function __construct(private string $pluginName, private string $pluginVersion){
-	     //NOOP
+	public function __construct(private string $pluginName, private string $pluginVersion) {
+		//NOOP
 	}
 
-	public function onRun() : void{
+	public function onRun(): void {
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
 		$api = "";
-		if($json !== null){
+		if ($json !== null) {
 			$releases = json_decode($json->getBody(), true);
-			foreach($releases as $release){
-				if(version_compare($highestVersion, $release["version"], ">=")){
-				     continue;
+			foreach ($releases as $release) {
+				if (version_compare($highestVersion, $release["version"], ">=")) {
+					continue;
 				}
 				$highestVersion = $release["version"];
 				$artifactUrl = $release["artifact_url"];
@@ -62,22 +62,21 @@ class UpdateTask extends AsyncTask{
 	}
 
 
-	public function onCompletion() : void{
-	     $lang = new Language();
+	public function onCompletion(): void {
+		$lang = new Language();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
-		if($plugin === null) return;
+		if ($plugin === null) return;
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
-		if($err !== null){
+		if ($err !== null) {
 			$plugin->getServer()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			return;
 		}
 
-		if($highestVersion !== $this->pluginVersion){
+		if ($highestVersion !== $this->pluginVersion) {
 			$plugin->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
 		} else {
-		     $plugin->getServer()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
+			$plugin->getServer()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
 	}
 }
-
