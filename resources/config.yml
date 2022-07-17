@@ -19,7 +19,7 @@ block-message: "&cHey, Watch your Language!"
 # You can make your own plugin language by option: "custom"
 # and make file custom.yml in ~/plugin_data/ProfanityFilter/languages
 # You can make your own pull request for more languages.
-# Available languages: eng (English)
+# Available languages: eng (English) and vie (Vietnamese).
 lang: eng
 
 # Max Violation
