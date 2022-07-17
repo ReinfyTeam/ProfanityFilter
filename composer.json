@@ -2,7 +2,6 @@
     "name": "xqwtxon/profanityfilter",
     "description": "The best profanity filter for chat with api for plugin developers!",
     "type": "project",
-    "keywords": ["profanityfilter", "pocketmine-mp"],
     "homepage": "https://github.com/ReinfyTeam",
     "license": "LGPL-2.1",
     "require": {
