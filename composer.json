@@ -4,7 +4,7 @@
     "type": "project",
     "keywords": ["profanityfilter", "pocketmine-mp"],
     "homepage": "https://github.com/ReinfyTeam",
-    "license": "GNU Lesser General Public License v2.1",
+    "license": "LGPL-2.1",
     "require": {
         "php": "8.0.19",
         "pocketmine/pocketmine-mp": "4.5.1"
