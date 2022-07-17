@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,6 +16,7 @@
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
  *
+ *
  */
 
 declare(strict_types=1);
@@ -25,20 +24,17 @@ declare(strict_types=1);
 namespace xqwtxon\ProfanityFilter;
 
 use function preg_match;
+use function sizeof;
+use function str_repeat;
 use function str_replace;
 use function str_word_count;
-use function str_repeat;
-use function sizeof;
 
 final class PluginAPI {
 
 	/**
 	 * Whether to detect message on provided words.
-	 * @param string $message
-	 * @param array $words
-	 * @return bool
 	 */
-	public static function detectProfanity(string $message, array $words): bool {
+	public static function detectProfanity(string $message, array $words) : bool {
 		$filterCount = sizeof($words);
 		for ($i = 0; $i < $filterCount; $i++) {
 			$condition = preg_match('/' . $words[$i] . '/iu', $message) > 0;
@@ -49,28 +45,22 @@ final class PluginAPI {
 		return false;
 	}
 
-
 	/**
 	 * It is being used to remove profanities on message.
 	 * Returns string convert to **** characters.
-	 * @param string $message
 	 * @param array $words
-	 * @return string
 	 */
-
-	public static function removeProfanity(string $message, $words): string {
+	public static function removeProfanity(string $message, $words) : string {
 		foreach ($words as $profanity) {
 			$message = str_replace($profanity, str_repeat("*", str_word_count($profanity)), $words);
 		}
-
 		return $message;
 	}
 
 	/**
 	 * Returns array batch in english default profanity.
-	 * @return array
 	 */
-	public static function defaultProfanity(): array {
+	public static function defaultProfanity() : array {
 		return $words = [
 			"anal",
 			"anus",
