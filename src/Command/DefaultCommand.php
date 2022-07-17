@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +15,7 @@
  *
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
+ *
  *
  */
 
@@ -27,21 +26,18 @@ namespace xqwtxon\ProfanityFilter\Command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\utils\TextFormat as T;
-use pocketmine\utils\Config;
-use xqwtxon\ProfanityFilter\Utils\Language;
-use xqwtxon\ProfanityFilter\Utils\Forms\SimpleForm;
-use xqwtxon\ProfanityFilter\Loader;
-use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+use pocketmine\utils\TextFormat as T;
+use xqwtxon\ProfanityFilter\Loader;
+use xqwtxon\ProfanityFilter\Utils\Forms\SimpleForm;
+use xqwtxon\ProfanityFilter\Utils\Language;
+use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class DefaultCommand extends Command implements PluginOwned {
-
-	/** @var Loader $plugin **/
 	private Loader $plugin;
 
-	public function getOwningPlugin(): Plugin {
+	public function getOwningPlugin() : Plugin {
 		return $this->plugin;
 	}
 
@@ -52,15 +48,12 @@ class DefaultCommand extends Command implements PluginOwned {
 		$this->setPermission(($this->plugin->getConfig()->get("command-permission") ?? "profanityfilter.command"));
 	}
 
-	/**
-	 * @param CommandSender $sender
-	 * @param string $commandLabel
-	 * @param array $args
-	 * @return void
-	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args): void {
+
+	public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
 		if ($sender instanceof Player) {
-			if (!$this->testPermission($sender)) return;
+			if (!$this->testPermission($sender)) {
+				return;
+			}
 			if (!isset($args[0])) {
 				$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
 				return;
@@ -155,12 +148,12 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	/**
 	 * Profanity Form Interface.
-	 * @param Player $player
-	 * @return void
 	 */
-	private function sendForm(Player $player): void {
+	private function sendForm(Player $player) : void {
 		$form = new SimpleForm(function (Player $player, $data) {
-			if ($data === null) return;
+			if ($data === null) {
+				return;
+			}
 
 			switch ($data) {
 				case 0:
@@ -180,12 +173,12 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	/**
 	 * Profanity Form Interface.
-	 * @param Player $player
-	 * @return void
 	 */
-	private function viewList(Player $player): void {
+	private function viewList(Player $player) : void {
 		$form = new SimpleForm(function (Player $player, $data) {
-			if ($data === null) return $this->sendForm($player);
+			if ($data === null) {
+				return $this->sendForm($player);
+			}
 
 			switch ($data) {
 				case 0:

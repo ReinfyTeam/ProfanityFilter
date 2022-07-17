@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +15,7 @@
  *
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
+ *
  *
  */
 
@@ -27,12 +26,9 @@ namespace xqwtxon\ProfanityFilter;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use xqwtxon\ProfanityFilter\Loader;
-use xqwtxon\ProfanityFilter\Utils\Language;
 use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
-
 	private string $type;
 
 	public function __construct(string $type) {
@@ -43,15 +39,14 @@ class EventListener implements Listener {
 
 	/**
 	 * When player chat.
-	 *
-	 * @param PlayerChatEvent $ev
-	 * @return void
 	 */
-	public function onChat(PlayerChatEvent $ev): void {
+	public function onChat(PlayerChatEvent $ev) : void {
 		$message = $ev->getMessage();
 		$player = $ev->getPlayer();
 		$words = $this->plugin->getProfanity()->get("banned-words");
-		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) return;
+		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
+			return;
+		}
 		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
 				case "block":
@@ -89,15 +84,14 @@ class EventListener implements Listener {
 
 	/**
 	 * When player chats command.
-	 *
-	 * @param PlayerCommandPreprocessEvent $ev
-	 * @return void
 	 */
-	public function onCommand(PlayerCommandPreprocessEvent $ev): void {
+	public function onCommand(PlayerCommandPreprocessEvent $ev) : void {
 		$message = $ev->getMessage();
 		$player = $ev->getPlayer();
 		$words = $this->plugin->getProfanity()->get("banned-words");
-		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) return;
+		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
+			return;
+		}
 		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
 				case "block":

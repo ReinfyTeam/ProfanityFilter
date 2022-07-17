@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,6 +16,7 @@
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
  *
+ *
  */
 
 declare(strict_types=1);
@@ -25,16 +24,14 @@ declare(strict_types=1);
 namespace xqwtxon\ProfanityFilter\Utils;
 
 use pocketmine\utils\TextFormat;
+use function str_replace;
 
 final class PluginUtils {
 
 	/**
 	 * Colorise Messages turns & to § and etc.
-	 * 
-	 * @param string $message
-	 * @return string
 	 */
-	public static function colorize(string $message): string {
+	public static function colorize(string $message) : string {
 		$message = str_replace("&", "§", $message);
 		$message = str_replace("{BLACK}", TextFormat::BLACK, $message);
 		$message = str_replace("{DARK_BLUE}", TextFormat::DARK_BLUE, $message);
@@ -58,7 +55,6 @@ final class PluginUtils {
 		$message = str_replace("{UNDERLINE}", TextFormat::UNDERLINE, $message);
 		$message = str_replace("{ITALIC}", TextFormat::ITALIC, $message);
 		$message = str_replace("{RESET}", TextFormat::RESET, $message);
-
 		return $message;
 	}
 }

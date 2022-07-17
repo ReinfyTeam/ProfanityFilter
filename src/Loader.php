@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,36 +16,48 @@
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
  *
+ *
  */
 
 declare(strict_types=1);
 
 namespace xqwtxon\ProfanityFilter;
 
+use DateInterval;
+use DateTime;
+use pocketmine\permission\DefaultPermissions;
+use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionManager;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use pocketmine\Server;
-use pocketmine\permission\Permission;
-use pocketmine\permission\DefaultPermissions;
-use pocketmine\permission\PermissionManager;
 use xqwtxon\ProfanityFilter\Command\DefaultCommand;
-use xqwtxon\ProfanityFilter\EventListener;
-use xqwtxon\ProfanityFilter\Utils\Language;
 use xqwtxon\ProfanityFilter\Tasks\UpdateTask;
+use xqwtxon\ProfanityFilter\Utils\Language;
+use function count;
+use function fclose;
+use function file_exists;
+use function ltrim;
+use function mkdir;
+use function preg_match_all;
+use function preg_replace;
+use function rename;
+use function str_replace;
+use function stream_get_contents;
+use function strlen;
+use function strtoupper;
+use function substr;
+use function trim;
+use function unlink;
 use function yaml_parse;
-use DateTime;
-use DateInterval;
 
 class Loader extends PluginBase {
-
-	/** @var Loader $instance **/
 	private static Loader $instance;
 
-	/** @var array $punishment **/
+
 	public array $punishment = [];
 
 
-	public function onLoad(): void {
+	public function onLoad() : void {
 		Loader::$instance = $this;
 		$this->checkConfig();
 		$this->checkUpdate();
@@ -56,16 +66,16 @@ class Loader extends PluginBase {
 		$this->loadPermission();
 	}
 
-	public function onEnable(): void {
+	public function onEnable() : void {
 		$this->registerCommands();
 		$this->loadListeners();
 	}
 
-	public static function getInstance(): Loader {
+	public static function getInstance() : Loader {
 		return Loader::$instance;
 	}
 
-	private function checkConfig(): void {
+	private function checkConfig() : void {
 		$log = $this->getLogger();
 		$pluginConfigResource = $this->getResource("config.yml");
 		$lang = new Language();
@@ -79,7 +89,9 @@ class Loader extends PluginBase {
 			return;
 		}
 
-		if ($config->get("config-version") === $pluginConfig["config-version"]) return;
+		if ($config->get("config-version") === $pluginConfig["config-version"]) {
+			return;
+		}
 
 		$log->notice($lang->translateMessage("outdated-config"));
 		@rename($this->getDataFolder() . 'config.yml', 'old-config.yml');
@@ -87,7 +99,7 @@ class Loader extends PluginBase {
 		$this->saveResource("config.yml");
 	}
 
-	private function loadListeners(): void {
+	private function loadListeners() : void {
 		switch ($this->getConfig()->get("type")) {
 			case "block":
 				$this->getServer()->getPluginManager()->registerEvents(new EventListener("block"), $this);
@@ -102,20 +114,19 @@ class Loader extends PluginBase {
 		}
 	}
 
-	private function registerCommands(): void {
+	private function registerCommands() : void {
 		$this->getServer()->getCommandMap()->register($this->getDescription()->getName(), new DefaultCommand());
 	}
 
 	/**
 	 * Format Message. Dont call it directly.
-	 *
-	 * @param string $message
-	 * @return string
 	 */
-	public function formatMessage(string $message, ?Player $player = null): string { // TODO: Move this in the event class
+	public function formatMessage(string $message, ?Player $player = null) : string { // TODO: Move this in the event class
 		$message = str_replace("{type}", $this->getConfig()->get("punishment-type") . "ed", $message);
 
-		if ($player === null) return $message;
+		if ($player === null) {
+			return $message;
+		}
 
 		$message = str_replace("{player_name}", $player->getName(), $message);
 		$message = str_replace("{player_ping}", $player->getNetworkSession()->getPing(), $message);
@@ -123,23 +134,21 @@ class Loader extends PluginBase {
 		return $message;
 	}
 
-	private function checkUpdate(): void {
+	private function checkUpdate() : void {
 		$this->getServer()->getAsyncPool()->submitTask(new UpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 	}
 
 	/**
 	 * Get Profanity List. Do not call it directly.
-	 * @return Config
 	 */
-	public function getProfanity(): Config {
+	public function getProfanity() : Config {
 		return new Config($this->getDataFolder() . "profanity.yml", Config::YAML);
 	}
 
 	/**
 	 * Initilize the resource in the context.
-	 * @return void
 	 */
-	private function saveResources(): void {
+	private function saveResources() : void {
 		if (!file_exists($this->getDataFolder() . "languages/")) {
 			@mkdir($this->getDataFolder() . "languages/");
 		}
@@ -163,10 +172,9 @@ class Loader extends PluginBase {
 	/**
 	 * Convert String to Timestamp
 	 *
-	 * @param string $string
 	 * @return ?array
 	 */
-	private function stringToTimestamp(string $string): ?array {
+	private function stringToTimestamp(string $string) : ?array {
 		/**
 		 * Rules:
 		 * Integers without suffix are considered as seconds
@@ -211,7 +219,7 @@ class Loader extends PluginBase {
 		return [$t, ltrim(str_replace($found[0], "", $string))];
 	}
 
-	private function loadPermission(): void {
+	private function loadPermission() : void {
 		$this->registerPermission(($this->getConfig()->get("command-permission") ?? "profanityfilter.command"));
 		$this->registerPermission(($this->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"));
 	}
@@ -221,9 +229,8 @@ class Loader extends PluginBase {
 	 * Custom Permission in Config.yml
 	 *
 	 * @param $perm
-	 * @return void
 	 */
-	private function registerPermission($perm): void {
+	private function registerPermission($perm) : void {
 		$permission = new Permission($perm);
 		$permManager = PermissionManager::getInstance();
 		$permManager->addPermission($permission);

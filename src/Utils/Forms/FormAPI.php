@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +15,7 @@
  *
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
+ *
  *
  */
 

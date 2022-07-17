@@ -1,14 +1,12 @@
 <?php
 
-/**  					
- *			        _
- * 				  | |                  
- * __  ____ ___      _| |___  _____  _ __  
- * \ \/ / _` \ \ /\ / / __\ \/ / _ \| '_ \ 
- *  >  < (_| |\ V  V /| |_ >  < (_) | | | |
- * /_/\_\__, | \_/\_/  \__/_/\_\___/|_| |_|
- *         | |                             
- *         |_|                             
+/*
+ *
+ * __  __   __ _  __      __ | |_  __  __   ___    _ __
+ * \ \/ /  / _` | \ \ /\ / / | __| \ \/ /  / _ \  | '_ \
+ *  >  <  | (_| |  \ V  V /  | |_   >  <  | (_) | | | | |
+ * /_/\_\  \__, |   \_/\_/    \__| /_/\_\  \___/  |_| |_|
+ *            |_|
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,6 +15,7 @@
  *
  * @author xqwtxon
  * @link https://github.com/xqwtxon/
+ *
  *
  */
 
@@ -28,20 +27,18 @@ use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
 use xqwtxon\ProfanityFilter\Utils\Language;
-use function is_array;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
 
 class UpdateTask extends AsyncTask {
-
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
 	public function __construct(private string $pluginName, private string $pluginVersion) {
 		//NOOP
 	}
 
-	public function onRun(): void {
+	public function onRun() : void {
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
 		$highestVersion = $this->pluginVersion;
 		$artifactUrl = "";
@@ -62,10 +59,12 @@ class UpdateTask extends AsyncTask {
 	}
 
 
-	public function onCompletion(): void {
+	public function onCompletion() : void {
 		$lang = new Language();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
-		if ($plugin === null) return;
+		if ($plugin === null) {
+			return;
+		}
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if ($err !== null) {
