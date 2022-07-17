@@ -5,5 +5,4 @@ branches:
 projects:
   ProfanityFilter:
     path: ""
-    icon: "ProfanityFilter.png"
 ...

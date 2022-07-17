@@ -1,6 +1,6 @@
 <h1 align=center>ProfanityFilter 🤐</h1>
 <p align=center>
-<a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://github.com/xqwtxon/ProfanityFilter/blob/main/ProfanityFilter.png" align="center" size="200"></a><br>
+<a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://github.com/xqwtxon/ProfanityFilter/blob/main/icon.png" align="center" size="200"></a><br>
 A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
 <p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
 <h1 align=center>Features 🎈</h1>
@@ -23,8 +23,8 @@ It is lightweight, easy to use, and easy to configure.
 </details>
 <h1>Screenshots 📷</h1>
 <p align=center>
-<img src="https://github.com/ReinfyTeam/ProfanityFilter/blob/main/assets/chat-filter.jpg" align="center"><br><br>
-<img src="https://github.com/ReinfyTeam/ProfanityFilter/blob/main/assets/punish-from-player.jpg" align="center">
+<img src="https://user-images.githubusercontent.com/60387689/179397180-9954e6ca-2858-4baf-8fa0-79173ff6e525.jpg" align="center"><br><br>
+<img src="https://user-images.githubusercontent.com/60387689/179397210-99638333-7358-4375-9331-237a9c7aeffd.jpg" align="center">
 </p>
 <h1>TODO: 🎯</h1>
 <p align=left>
