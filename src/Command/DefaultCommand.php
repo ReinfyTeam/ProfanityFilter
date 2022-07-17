@@ -36,7 +36,9 @@ use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class DefaultCommand extends Command implements PluginOwned {
 	private Loader $plugin;
-
+        
+        private $language;
+        
 	public function getOwningPlugin() : Plugin {
 		return $this->plugin;
 	}
