@@ -36,9 +36,9 @@ use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class DefaultCommand extends Command implements PluginOwned {
 	private Loader $plugin;
-        
-        private $language;
-        
+
+	private $language;
+
 	public function getOwningPlugin() : Plugin {
 		return $this->plugin;
 	}
@@ -180,7 +180,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		$form = new SimpleForm(function (Player $player, $data) {
 			if ($data === null) {
 				$this->sendForm($player);
-                                return;
+				return;
 			}
 
 			switch ($data) {

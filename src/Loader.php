@@ -25,13 +25,12 @@ namespace xqwtxon\ProfanityFilter;
 
 use DateInterval;
 use DateTime;
-use pocketmine\player\Player;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use pocketmine\Server;
 use xqwtxon\ProfanityFilter\Command\DefaultCommand;
 use xqwtxon\ProfanityFilter\Tasks\UpdateTask;
 use xqwtxon\ProfanityFilter\Utils\Language;
@@ -229,9 +228,6 @@ class Loader extends PluginBase {
 	/**
 	 * Register Permission on Plugin
 	 * Custom Permission in Config.yml
-	 *
-	 * @param string $perm
-         * @return void
 	 */
 	private function registerPermission(string $perm) : void {
 		$permission = new Permission($perm);

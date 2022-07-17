@@ -26,7 +26,6 @@ namespace xqwtxon\ProfanityFilter\Utils;
 use pocketmine\utils\Config;
 use xqwtxon\ProfanityFilter\Loader;
 use function file_exists;
-use function is_null;
 
 class Language {
 	private Loader $plugin;
