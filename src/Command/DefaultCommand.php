@@ -26,7 +26,6 @@ namespace xqwtxon\ProfanityFilter\Command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as T;
 use xqwtxon\ProfanityFilter\Loader;
@@ -39,7 +38,7 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	private Language $language;
 
-	public function getOwningPlugin() : Plugin {
+	public function getOwningPlugin() : Loader {
 		return $this->plugin;
 	}
 
