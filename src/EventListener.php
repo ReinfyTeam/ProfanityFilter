@@ -29,7 +29,6 @@ use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
-	private string $type;
         
         private Loader $plugin;
         private $type;
