@@ -43,9 +43,9 @@ class EventListener implements Listener {
 	/**
 	 * When player chat.
 	 */
-	public function onChat(PlayerChatEvent $ev) : void {
-		$message = $ev->getMessage();
-		$player = $ev->getPlayer();
+	public function onChat(PlayerChatEvent $event) : void {
+		$message = $event->getMessage();
+		$player = $event->getPlayer();
 		$words = $this->plugin->getProfanity()->get("banned-words");
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
@@ -53,11 +53,11 @@ class EventListener implements Listener {
 		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
 				case "block":
-					$ev->cancel();
+					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
 					break;
 				case "hide":
-					$ev->setMessage(PluginAPI::removeProfanity($message, $words));
+					$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
@@ -86,9 +86,9 @@ class EventListener implements Listener {
 	/**
 	 * When player chats command.
 	 */
-	public function onCommand(PlayerCommandPreprocessEvent $ev) : void {
-		$message = $ev->getMessage();
-		$player = $ev->getPlayer();
+	public function onCommand(PlayerCommandPreprocessEvent $event) : void {
+		$message = $event->getMessage();
+		$player = $event->getPlayer();
 		$words = $this->plugin->getProfanity()->get("banned-words");
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
@@ -96,11 +96,11 @@ class EventListener implements Listener {
 		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
 				case "block":
-					$ev->cancel();
+					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
 					break;
 				case "hide":
-					$ev->setMessage(PluginAPI::removeProfanity($message, $words));
+					$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
