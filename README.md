@@ -3,8 +3,6 @@
 <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://github.com/xqwtxon/ProfanityFilter/blob/main/ProfanityFilter.png" align="center" size="200"></a><br>
 A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
 <p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
-
-
 <h1 align=center>Features 🎈</h1>
 <p align="center">
 Do you want to block hate speech? Do you want to customize it? Do you want to punish them?<br>
@@ -23,14 +21,11 @@ It is lightweight, easy to use, and easy to configure.
 - [x] PluginAPI ([Wiki](https://github.com/xqwtxon/ProfanityFilter/wiki))
 	
 </details>
-
 <h1>Screenshots 📷</h1>
 <p align=center>
 <img src="https://github.com/ReinfyTeam/ProfanityFilter/blob/main/assets/chat-filter.jpg" align="center"><br><br>
 <img src="https://github.com/ReinfyTeam/ProfanityFilter/blob/main/assets/punish-from-player.jpg" align="center">
 </p>
-
-
 <h1>TODO: 🎯</h1>
 <p align=left>
 		<ul>
@@ -39,13 +34,6 @@ It is lightweight, easy to use, and easy to configure.
 		<li>/me, /say, /tell command message filter.</li>
 		</ul>
 </p>
-<br>
-
-			
-			
-			
-			
-			
 <h1>FAQ's 🤷‍</h1>
 <p align=left>
 	<details>
@@ -57,7 +45,6 @@ It is lightweight, easy to use, and easy to configure.
 		<li>Then start your server by running it.</li>
 		<ul>
 	</details>
-	<br>
 	<details>
 		<summary>How to fix missing class.</summary>
 		<p>
@@ -65,7 +52,6 @@ It is lightweight, easy to use, and easy to configure.
 			If you are experience this issue. Move up your pocketmine-mp to latest version that can be download here in <a href="https://github.com/pmmp/PocketMine-MP/releases">pocketmine releases</a>
 		</p>
 	</details>
-	<br>
 	<details>
 		<summary>How to fix <code>Missing files in .../plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
 		<p>
@@ -74,9 +60,6 @@ It is lightweight, easy to use, and easy to configure.
 		</p>
 	</details>
 </p>
-
-<br>
-<br>
 <h1>Found a Problem? 🧤</h1>
 <p align=center>
 	You are encountered some bugs or issue? Tell us about it.<br>
@@ -89,8 +72,5 @@ It is lightweight, easy to use, and easy to configure.
 		<li>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</li>
 		<li>Submit the issue and be patient for a response for a solution to your problem :D</li>
 	</ul>
-
-
-<br><br>
 <h1 align=center>Credits</h1>
 <p align=center>This plugin was made by <a href="https://github.com/xqwtxon/">@xqwtxon</a>!</p>
