@@ -33,7 +33,6 @@ class SimpleForm extends Form {
 
 	const IMAGE_TYPE_URL = 1;
 
-
 	private string $content = "";
 
 	private array $labelMap = [];

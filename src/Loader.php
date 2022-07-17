@@ -46,6 +46,7 @@ use function str_replace;
 use function stream_get_contents;
 use function strlen;
 use function strtoupper;
+use function strval;
 use function substr;
 use function trim;
 use function unlink;

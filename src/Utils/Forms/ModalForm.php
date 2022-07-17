@@ -28,8 +28,6 @@ use function gettype;
 use function is_bool;
 
 class ModalForm extends Form {
-
-
 	private string $content = "";
 
 	public function __construct(?callable $callable) {

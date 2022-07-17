@@ -27,8 +27,6 @@ use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;
 
 abstract class Form implements IForm {
-
-
 	protected array $data = [];
 
 	/** @var callable|null */
