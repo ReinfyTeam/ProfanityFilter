@@ -16,10 +16,5 @@
         "psr-4": {
             "xqwtxon\\ProfanityFilter\\": "src/"
         }
-    },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
     }
 }
