@@ -1,5 +1,25 @@
 {
+    "name": "xqwtxon/profanityfilter",
+    "description": "The best profanity filter for chat with api for plugin developers!",
+    "type": "project",
+    "keywords": ["profanityfilter", "pocketmine-mp"],
+    "homepage": "https://github.com/ReinfyTeam",
+    "license": "GNU Lesser General Public License v2.1",
     "require": {
-        "friendsofphp/php-cs-fixer": "^3.9"
+        "php": "8.0.19",
+        "pocketmine/pocketmine-mp": "4.5.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "v3.8.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "xqwtxon\\ProfanityFilter\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     }
 }
