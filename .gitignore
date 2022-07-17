@@ -1,3 +1,14 @@
-.idea
+# Common IDEs
+.idea/*
+
+# Mac crap
 .DS_Store
+
+# Git
 .git
+
+# Composer
+vendor/*
+
+# php-cs-fixer
+/.php-cs-fixer.cache
