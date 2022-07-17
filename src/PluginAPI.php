@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace xqwtxon\ProfanityFilter;
 
+use function mb_strlen;
 use function preg_match;
+use function preg_replace;
 use function sizeof;
 use function str_repeat;
-use function str_replace;
-use function str_word_count;
 
 final class PluginAPI {
 
@@ -48,11 +48,10 @@ final class PluginAPI {
 	/**
 	 * It is being used to remove profanities on message.
 	 * Returns string convert to **** characters.
-	 * @param array $words
 	 */
-	public static function removeProfanity(string $message, $words) : string {
+	public static function removeProfanity(string $message, array $words) : string {
 		foreach ($words as $profanity) {
-			$message = str_replace($profanity, str_repeat("*", str_word_count($profanity)), $words);
+			$message = preg_replace("/" . $profanity . "/i", str_repeat("*", mb_strlen($profanity, "utf8")), $message);
 		}
 		return $message;
 	}
