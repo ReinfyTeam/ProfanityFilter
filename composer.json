@@ -11,10 +11,5 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "v3.9.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "xqwtxon\\ProfanityFilter\\": "src/"
-        }
     }
 }
