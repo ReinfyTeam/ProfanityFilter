@@ -30,7 +30,11 @@ use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
 	private string $type;
-
+        
+        private Loader $plugin;
+        private $type;
+        private $duration;
+        
 	public function __construct(string $type) {
 		$this->plugin = Loader::getInstance();
 		$this->type = $type;
