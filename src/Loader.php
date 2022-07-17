@@ -128,7 +128,7 @@ class Loader extends PluginBase {
 		}
 
 		$message = str_replace("{player_name}", $player->getName(), $message);
-		$message = str_replace("{player_ping}", $player->getNetworkSession()->getPing(), $message);
+		$message = str_replace("{player_ping}", strval($player->getNetworkSession()->getPing()), $message);
 
 		return $message;
 	}
