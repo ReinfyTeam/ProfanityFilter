@@ -53,7 +53,7 @@ It is lightweight, easy to use, and easy to configure.
 		</ul>
 	</details>
 	<details>
-		<summary>How to fix <code>Missing files in .../plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
+		<summary>How to fix <code>Missing files in ~/plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
 		<ul>
 			<li>Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.</li>
 			<li>Fix this by deleting <code>config.yml</code>.</li>
