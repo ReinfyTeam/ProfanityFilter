@@ -47,17 +47,17 @@ It is lightweight, easy to use, and easy to configure.
 	</details>
 	<details>
 		<summary>How to fix missing class.</summary>
-		<p>
-			Well, as pocketmine 4.0 is released. This plugin uses <code>src-namespace-prefix</code>.<br>
-			If you are experience this issue. Move up your pocketmine-mp to latest version that can be download here in <a href="https://github.com/pmmp/PocketMine-MP/releases">pocketmine releases</a>
-		</p>
+		<ul>
+			<li>Well, as pocketmine 4.0 is released. This plugin uses <code>src-namespace-prefix</code>.</li>
+			<li>If you are experience this issue. Move up your pocketmine-mp to latest version that can be download here in <a href="https://github.com/pmmp/PocketMine-MP/releases">pocketmine releases</a></li>
+		</ul>
 	</details>
 	<details>
 		<summary>How to fix <code>Missing files in .../plugin_data/ProfanityFilter/languages/en-us.yml</code></summary>
-		<p>
-			Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.<br>
-			Or fix this by deleting <code>config.yml</code>.
-		</p>
+		<ul>
+			<li>Well, if you experience this issue. Try to delete languages folder located in <code>plugin_data</code> of plugin.</li>
+			<li>Fix this by deleting <code>config.yml</code>.</li>
+		</ul>
 	</details>
 </p>
 <h1>Found a Problem? 🧤</h1>
