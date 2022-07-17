@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace xqwtxon\ProfanityFilter;
 
-use Excemption;
+use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
@@ -61,8 +61,7 @@ class EventListener implements Listener {
 					$ev->setMessage(PluginAPI::removeProfanity($message, $words));
 					break;
 				default:
-					throw new Excemption("Cannot Identify the type of profanity in config.yml");
-					break;
+					throw new Exception("Cannot Identify the type of profanity in config.yml");
 			}
 
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
@@ -77,8 +76,7 @@ class EventListener implements Listener {
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					default:
-						throw new Excemption("Cannot Identify the type of punishment in config.yml");
-						break;
+						throw new Exception("Cannot Identify the type of punishment in config.yml");
 				}
 			} else {
 				$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;
@@ -106,8 +104,7 @@ class EventListener implements Listener {
 					$ev->setMessage(PluginAPI::removeProfanity($message, $words));
 					break;
 				default:
-					throw new Excemption("Cannot Identify the type of profanity in config.yml");
-					break;
+					throw new Exception("Cannot Identify the type of profanity in config.yml");
 			}
 
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
@@ -122,8 +119,7 @@ class EventListener implements Listener {
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					default:
-						throw new Excemption("Cannot Identify the type of punishment in config.yml");
-						break;
+						throw new Exception("Cannot Identify the type of punishment in config.yml");
 				}
 			} else {
 				$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;
