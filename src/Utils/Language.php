@@ -51,7 +51,7 @@ class Language {
 		$lang = $this->getLanguage();
 
 		/** Check if selected language is missing. **/
-		if (is_null($this->getLanguage())) {
+		if (!file_exists($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml")) {
 			throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml");
 		}
 
