@@ -13,7 +13,7 @@
         "friendsofphp/php-cs-fixer": "v3.8.0"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "xqwtxon\\ProfanityFilter\\": "src/"
         }
     },
