@@ -12,14 +12,14 @@ It is lightweight, easy to use, and easy to configure.
 </p>
 <details>
 	<summary>Click for detailed plugin features!</summary>
-	
+
 - [x] UI (FormAPI)<br>
 - [x] Profanity Command.<br>
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
 - [x] PluginAPI ([Wiki](https://github.com/xqwtxon/ProfanityFilter/wiki))
-	
+
 </details>
 <h1>Screenshots 📷</h1>
 <p align=center>

@@ -30,13 +30,13 @@ use function is_int;
 
 class SimpleForm extends Form {
 	const IMAGE_TYPE_PATH = 0;
+
 	const IMAGE_TYPE_URL = 1;
 
-	/** @var string */
-	private $content = "";
 
-	private $labelMap = [];
+	private string $content = "";
 
+	private array $labelMap = [];
 
 	public function __construct(?callable $callable) {
 		parent::__construct($callable);
@@ -59,21 +59,17 @@ class SimpleForm extends Form {
 		}
 	}
 
-
 	public function setTitle(string $title) : void {
 		$this->data["title"] = $title;
 	}
-
 
 	public function getTitle() : string {
 		return $this->data["title"];
 	}
 
-
 	public function getContent() : string {
 		return $this->data["content"];
 	}
-
 
 	public function setContent(string $content) : void {
 		$this->data["content"] = $content;

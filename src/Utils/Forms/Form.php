@@ -28,11 +28,11 @@ use pocketmine\player\Player;
 
 abstract class Form implements IForm {
 
-	/** @var array */
-	protected $data = [];
+
+	protected array $data = [];
+
 	/** @var callable|null */
 	private $callable;
-
 
 	public function __construct(?callable $callable) {
 		$this->callable = $callable;

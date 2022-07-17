@@ -58,7 +58,6 @@ class UpdateTask extends AsyncTask {
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
 
-
 	public function onCompletion() : void {
 		$lang = new Language();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);

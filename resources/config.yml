@@ -27,7 +27,7 @@ lang: english
 # Options: kick,ban
 punishment-type: kick
 # If player reached max violations will be kicked.
-# You can set max player violations here. 
+# You can set max player violations here.
 # When player is kicked. The player violations will reset.
 max-violations: 5
 # Kick Violation Message

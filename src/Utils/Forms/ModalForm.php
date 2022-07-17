@@ -29,9 +29,8 @@ use function is_bool;
 
 class ModalForm extends Form {
 
-	/** @var string */
-	private $content = "";
 
+	private string $content = "";
 
 	public function __construct(?callable $callable) {
 		parent::__construct($callable);
@@ -48,41 +47,33 @@ class ModalForm extends Form {
 		}
 	}
 
-
 	public function setTitle(string $title) : void {
 		$this->data["title"] = $title;
 	}
-
 
 	public function getTitle() : string {
 		return $this->data["title"];
 	}
 
-
 	public function getContent() : string {
 		return $this->data["content"];
 	}
-
 
 	public function setContent(string $content) : void {
 		$this->data["content"] = $content;
 	}
 
-
 	public function setButton1(string $text) : void {
 		$this->data["button1"] = $text;
 	}
-
 
 	public function getButton1() : string {
 		return $this->data["button1"];
 	}
 
-
 	public function setButton2(string $text) : void {
 		$this->data["button2"] = $text;
 	}
-
 
 	public function getButton2() : string {
 		return $this->data["button2"];

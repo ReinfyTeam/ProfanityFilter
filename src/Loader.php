@@ -54,9 +54,7 @@ use function yaml_parse;
 class Loader extends PluginBase {
 	private static Loader $instance;
 
-
 	public array $punishment = [];
-
 
 	public function onLoad() : void {
 		Loader::$instance = $this;
@@ -170,6 +168,7 @@ class Loader extends PluginBase {
 			return $this->stringToTimestamp($this->getConfig()->get("ban-duration"));
 		}
 	}
+
 	/**
 	 * Convert String to Timestamp
 	 *

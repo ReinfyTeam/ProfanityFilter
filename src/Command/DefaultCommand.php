@@ -37,7 +37,7 @@ use xqwtxon\ProfanityFilter\Utils\PluginUtils;
 class DefaultCommand extends Command implements PluginOwned {
 	private Loader $plugin;
 
-	private $language;
+	private Language $language;
 
 	public function getOwningPlugin() : Plugin {
 		return $this->plugin;
@@ -49,7 +49,6 @@ class DefaultCommand extends Command implements PluginOwned {
 		parent::__construct("profanityfilter", "ProfanityFilter Management", "/profanityfilter <help/subcommand>", ["pf"]);
 		$this->setPermission(($this->plugin->getConfig()->get("command-permission") ?? "profanityfilter.command"));
 	}
-
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
 		if ($sender instanceof Player) {

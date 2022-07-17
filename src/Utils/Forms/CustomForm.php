@@ -33,9 +33,9 @@ use function is_int;
 use function is_string;
 
 class CustomForm extends Form {
-	private $labelMap = [];
-	private $validationMethods = [];
+	private array $labelMap = [];
 
+	private array $validationMethods = [];
 
 	public function __construct(?callable $callable) {
 		parent::__construct($callable);
@@ -67,23 +67,19 @@ class CustomForm extends Form {
 		}
 	}
 
-
 	public function setTitle(string $title) : void {
 		$this->data["title"] = $title;
 	}
 
-
 	public function getTitle() : string {
 		return $this->data["title"];
 	}
-
 
 	public function addLabel(string $text, ?string $label = null) : void {
 		$this->addContent(["type" => "label", "text" => $text]);
 		$this->labelMap[] = $label ?? count($this->labelMap);
 		$this->validationMethods[] = static fn ($v) => $v === null;
 	}
-
 
 	public function addToggle(string $text, bool $default = null, ?string $label = null) : void {
 		$content = ["type" => "toggle", "text" => $text];
@@ -94,7 +90,6 @@ class CustomForm extends Form {
 		$this->labelMap[] = $label ?? count($this->labelMap);
 		$this->validationMethods[] = static fn ($v) => is_bool($v);
 	}
-
 
 	public function addSlider(string $text, int $min, int $max, int $step = -1, int $default = -1, ?string $label = null) : void {
 		$content = ["type" => "slider", "text" => $text, "min" => $min, "max" => $max];
@@ -108,7 +103,6 @@ class CustomForm extends Form {
 		$this->labelMap[] = $label ?? count($this->labelMap);
 		$this->validationMethods[] = static fn ($v) => (is_float($v) || is_int($v)) && $v >= $min && $v <= $max;
 	}
-
 
 	public function addStepSlider(string $text, array $steps, int $defaultIndex = -1, ?string $label = null) : void {
 		$content = ["type" => "step_slider", "text" => $text, "steps" => $steps];
@@ -137,7 +131,6 @@ class CustomForm extends Form {
 		$this->labelMap[] = $label ?? count($this->labelMap);
 		$this->validationMethods[] = static fn ($v) => is_string($v);
 	}
-
 
 	private function addContent(array $content) : void {
 		$this->data["content"][] = $content;
