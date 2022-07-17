@@ -68,14 +68,14 @@ class UpdateTask extends AsyncTask {
 
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if ($err !== null) {
-			$plugin->getServer()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			return;
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
-			$plugin->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
 		} else {
-			$plugin->getServer()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
+			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
 	}
 }
