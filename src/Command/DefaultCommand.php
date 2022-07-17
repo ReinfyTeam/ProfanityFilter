@@ -151,7 +151,7 @@ class DefaultCommand extends Command implements PluginOwned {
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function sendForm(Player $player) : void {
+	private function sendForm(Player $player) {
 		$form = new SimpleForm(function (Player $player, $data) {
 			if ($data === null) {
 				return;
@@ -176,10 +176,11 @@ class DefaultCommand extends Command implements PluginOwned {
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function viewList(Player $player) : void {
+	private function viewList(Player $player) {
 		$form = new SimpleForm(function (Player $player, $data) {
 			if ($data === null) {
-				return $this->sendForm($player);
+				$this->sendForm($player);
+                                return;
 			}
 
 			switch ($data) {
