@@ -68,12 +68,12 @@ class EventListener implements Listener {
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
 				switch ($this->plugin->getConfig()->get("punishment-type")) {
 					case "ban":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
+						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					case "kick":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
+						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					default:
@@ -111,12 +111,12 @@ class EventListener implements Listener {
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
 				switch ($this->plugin->getConfig()->get("punishment-type")) {
 					case "ban":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
+						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					case "kick":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ?? 0;
+						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						break;
 					default:
