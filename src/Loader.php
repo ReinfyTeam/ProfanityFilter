@@ -152,7 +152,7 @@ class Loader extends PluginBase {
 		if (!file_exists($this->getDataFolder() . "languages/")) {
 			@mkdir($this->getDataFolder() . "languages/");
 		}
-		$this->saveResource("languages/english.yml");
+		$this->saveResource("languages/eng.yml");
 		if (!file_exists($this->getDataFolder() . "banned-words.yml")) {
 			$this->saveResource("banned-words.yml");
 		}
