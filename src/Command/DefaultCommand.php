@@ -117,7 +117,7 @@ class DefaultCommand extends Command implements PluginOwned {
 				case "ui":
 				case "gui":
 				case "form":
-					if (!$sender instanceof Player) {
+					if (!($sender instanceof Player)) {
 						$sender->sendMessage($this->language->translateMessage("profanity-command-only-ingame"));
 					} else {
 						$this->sendForm($sender);
