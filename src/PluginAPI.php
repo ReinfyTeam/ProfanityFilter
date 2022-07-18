@@ -47,12 +47,18 @@ final class PluginAPI {
 
 	/**
 	 * It is being used to remove profanities on message.
-	 * Returns string convert to **** characters.
+	 * Returns string convert to #### characters.
 	 */
 	public static function removeProfanity(string $message, array $words) : string {
 		foreach ($words as $profanity) {
 			$message = preg_replace("/" . $profanity . "/i", str_repeat("#", mb_strlen($profanity, "utf8")), $message);
 		}
+		/**
+		 * Control the ASCII Unicode Bypassing
+		 * 
+		 * We are expectate using unicode characters can bypass profanity...
+		 */
+		$message = preg_replace('/[\x00-\x1F\x80-\xFF]/', $profanity, $message);
 		return $message;
 	}
 
