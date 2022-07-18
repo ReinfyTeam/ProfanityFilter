@@ -58,7 +58,7 @@ final class PluginAPI {
 		 * 
 		 * We are expectate using unicode characters can bypass profanity...
 		 */
-		$message = preg_replace('/[\x00-\x1F\x80-\xFF]/', $profanity, $message);
+		$message = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $message);
 		return $message;
 	}
 
