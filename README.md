@@ -2,7 +2,7 @@
 <p align=center>
 <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://github.com/ReinfyTeam/ProfanityFilter/blob/main/icon.png" align="center" size="200"></a><br>
 A best <b>profanity filter</b> for pocketmine.<br>Controls <b>hate speech and blocks bad words</b> in certain on the chat.</p>
-<p align=right>Made with ❤ by <a href="https://github.com/xqwtxon">xqwtxon</a></p>
+<p align=right>Made with ❤ by <a href="https://github.com/ReinfyTeam">ReinfyTeam</a></p>
 <h1 align=center>Features 🎈</h1>
 <p align="center">
 Do you want to block hate speech? Do you want to customize it? Do you want to punish them?<br>
@@ -18,7 +18,7 @@ It is lightweight, easy to use, and easy to configure.
 - [x] Profanity Filter Types!<br>
 - [x] Custom Languages!<br>
 - [x] Easy to configure.<br>
-- [x] PluginAPI ([Wiki](https://github.com/xqwtxon/ProfanityFilter/wiki))
+- [x] PluginAPI ([Wiki](https://github.com/Reinfy/ProfanityFilter/wiki))
 
 </details>
 <h1>Screenshots 📷</h1>
@@ -72,5 +72,3 @@ It is lightweight, easy to use, and easy to configure.
 		<li>Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.</li>
 		<li>Submit the issue and be patient for a response for a solution to your problem :D</li>
 	</ul>
-<h1 align=center>Credits</h1>
-<p align=center>This plugin was made by <a href="https://github.com/xqwtxon/">@xqwtxon</a>!</p>
