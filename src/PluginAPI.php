@@ -51,7 +51,7 @@ final class PluginAPI {
 	 */
 	public static function removeProfanity(string $message, array $words) : string {
 		foreach ($words as $profanity) {
-			$message = preg_replace("/" . $profanity . "/i", str_repeat("*", mb_strlen($profanity, "utf8")), $message);
+			$message = preg_replace("/" . $profanity . "/i", str_repeat("#", mb_strlen($profanity, "utf8")), $message);
 		}
 		return $message;
 	}
