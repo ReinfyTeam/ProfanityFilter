@@ -34,6 +34,10 @@ final class PluginAPI {
 
 	/**
 	 * Whether to detect message on provided words.
+	 * 
+	 * @param string $message
+	 * @param array $words
+	 * @param 
 	 */
 	public static function detectProfanity(string $message, array $words) : bool {
 		$filterCount = sizeof($words);

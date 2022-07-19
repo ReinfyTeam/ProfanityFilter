@@ -52,8 +52,9 @@ class EventListener implements Listener {
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
 		}
-		if (PluginAPI::detectProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))) {
+		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
+			    // @phpstan-ignore-next-line
 				case "block":
 					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
@@ -63,14 +64,16 @@ class EventListener implements Listener {
 				     * Detect if theres unicode inside of profanity. It will removed if config was set to true...
 				     * TODO: Improve this unicode blocking
 				     */
+				     // @phpstan-ignore-next-line
 				    if(((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)){
-				        $event->setMessage(PluginAPI::removeUnicode($message));
-				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
+				        // @phpstan-ignore-next-line
+				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
 				    } else {
 				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
 				    }
 					break;
 				default:
+				    // @phpstan-ignore-line
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
 					break;
 			}
