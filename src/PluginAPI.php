@@ -71,8 +71,8 @@ final class PluginAPI {
 	 */
 	public static function removeUnicode(string $text) : string {
 	    
-	        // Single Characters
-	        $text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
+	    // Single Characters
+	    $text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
             $text = preg_replace("/[∆лДΛдАÁÀÂÃÄ]/u", "A", $text);
             $text = preg_replace("/[ЂЪЬБъь]/u", "b", $text);
             $text = preg_replace("/[βвВ]/u", "B", $text);
