@@ -65,7 +65,7 @@ class EventListener implements Listener {
 				     */
 				     // @phpstan-ignore-next-line
 				    if(((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)){
-				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")));
+				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
 				    } else {
 				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
 				    }
