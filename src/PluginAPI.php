@@ -54,7 +54,6 @@ final class PluginAPI {
 	 */
 	public static function removeProfanity(string $message, array $words, string $replacementCharacter = "#") : string {
 		if (strlen($replacementCharacter) < 1) {
-			// @phpstan-ignore-next-line
 			throw new Excemption("Cannot replace character longer than 1 character.");
 		}
 		foreach ($words as $profanity) {
