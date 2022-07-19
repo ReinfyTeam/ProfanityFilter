@@ -54,7 +54,6 @@ class EventListener implements Listener {
 		}
 		if (PluginAPI::detectProfanity($message, $words)) {
 			switch ($this->type) {
-			    // @phpstan-ignore-next-line
 				case "block":
 					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
@@ -66,18 +65,17 @@ class EventListener implements Listener {
 				     */
 				     // @phpstan-ignore-next-line
 				    if(((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)){
-				        // @phpstan-ignore-next-line
-				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
+				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")));
 				    } else {
 				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
 				    }
 					break;
 				default:
-				    // @phpstan-ignore-line
+				    // @phpstan-ignore-next-line
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
 					break;
 			}
-
+            // @phpstan-ignore-next-line
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
 				switch ($this->plugin->getConfig()->get("punishment-type")) {
 					case "ban":

@@ -37,7 +37,7 @@ final class PluginAPI {
 	 * 
 	 * @param string $message
 	 * @param array $words
-	 * @param 
+	 * @return bool
 	 */
 	public static function detectProfanity(string $message, array $words) : bool {
 		$filterCount = sizeof($words);
@@ -54,11 +54,10 @@ final class PluginAPI {
 	 * It is being used to remove profanities on message.
 	 * Returns string convert to #### characters.
 	 */
-	public static function removeProfanity(string $message, array $words, string $replacementCharacter = "#") : ?string {
+	public static function removeProfanity(string $message, array $words, string $replacementCharacter = "#") : string {
 	    if(strlen($replacementCharacter) < 1){
 	        // @phpstan-ignore-next-line
 	        throw new Excemption("Cannot replace character longer than 1 character.");
-	        return null;
 	    }
 		foreach ($words as $profanity) {
 			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity, "utf8")), $message);
@@ -71,8 +70,7 @@ final class PluginAPI {
 	 * 
 	 * TODO: Improve this blocking in future...
 	 * 
-         * @param string $text
-         *
+     * @param string $text
 	 * @return string
 	 */
 	public static function removeUnicode(string $text) : string {
