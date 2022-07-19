@@ -67,6 +67,8 @@ final class PluginAPI {
 	 * 
 	 * TODO: Improve this blocking in future...
 	 * 
+         * @param string $text
+         *
 	 * @return string
 	 */
 	public static function removeUnicode(string $text) : string {
