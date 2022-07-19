@@ -71,11 +71,8 @@ class EventListener implements Listener {
 				    }
 					break;
 				default:
-				    // @phpstan-ignore-next-line
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
-					break;
 			}
-            // @phpstan-ignore-next-line
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
 				switch ($this->plugin->getConfig()->get("punishment-type")) {
 					case "ban":
