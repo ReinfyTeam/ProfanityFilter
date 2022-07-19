@@ -52,17 +52,27 @@ class EventListener implements Listener {
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
 		}
-		if (PluginAPI::detectProfanity($message, $words)) {
+		if (PluginAPI::detectProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))) {
 			switch ($this->type) {
 				case "block":
 					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
 					break;
 				case "hide":
-					$event->setMessage(PluginAPI::removeProfanity($message, $words));
+				    /**
+				     * Detect if theres unicode inside of profanity. It will removed if config was set to true...
+				     * TODO: Improve this unicode blocking
+				     */
+				    if(((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)){
+				        $event->setMessage(PluginAPI::removeUnicode($message));
+				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
+				    } else {
+				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
+				    }
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
+					break;
 			}
 
 			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
@@ -127,4 +137,6 @@ class EventListener implements Listener {
 			}
 		}
 	}
+	
+	
 }
