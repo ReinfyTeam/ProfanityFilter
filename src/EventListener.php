@@ -63,7 +63,7 @@ class EventListener implements Listener {
 					 * Detect if theres unicode inside of profanity. It will removed if config was set to true...
 					 * TODO: Improve this unicode blocking
 					 */
-					if (((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)) {
+					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
 						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));

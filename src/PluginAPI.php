@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace xqwtxon\ProfanityFilter;
 
-use Excemption;
+use Exception;
 use function mb_strlen;
 use function preg_match;
 use function preg_replace;
@@ -54,7 +54,7 @@ final class PluginAPI {
 	 */
 	public static function removeProfanity(string $message, array $words, string $replacementCharacter = "#") : string {
 		if (strlen($replacementCharacter) < 1) {
-			throw new Excemption("Cannot replace character longer than 1 character.");
+			throw new Exception("Cannot replace character longer than 1 character.");
 		}
 		foreach ($words as $profanity) {
 			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity, "utf8")), $message);
