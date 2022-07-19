@@ -94,7 +94,7 @@ class Loader extends PluginBase {
 		}
 
 		$log->notice($lang->translateMessage("outdated-config"));
-		@rename($this->getDataFolder() . 'config.yml', 'old-config.yml');
+		@rename($this->getDataFolder() . "config.yml", "old-config.yml");
 		@unlink($this->getDataFolder() . "old-config.yml");
 		$this->saveResource("config.yml");
 	}

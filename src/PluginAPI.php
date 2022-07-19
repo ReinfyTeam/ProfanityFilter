@@ -37,7 +37,7 @@ final class PluginAPI {
 	public static function detectProfanity(string $message, array $words) : bool {
 		$filterCount = sizeof($words);
 		for ($i = 0; $i < $filterCount; $i++) {
-			$condition = preg_match('/' . $words[$i] . '/iu', $message) > 0;
+			$condition = preg_match("/" . $words[$i] . "/iu", $message) > 0;
 			if ($condition) {
 				return true;
 			}
@@ -50,15 +50,19 @@ final class PluginAPI {
 	 * Returns string convert to #### characters.
 	 */
 	public static function removeProfanity(string $message, array $words) : string {
+		$replacementCharacter = Loader::getInstance()->getConfig()->get("replacementCharacter");
 		foreach ($words as $profanity) {
-			$message = preg_replace("/" . $profanity . "/i", str_repeat("#", mb_strlen($profanity, "utf8")), $message);
+			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity, "utf8")), $message);
 		}
 		/**
 		 * Control the ASCII Unicode Bypassing
-		 * 
+		 *
 		 * We are expectate using unicode characters can bypass profanity...
 		 */
-		$message = $str = preg_replace('/[[:^print:]]/', '', $message);
+		$removeUnicode = (bool) Loader::getInstance()->getConfig()->get("removeUnicode");
+		if ($removeUnicode) {
+			$message = preg_replace("/[[:^print:]]/", "", $message);
+		}
 		return $message;
 	}
 

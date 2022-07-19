@@ -12,6 +12,13 @@
 # for more information about profanity types.
 type: "block"
 
+# Characters are replaced for obscene words
+# Example: hello -> ####
+replacementCharacter: "#"
+# If true, all unicode characters will be removed from the player's message
+# # This should only be enabled if English is the primary language used by the players on your server.
+removeUnicode: false
+
 # If "block" has selected, you can add your own message right here.
 block-message: "&cHey, Watch your Language!"
 
@@ -51,5 +58,5 @@ command-permission: profanityfilter.command
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.5
+config-version: 0.0.6
 ...
