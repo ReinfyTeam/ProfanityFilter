@@ -59,16 +59,16 @@ class EventListener implements Listener {
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
 					break;
 				case "hide":
-				    /**
-				     * Detect if theres unicode inside of profanity. It will removed if config was set to true...
-				     * TODO: Improve this unicode blocking
-				     */
-				     // @phpstan-ignore-next-line
-				    if(((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)){
-				        $event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
-				    } else {
-				        $event->setMessage(PluginAPI::removeProfanity($message, $words));
-				    }
+					/**
+					 * Detect if theres unicode inside of profanity. It will removed if config was set to true...
+					 * TODO: Improve this unicode blocking
+					 */
+					// @phpstan-ignore-next-line
+					if (((bool) $this->plugin->getConfig()->get("removeUnicode") ?? false)) {
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))));
+					} else {
+						$event->setMessage(PluginAPI::removeProfanity($message, $words));
+					}
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
@@ -135,6 +135,4 @@ class EventListener implements Listener {
 			}
 		}
 	}
-	
-	
 }
