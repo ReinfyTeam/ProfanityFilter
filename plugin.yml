@@ -6,10 +6,7 @@ api: 4.0.0
 src-namespace-prefix: ReinfyTeam\ProfanityFilter
 description: "A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat."
 website: "https://github.com/ReinfyTeam/ProfanityFilter"
-authors:
-  - "xqwtxon"
-  - "xVoiqMC"
-  - "NhanAZ"
+author: "ReinfyTeam"
 permissions:
   profanityfilter.command:
     description: ProfanityFilter Operator Permission
