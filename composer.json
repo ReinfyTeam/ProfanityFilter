@@ -1,5 +1,5 @@
 {
-    "name": "xqwtxon/profanityfilter",
+    "name": "reinfyteam/profanityfilter",
     "description": "The best profanity filter for chat with api for plugin developers!",
     "type": "project",
     "homepage": "https://github.com/ReinfyTeam",
@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "xqwtxon\\ProfanityFilter\\": "src/"
+            "ReinfyTeam\\ProfanityFilter\\": "src/"
         }
     }
 }
