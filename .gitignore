@@ -9,3 +9,7 @@
 
 # Composer
 vendor/*
+
+# php-cs-fixer
+/.php_cs.cache
+/.php-cs-fixer.cache
