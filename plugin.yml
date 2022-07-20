@@ -1,14 +1,15 @@
 ---
 name: ProfanityFilter
 version: 0.0.2
-main: xqwtxon\ProfanityFilter\Loader
+main: xqwtxon\ProfanityFilter\Loader # TODO: Change to ReinfyTeam\ProfanityFilter\Loader
 api: 4.0.0
 src-namespace-prefix: xqwtxon\ProfanityFilter
 description: "A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat."
 website: "https://github.com/xqwtxon/ProfanityFilter"
 authors:
+  - "NhanAZ"
   - "xqwtxon"
-  - "z3nXxz"
+  - "xVoiqMC"
 permissions:
   profanityfilter.command:
     description: ProfanityFilter Operator Permission
