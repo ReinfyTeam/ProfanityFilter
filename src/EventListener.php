@@ -21,13 +21,13 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter;
+namespace ReinfyTeam\ProfanityFilter;
 
 use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use xqwtxon\ProfanityFilter\Utils\PluginUtils;
+use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
 	private Loader $plugin;

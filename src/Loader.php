@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter;
+namespace ReinfyTeam\ProfanityFilter;
 
 use DateInterval;
 use DateTime;
@@ -31,9 +31,9 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use xqwtxon\ProfanityFilter\Command\DefaultCommand;
-use xqwtxon\ProfanityFilter\Tasks\UpdateTask;
-use xqwtxon\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Command\DefaultCommand;
+use ReinfyTeam\ProfanityFilter\Tasks\UpdateTask;
+use ReinfyTeam\ProfanityFilter\Utils\Language;
 use function count;
 use function fclose;
 use function file_exists;

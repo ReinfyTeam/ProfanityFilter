@@ -21,12 +21,12 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Tasks;
+namespace ReinfyTeam\ProfanityFilter\Tasks;
 
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use xqwtxon\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Utils\Language;
 use function json_decode;
 use function version_compare;
 use function vsprintf;

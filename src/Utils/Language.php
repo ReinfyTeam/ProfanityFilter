@@ -21,10 +21,10 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Utils;
+namespace ReinfyTeam\ProfanityFilter\Utils;
 
 use pocketmine\utils\Config;
-use xqwtxon\ProfanityFilter\Loader;
+use ReinfyTeam\ProfanityFilter\Loader;
 use function file_exists;
 
 class Language {

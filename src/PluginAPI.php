@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter;
+namespace ReinfyTeam\ProfanityFilter;
 
 use Exception;
 use function mb_strlen;

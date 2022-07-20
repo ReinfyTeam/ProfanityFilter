@@ -21,17 +21,17 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Command;
+namespace ReinfyTeam\ProfanityFilter\Command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as T;
-use xqwtxon\ProfanityFilter\Loader;
-use xqwtxon\ProfanityFilter\Utils\Forms\SimpleForm;
-use xqwtxon\ProfanityFilter\Utils\Language;
-use xqwtxon\ProfanityFilter\Utils\PluginUtils;
+use ReinfyTeam\ProfanityFilter\Loader;
+use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
+use ReinfyTeam\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
 class DefaultCommand extends Command implements PluginOwned {
 	private Loader $plugin;

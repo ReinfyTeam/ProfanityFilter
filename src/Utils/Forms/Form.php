@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Utils\Forms;
+namespace ReinfyTeam\ProfanityFilter\Utils\Forms;
 
 use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;

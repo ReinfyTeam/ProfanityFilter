@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace xqwtxon\ProfanityFilter\Utils;
+namespace ReinfyTeam\ProfanityFilter\Utils;
 
 use pocketmine\utils\TextFormat;
 use function array_keys;
