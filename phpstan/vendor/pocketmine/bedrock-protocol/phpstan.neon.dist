@@ -1,0 +1,16 @@
+includes:
+	- tests/phpstan/configs/architectural-issues.neon
+	- vendor/phpstan/phpstan-phpunit/extension.neon
+	- vendor/phpstan/phpstan-phpunit/rules.neon
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+	level: 9
+	checkMissingCallableSignature: true
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- src
+		- tests/phpunit
+	stubFiles:
+		- tests/phpstan/stubs/JsonMapper.stub
+	reportUnmatchedIgnoredErrors: false #no other way to silence platform-specific non-warnings

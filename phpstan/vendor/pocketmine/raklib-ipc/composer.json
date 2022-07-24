@@ -1,0 +1,22 @@
+{
+	"name": "pocketmine/raklib-ipc",
+	"description": "Channel-based protocols for inter-thread/inter-process communication with RakLib",
+	"type": "library",
+	"license": "GPL-3.0",
+	"minimum-stability": "dev",
+	"require": {
+		"php": "^7.4 || ^8.0",
+		"php-64bit": "*",
+		"pocketmine/binaryutils": "^0.2.0",
+		"pocketmine/raklib": "^0.13.1 || ^0.14.0"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "0.12.81",
+		"phpstan/phpstan-strict-rules": "^0.12.2"
+	},
+	"autoload": {
+		"psr-4": {
+			"raklib\\server\\ipc\\": "src/"
+		}
+	}
+}

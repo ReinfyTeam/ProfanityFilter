@@ -1,0 +1,32 @@
+name: Tag new patch releases on branch push
+
+on:
+  push:
+    branches: [ stable ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Tag new patch release
+    runs-on: ubuntu-latest
+    if: "github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'New translations') || startsWith(github.event.head_commit.message, 'New Crowdin updates') "
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Tag new version
+        run: |
+          BASE_VERSION="2.8"
+          PATCH_VERSION_OFFSET=46
+
+          PATCH_VERSION=$(($GITHUB_RUN_NUMBER-$PATCH_VERSION_OFFSET))
+          FULL_VERSION="$BASE_VERSION.$PATCH_VERSION"
+
+          echo "Tagging version $FULL_VERSION"
+
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git tag "$FULL_VERSION"
+      
+      - name: Push changes
+        run: git push origin --tags
