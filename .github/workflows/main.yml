@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: PHPStan analysis
+    name: Plugin Security Check
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -36,7 +36,7 @@ jobs:
         working-directory: ./phpstan
         run: composer install --prefer-dist --no-interaction
       - name: PHP-CS-FIXER
-        uses: OskarStark/php-cs-fixer-ga@3.9.5
+        uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --diff --dry-run
       - name: Add & Commit
