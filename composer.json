@@ -6,7 +6,7 @@
     "license": "LGPL-2.1",
     "require": {
         "php": "^8.0",
-        "pocketmine/pocketmine-mp": "4.6.0",
+        "pocketmine/pocketmine-mp": "4.6.1",
         "phpstan/phpstan": "1.8.0",
         "phpstan/phpstan-phpunit": "^1.1.0",
         "phpstan/phpstan-strict-rules": "^1.2.0",
