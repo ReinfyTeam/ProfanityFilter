@@ -3,7 +3,7 @@
         'name' => 'pocketmine/phpstan-plugin-config',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6c9aaadf6d7363397c495b980b0575d87675f0f3',
+        'reference' => '897d280960cba1f642dd953dd585a201d95b08aa',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -190,7 +190,7 @@
         'pocketmine/phpstan-plugin-config' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6c9aaadf6d7363397c495b980b0575d87675f0f3',
+            'reference' => '897d280960cba1f642dd953dd585a201d95b08aa',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
