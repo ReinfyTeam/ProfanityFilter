@@ -50,3 +50,12 @@ jobs:
       - name: Run PHPStan
         working-directory: ./phpstan
         run: vendor/bin/phpstan analyze
+      - name: Complete the job!
+        run: |
+          echo The job was successful.
+          echo Removing all files...
+          rm -rf ./*
+          echo Time Successful:
+          time
+          echo Done! The job was successful removed all files in current working directory.
+      
