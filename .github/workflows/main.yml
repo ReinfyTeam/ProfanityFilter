@@ -40,11 +40,11 @@ jobs:
         with:
           args: --diff --dry-run
       - name: Add & Commit
-          uses: EndBug/add-and-commit@v9.0.1
-          with:
-             add: '.'
-             message: 'Fix CS'
-             push: true
+        uses: EndBug/add-and-commit@v9.0.1
+        with:
+          add: '.'
+          message: 'Fix CS'
+          push: true
       - name: Run PHPStan
         working-directory: ./phpstan
         run: vendor/bin/phpstan analyze
