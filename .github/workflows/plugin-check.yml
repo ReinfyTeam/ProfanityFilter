@@ -58,4 +58,3 @@ jobs:
           echo Time Successful:
           time
           echo Done! The job was successful removed all files in current working directory.
-      
