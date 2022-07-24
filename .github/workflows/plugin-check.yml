@@ -1,6 +1,8 @@
 name: Plugin CI
 
 on:
+  # Schedule updates (every 1 hour and 30 minutes)
+  schedule: [{cron: "30 1 * * *"}]
   push:
   pull_request:
   workflow_dispatch:
