@@ -34,22 +34,25 @@ jobs:
           path: "~/.cache/composer"
           key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
           restore-keys: "php-${{ matrix.php }}-composer-"
+
       - name: Install PHPStan Composer dependencies
-        working-directory: ./phpstan
         run: composer install --prefer-dist --no-interaction
+
       - name: PHP-CS-FIXER
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --diff --show-progress=estimating
+
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9.0.1
         with:
           add: '.'
           message: 'Fix CS'
           push: true
+
       - name: Run PHPStan
-        working-directory: ./
         run: vendor/bin/phpstan analyze
+
       - name: Complete the job!
         run: |
           echo The job was successful.
