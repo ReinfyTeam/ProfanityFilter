@@ -159,7 +159,7 @@ class Loader extends PluginBase {
 		}
 
 		foreach ($this->getResources() as $file) {
-			$this->saveResource($file->getFileName());
+			$this->saveResource($file->getFilename());
 		}
 	}
 
