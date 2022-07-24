@@ -13,6 +13,9 @@ bin/*
 # Composer
 vendor/*
 
+# PHPSTAN
+phpstan/*
+
 # php-cs-fixer
 /.php_cs.cache
 /.php-cs-fixer.cache
