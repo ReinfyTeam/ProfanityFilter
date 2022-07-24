@@ -48,7 +48,6 @@ jobs:
           message: 'Fix CS'
           push: true
       - name: Run PHPStan
-        working-directory: ./phpstan
         run: vendor/bin/phpstan analyze
       - name: Complete the job!
         run: |
