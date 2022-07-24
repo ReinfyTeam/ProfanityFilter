@@ -1,6 +1,0 @@
-parameters:
-	stubFiles:
-		- tests/phpstan/stubs/pthreads.stub
-	level: 8
-	paths:
-		- src

@@ -1,7 +1,0 @@
-parameters:
-	ignoreErrors:
-		-
-			message: "#^Call to function is_int\\(\\) with int will always evaluate to true\\.$#"
-			count: 1
-			path: ../../../src/tag/IntArrayTag.php
-

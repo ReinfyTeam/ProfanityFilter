@@ -1,7 +1,0 @@
-/vendor/
-/composer.lock
-
-.idea/*
-!.idea/codeStyles/
-!.idea/fileTemplates/
-/.php-cs-fixer.cache
