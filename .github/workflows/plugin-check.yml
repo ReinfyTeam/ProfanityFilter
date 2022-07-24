@@ -10,12 +10,13 @@ on:
 jobs:
   build:
     name: Plugin Security Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.image }}
+
     strategy:
       fail-fast: false
       matrix:
-        php:
-          - "8.0.19"
+        image: [ubuntu-20.04]
+        php: [8.0.19]
 
     steps:
       - name: Action Checkout
@@ -38,6 +39,9 @@ jobs:
       - name: Install PHPStan Composer dependencies
         run: composer install --prefer-dist --no-interaction
 
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyze
+
       - name: PHP-CS-FIXER
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
@@ -49,9 +53,6 @@ jobs:
           add: '.'
           message: 'Fix CS'
           push: true
-
-      - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyze
 
       - name: Complete the job!
         run: |
