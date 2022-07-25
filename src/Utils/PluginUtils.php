@@ -33,7 +33,7 @@ final class PluginUtils {
 
 	/**
 	 * Colorise Messages turns & to § and etc.
-	 */
+	 */ 
 	public static function colorize(string $message) : string {
 		$replacements = [
 			"&" => "§",
