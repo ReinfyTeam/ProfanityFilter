@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [ubuntu-20.04]
+        image: [ubuntu-latest]
         php: [8.0.19]
 
     steps:
