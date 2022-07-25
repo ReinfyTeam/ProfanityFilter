@@ -22,16 +22,16 @@
 
 declare(strict_types=1);
 
-namespace ReinfyTeam\ProfanityFilter;
+namespace ReinfyTeam\ProfanityFilter
 
-use DateInterval;
-use DateTime;
-use pocketmine\permission\DefaultPermissions;
-use pocketmine\permission\Permission;
-use pocketmine\permission\PermissionManager;
-use pocketmine\player\Player;
-use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
+use DateInterval
+use DateTime
+use pocketmine\permission\DefaultPermissions
+use pocketmine\permission\Permission
+use pocketmine\permission\PermissionManager
+use pocketmine\player\Player
+use pocketmine\plugin\PluginBase
+use pocketmine\utils\Config
 use ReinfyTeam\ProfanityFilter\Command\DefaultCommand;
 use ReinfyTeam\ProfanityFilter\Tasks\UpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
