@@ -45,20 +45,23 @@ jobs:
         continue-on-error: true
         run: |
             git config user.name 'xqwtxon'
-            git config user.email 'xqwtxon@users.noreply.github.com'
-            git add -A
+            git config user.email 'xqwtxon@hotmail.com'
+            git remote add upstream https://github.com/ReinfyTeam/ProfanityFilter.git
+            git fetch origin main:main
+            git reset --hard main
+            git add --all
             git commit -m "Fix Syntax Code"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
         continue-on-error: true
         with:
-          token: ${{ secrets.PAT }}
           commit-message: Fix Code Syntax
           committer: GitHub <noreply@github.com>
           signoff: false
           branch: php-cs-fixer
           delete-branch: true
+          title: Fix Code Syntax (Auto-Generated)
           body: |
              **Fixed Source Code Syntax:**
              Please check the following code before you are performing merging of the project.
@@ -70,11 +73,11 @@ jobs:
           labels: |
               Pull: Enhancement
               Pull: Auto
-      - name: Complete the job!
+      - name: Complete the job
         run: |
           echo The job was successful.
           echo Removing all files...
           rm -rf ./*
           echo Time Successful:
-          time
+          date
           echo Done! The job was successful removed all files in current working directory.
