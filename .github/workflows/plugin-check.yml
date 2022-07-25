@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         image: [ubuntu-latest]
-        php: [8.0.19]
+        php: [8.0.19, 8.0.12]
 
     steps:
       - name: Action Checkout
@@ -44,8 +44,8 @@ jobs:
       - name: Commit Stages
         continue-on-error: true
         run: |
-            git config user.name 'xqwtxon'
-            git config user.email 'xqwtxon@hotmail.com'
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git fetch origin main:main
             git reset --hard main
             git add --all
@@ -58,6 +58,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Fix Code Syntax
           committer: GitHub <noreply@github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           signoff: false
           branch: php-cs-fixer
           delete-branch: true
