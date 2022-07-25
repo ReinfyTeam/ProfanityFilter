@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Utils;
 
-use pocketmine\utils\TextFormat;
 use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 use function array_keys;
 use function array_values;
 use function str_replace;
@@ -34,7 +34,7 @@ final class PluginUtils {
 
 	/**
 	 * Colorise Messages turns & to § and etc.
-	 */ 
+	 */
 	public static function colorize(string $message) : string {
 		$replacements = [
 			"&" => "§",
@@ -64,14 +64,14 @@ final class PluginUtils {
 		$message = str_replace(array_keys($replacements), array_values($replacements), $message);
 		return $message;
 	}
-        
-        public static function formatMessage(?Player $player = null, string $message) : string {
-                if($player === null){
-                     $message = str_replace("{player_name}", "Unknown Player Name", $message);
-                     return $message;
-                } else {
-                     $message = str_replace("{player_name}", $player->getName(), $message);
-                     return $message;
-                }
-        }
+
+	public static function formatMessage(?Player $player = null, string $message) : string {
+		if ($player === null) {
+			$message = str_replace("{player_name}", "Unknown Player Name", $message);
+			return $message;
+		} else {
+			$message = str_replace("{player_name}", $player->getName(), $message);
+			return $message;
+		}
+	}
 }
