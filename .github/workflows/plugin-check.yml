@@ -47,7 +47,7 @@ jobs:
             git config user.name 'xqwtxon'
             git config user.email 'xqwtxon@users.noreply.github.com'
             git add -A
-            git commit -am "Fix Syntax Code"
+            git commit -m "Fix Syntax Code"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
