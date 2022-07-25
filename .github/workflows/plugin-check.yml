@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     name: Plugin Security Check
     runs-on: ${{ matrix.image }}
 
@@ -46,7 +46,6 @@ jobs:
         run: |
             git config user.name 'xqwtxon'
             git config user.email 'xqwtxon@hotmail.com'
-            git remote add upstream https://github.com/ReinfyTeam/ProfanityFilter.git
             git fetch origin main:main
             git reset --hard main
             git add --all
@@ -56,7 +55,7 @@ jobs:
         id: php-cs-fixer
         continue-on-error: true
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Fix Code Syntax
           committer: GitHub <noreply@github.com>
           signoff: false
