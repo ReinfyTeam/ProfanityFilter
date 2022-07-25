@@ -21,13 +21,11 @@ jobs:
     steps:
       - name: Action Checkout
         uses: actions/checkout@v3
-
       - name: Setup PHP
         uses: pmmp/setup-php-action@247e08acd52c1465f8f144c162c88f079d8c1174
         with:
           php-version: ${{ matrix.php }}
           install-path: "./bin"
-
       - name: Restore Composer package cache
         id: composer-cache
         uses: actions/cache@v2
@@ -35,25 +33,37 @@ jobs:
           path: "~/.cache/composer"
           key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
           restore-keys: "php-${{ matrix.php }}-composer-"
-
       - name: Install PHPStan Composer dependencies
         run: composer install --prefer-dist --no-interaction
-
-      - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyze
-
-      - name: PHP-CS-FIXER
+      - name: Code Syntax Fixer
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --diff --show-progress=estimating
-
-      - name: Add & Commit
-        uses: EndBug/add-and-commit@v9.0.1
+      - name: PHPStan Lints
+        run: ./vendor/bin/phpstan analyze
+      - name: Commit Stages
+        run: |
+            git config user.name 'xqwtxon'
+            git config user.email 'xqwtxon@users.noreply.github.com'
+            git add -A
+            git commit -am "Fix Syntax Code"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4.0.4
+        id: php-cs-fixer
         with:
-          add: '.'
-          message: 'Fix CS'
-          push: true
-
+          token: ${{ secrets.PAT }}
+          commit-message: Fix Code Syntax
+          committer: GitHub <noreply@github.com>
+          signoff: false
+          branch: php-cs-fixer
+          delete-branch: true
+          body: |
+             **Fixed Source Code Syntax:**
+             Please check the following code before you are performing merging of the project.
+          assignees: xqwtxon
+          reviewers: xqwtxon
+          team-reviewers: [Reinfy, NhanAZ]
+          labels: ["Pull: Enhancement", "Pull: Auto"]
       - name: Complete the job!
         run: |
           echo The job was successful.
