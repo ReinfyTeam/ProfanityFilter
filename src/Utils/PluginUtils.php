@@ -63,4 +63,14 @@ final class PluginUtils {
 		$message = str_replace(array_keys($replacements), array_values($replacements), $message);
 		return $message;
 	}
+        
+        public static function formatMessage(?Player $player = null, string $message) : string {
+                if($player === null){
+                     $message = str_replace("{player_name}", "Unknown Player Name", $message);
+                     return $message;
+                } else {
+                     $message = str_replace("{player_name}", $player->getName(), $message);
+                     return $message;
+                }
+        }
 }
