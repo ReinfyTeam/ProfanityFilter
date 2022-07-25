@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace ReinfyTeam\ProfanityFilter\Utils;
 
 use pocketmine\utils\TextFormat;
+use pocketmine\player\Player;
 use function array_keys;
 use function array_values;
 use function str_replace;
