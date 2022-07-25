@@ -1,5 +1,5 @@
 name: Plugin CI
-permissions: read-all|write-all
+permissions: write-all
 on:
   # Schedule updates (every 1 hour and 30 minutes)
   schedule: [{cron: "30 1 * * *"}]
