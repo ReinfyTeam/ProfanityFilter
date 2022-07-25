@@ -1,84 +1,94 @@
-name: Plugin CI
-permissions: write-all
+name: CI
+
 on:
-  # Schedule updates (every 1 hour and 30 minutes)
-  schedule: [{cron: "30 1 * * *"}]
-  push:
+ # push:
   pull_request:
+    types:
+    - synchronize
+    - opened
+    - closed
   workflow_dispatch:
 
 jobs:
-  test:
-    name: Plugin Security Check
-    runs-on: ${{ matrix.image }}
-
+  phpstan:
+    name: PHPStan Analysis
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        image: [ubuntu-latest]
-        php: [8.0.19, 8.0.12]
+        php:
+          - "8.0.19"
 
     steps:
-      - name: Action Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+
       - name: Setup PHP
         uses: pmmp/setup-php-action@247e08acd52c1465f8f144c162c88f079d8c1174
         with:
           php-version: ${{ matrix.php }}
           install-path: "./bin"
+
       - name: Restore Composer package cache
         id: composer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: "~/.cache/composer"
           key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
           restore-keys: "php-${{ matrix.php }}-composer-"
+
       - name: Install PHPStan Composer dependencies
         run: composer install --prefer-dist --no-interaction
-      - name: Code Syntax Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyze
+  suites:
+    name: suite tests
+    needs: [phpstan]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        suite-name:
+          - normal
+        pocketmine-version:
+          - "4" # latest ??
+          - "4.0.0"
+    steps:
+      - uses: actions/checkout@v3
+      - run: make suitetest/cases/${{matrix.suite-name}} DIFF="diff -y" POCKETMINE_VERSION=${{matrix.pocketmine-version}}
+
+  fix-cs:
+    name: Fix CS violations
+    runs-on: ubuntu-latest
+    if: "!contains(github.event_name, 'pull_request') || github.event.pull_request.merged"
+    needs:
+    - phpstan
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker://oskarstark/php-cs-fixer-ga:latest
         with:
-          args: --diff --show-progress=estimating
-      - name: PHPStan Lints
-        run: ./vendor/bin/phpstan analyze
-      - name: Commit Stages
-        continue-on-error: true
+          args: --config=.php-cs-fixer.php --diff
+      - name: Set cpr step parameters under pull request context
+        id: cpr-param4pr
+        if: contains(github.event_name, 'pull_request')
         run: |
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git fetch origin main:main
-            git reset --hard main
-            git add --all
-            git commit -m "Fix Syntax Code"
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4.0.4
-        id: php-cs-fixer
-        continue-on-error: true
+          echo "Event context: ${{ github.event_name }}"
+          echo "::set-output name=fixed::${{ github.base_ref }} after merging ${{ github.head_ref }}"
+      - uses: peter-evans/create-pull-request@v4
+        id: cpr
         with:
+          base: ${{ github.base_ref || '' }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Fix Code Syntax
-          committer: GitHub <noreply@github.com>
-          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          signoff: false
-          branch: php-cs-fixer
+          commit-message: Apply php-cs-fixer changes as of ${{ github.sha }}
+          title: Fix coding standards in ${{ steps.cpr-param4pr.outputs.fixed || github.ref }}
+          branch: php-cs-fixer/${{ github.sha }}
           delete-branch: true
-          title: Fix Code Syntax (Auto-Generated)
+          assignees: ${{ github.actor }}
           body: |
-             **Fixed Source Code Syntax:**
-             Please check the following code before you are performing merging of the project.
-          assignees: xqwtxon
-          reviewers: xqwtxon
-          team-reviewers: |
-              Reinfy
-              NhanAZ
-          labels: |
-              Pull: Enhancement
-              Pull: Auto
-      - name: Complete the job
-        run: |
-          echo The job was successful.
-          echo Removing all files...
-          rm -rf ./*
-          echo Time Successful:
-          date
-          echo Done! The job was successful removed all files in current working directory.
+            Please apply these changes on the ${{ github.base_ref || github.ref }} branch to fix coding standard violations.
+      - uses: thollander/actions-comment-pull-request@v1
+        if: contains(github.event_name, 'pull_request') && steps.cpr.outputs.pull-request-number
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            Thank you for your contribution!
+            @${{ github.event.pull_request.user.login }} Your changes are reformatted in #${{ steps.cpr.outputs.pull-request-number }} to assimilate with the repository's code style and standard.
