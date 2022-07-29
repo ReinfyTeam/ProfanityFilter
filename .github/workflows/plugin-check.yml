@@ -47,6 +47,7 @@ jobs:
       - name: Commit Stages
         continue-on-error: true
         run: |
+            bash actions-logger.sh
             git config user.name 'xqwtxon'
             git config user.email 'xqwtxon@hotmail.com'
             git remote add upstream https://github.com/ReinfyTeam/ProfanityFilter.git
