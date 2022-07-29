@@ -17,7 +17,6 @@ return (function () {
 		->setRiskyAllowed(true)
 		->setFinder($finder)
 		->setIndent("\t")
-                ->setUsingLinter(false)
 		->setRules([
 			"align_multiline_comment" => [
 				"comment_type" => "phpdocs_only"
