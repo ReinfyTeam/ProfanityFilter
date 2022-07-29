@@ -58,10 +58,11 @@ jobs:
         id: php-cs-fixer
         continue-on-error: true
         with:
+          base: ${{ github.head_ref }}
           token: ${{ secrets.PAT }}
           committer: GitHub <noreply@github.com>
           commit-message: Fix Code Syntax
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           signoff: false
           branch: php-cs-fixer
           delete-branch: true
