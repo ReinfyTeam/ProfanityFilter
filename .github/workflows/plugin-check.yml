@@ -1,7 +1,4 @@
 name: Plugin CI
-permissions:
-  contents: read
-  pull-requests: write
 
 on:
   # Schedule updates (every 1 hour and 30 minutes)
