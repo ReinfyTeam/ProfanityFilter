@@ -1,89 +1,105 @@
 name: Plugin CI
-
-on:
-  # Schedule updates (every 1 hour and 30 minutes)
-  schedule: [{cron: "30 1 * * *"}]
-  push:
-  pull_request:
-  workflow_dispatch:
-
+'on':
+  schedule:
+    - cron: 30 1 * * *
+  push: null
+  pull_request: null
+  workflow_dispatch: null
 jobs:
   plugin_ci:
-    permissions: 
+    permissions:
       contents: write
       pull_request: write
     name: Plugin Security Check
-    runs-on: ${{ matrix.image }}
-
+    runs-on: '${{ matrix.image }}'
     strategy:
       fail-fast: false
       matrix:
-        image: [ubuntu-latest]
-        php: [8.0.19]
-
+        image:
+          - ubuntu-latest
+        php:
+          - 8.0.19
     steps:
       - name: Action Checkout
         uses: actions/checkout@v3
       - name: Setup PHP
         uses: pmmp/setup-php-action@247e08acd52c1465f8f144c162c88f079d8c1174
         with:
-          php-version: ${{ matrix.php }}
-          install-path: "./bin"
+          php-version: '${{ matrix.php }}'
+          install-path: ./bin
       - name: Restore Composer package cache
         id: composer-cache
         uses: actions/cache@v3
         with:
-          path: "~/.cache/composer"
-          key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
-          restore-keys: "php-${{ matrix.php }}-composer-"
+          path: ~/.cache/composer
+          key: 'php-${{ matrix.php }}-composer-${{ hashFiles(''**/composer.json'') }}'
+          restore-keys: 'php-${{ matrix.php }}-composer-'
       - name: Install PHPStan Composer dependencies
         run: composer install --prefer-dist --no-interaction
       - name: Code Syntax Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
+        uses: 'docker://oskarstark/php-cs-fixer-ga'
         with:
-          args: --diff --show-progress=estimating
+          args: '--diff --show-progress=estimating'
       - name: PHPStan Lints
         run: ./vendor/bin/phpstan analyze
         continue-on-error: true
       - name: Commit Stages
         continue-on-error: true
-        run: |
-            bash actions-logger.sh
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git reset --hard main
-            git add --all
-            git commit -m "Fix Code Standard Violations (Auto-Generated)"
+        run: >
+          bash actions-logger.sh
+
+          git config user.name 'github-actions[bot]'
+
+          git config user.email
+          '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git reset --hard main
+
+          git add --all
+
+          git commit -m "Fix Code Standard Violations (Auto-Generated)"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
         continue-on-error: true
         with:
-          base: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          base: '${{ github.head_ref }}'
+          token: '${{ secrets.GITHUB_TOKEN }}'
+          committer: >-
+            github-actions[bot]
+            <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: Fix Code Syntax
-          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: >-
+            github-actions[bot]
+            <41898282+github-actions[bot]@users.noreply.github.com>
           signoff: false
           branch: php-cs-fixer
           delete-branch: true
           title: Fix Code Syntax (Auto-Generated)
-          body: |
-             **Fixed Source Code Syntax:**
-             Please check the following code before you are performing merging of the project.
+          body: >
+            **Fixed Source Code Syntax:**
+
+            Please check the following code before you are performing merging of
+            the project.
           assignees: xqwtxon
           reviewers: xqwtxon
           team-reviewers: |
-              Reinfy
-              NhanAZ
+            Reinfy
+            NhanAZ
           labels: |
-              Pull: Enhancement
-              Pull: Auto
+            Pull: Enhancement
+            Pull: Auto
       - name: Complete the job
-        run: |
+        run: >
           echo The job was successful.
+
           echo Removing all files...
+
           rm -rf ./*
+
           echo Time Successful:
+
           date
-          echo Done! The job was successful removed all files in current working directory.
+
+          echo Done! The job was successful removed all files in current working
+          directory.
