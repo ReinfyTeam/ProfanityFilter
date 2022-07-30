@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  Plugin Security Check:
+  plugin_ci:
     permissions: 
-        contents: write
-        pull_request: write
+      contents: write
+      pull_request: write
     name: Plugin Security Check
     runs-on: ${{ matrix.image }}
 
