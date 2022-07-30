@@ -1,4 +1,7 @@
 name: Plugin CI
+permissions:
+      contents: write
+      pull-request: write
 on:
   schedule:
     - cron: 30 1 * * *
@@ -6,9 +9,6 @@ on:
   workflow_dispatch:
 jobs:
   plugin_ci:
-    permissions:
-      contents: write
-      pull-request: write
     name: Plugin Security Check
     runs-on: '${{ matrix.image }}'
     strategy:
