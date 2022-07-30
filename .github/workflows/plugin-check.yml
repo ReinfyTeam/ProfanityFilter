@@ -59,7 +59,7 @@ jobs:
         continue-on-error: true
         with:
           base: ${{ github.head_ref }}
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           commit-message: Fix Code Syntax
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
