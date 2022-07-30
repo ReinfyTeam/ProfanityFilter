@@ -3,13 +3,13 @@ name: Plugin CI
   schedule:
     - cron: 30 1 * * *
   push: null
-  pull_request: null
-  workflow_dispatch: null
+  pull-request: write
+  workflow_dispatch: write
 jobs:
   plugin_ci:
     permissions:
       contents: write
-      pull_request: write
+      pull-request: write
     name: Plugin Security Check
     runs-on: '${{ matrix.image }}'
     strategy:
