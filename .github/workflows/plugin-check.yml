@@ -1,5 +1,5 @@
 name: Plugin CI
-'on':
+on:
   schedule:
     - cron: 30 1 * * *
   push: null
