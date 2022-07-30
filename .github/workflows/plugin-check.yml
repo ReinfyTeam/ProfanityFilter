@@ -1,6 +1,7 @@
 name: Plugin CI
-
-permissions: write-all
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   # Schedule updates (every 1 hour and 30 minutes)
@@ -46,7 +47,9 @@ jobs:
         continue-on-error: true
       - name: Commit Stages
         continue-on-error: true
-        permission: write
+        permissions: 
+           contents: write
+           pull_request: write
         run: |
             bash actions-logger.sh
             git config user.name 'github-actions[bot]'
@@ -57,7 +60,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
-        permission: write
+        permissions: 
+           contents: write
+           pull_request: write
         continue-on-error: true
         with:
           base: ${{ github.head_ref }}
@@ -81,7 +86,9 @@ jobs:
               Pull: Enhancement
               Pull: Auto
       - name: Complete the job
-        permission: write
+        permissions: 
+           contents: write
+           pull_request: write
         run: |
           echo The job was successful.
           echo Removing all files...
