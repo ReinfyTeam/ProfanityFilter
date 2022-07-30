@@ -11,7 +11,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  Plugin Security Check:
+    permissions: 
+       contents: write
+       pull_request: write
     name: Plugin Security Check
     runs-on: ${{ matrix.image }}
 
@@ -47,9 +50,6 @@ jobs:
         continue-on-error: true
       - name: Commit Stages
         continue-on-error: true
-        permissions: 
-           contents: write
-           pull_request: write
         run: |
             bash actions-logger.sh
             git config user.name 'github-actions[bot]'
@@ -60,9 +60,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
-        permissions: 
-           contents: write
-           pull_request: write
         continue-on-error: true
         with:
           base: ${{ github.head_ref }}
@@ -86,9 +83,6 @@ jobs:
               Pull: Enhancement
               Pull: Auto
       - name: Complete the job
-        permissions: 
-           contents: write
-           pull_request: write
         run: |
           echo The job was successful.
           echo Removing all files...
