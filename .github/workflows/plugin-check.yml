@@ -1,7 +1,4 @@
 name: Plugin CI
-permissions:
-    contents: write
-    pull-request: write
 on:
   schedule:
     - cron: 30 1 * * *
@@ -63,7 +60,7 @@ jobs:
         continue-on-error: true
         with:
           base: '${{ github.head_ref }}'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          token: '${{ secrets.ReinfyToken }}'
           committer: >-
             github-actions[bot]
             <41898282+github-actions[bot]@users.noreply.github.com>
