@@ -42,17 +42,11 @@ jobs:
       - name: Commit Stages
         continue-on-error: true
         run: >
-          bash actions-logger.sh
-
           git config user.name 'github-actions[bot]'
-
           git config user.email
           '41898282+github-actions[bot]@users.noreply.github.com'
-
           git reset --hard main
-
           git add --all
-
           git commit -m "Fix Code Standard Violations (Auto-Generated)"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
