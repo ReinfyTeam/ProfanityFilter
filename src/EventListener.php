@@ -31,6 +31,12 @@ use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
+        private Loader $plugin;
+
+	private string $type;
+        
+        private ?array $duration;
+
 	public function __construct(string $type) {
 		$this->plugin = Loader::getInstance();
 		$this->type = $type;
