@@ -18,11 +18,3 @@ echo Processor: $(uname -p) > "actions.log"
 echo Hardware Platform: $(uname -i) > "actions.log"
 echo Operating System: $(uname -o) > "actions.log"
 echo =================================================================== > "actions.log"
-echo As of $(date +"%d-%m-%Y"), What files are included in actions? > "actions.log"
-if ! command -v tree &> /dev/null
-then
-    echo "tree is not installed. Installing..."
-    sudo apt-get install tree
-    echo "tree command is installed."
-fi
-tree --charset X > "actions.log"
