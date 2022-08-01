@@ -63,7 +63,7 @@ jobs:
         continue-on-error: true
         with:
           base: '${{ github.head_ref }}'
-          token: '${{ secrets.GITHUB_TOKEN }}'
+          token: '${{ secrets.ReinfyToken }}'
           committer: >-
             github-actions[bot]
             <41898282+github-actions[bot]@users.noreply.github.com>
