@@ -43,11 +43,15 @@ jobs:
         continue-on-error: true
         run: >
           git config user.name 'github-actions[bot]'
-          git config user.email
-          '41898282+github-actions[bot]@users.noreply.github.com'
+
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          
           git reset --hard main
+
           git add --all
+
           git commit -m "Fix Code Standard Violations (Auto-Generated)"
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.0.4
         id: php-cs-fixer
@@ -93,3 +97,4 @@ jobs:
 
           echo Done! The job was successful removed all files in current working
           directory.
+          echo Last Exit Status: $?
