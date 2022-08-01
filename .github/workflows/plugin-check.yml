@@ -1,7 +1,4 @@
 name: Plugin CI
-permissions:
-    contents: write
-    pull-request: write
 on:
   schedule:
     - cron: 30 1 * * *
