@@ -65,7 +65,7 @@ class EventListener implements Listener {
 					 * TODO: Improve this unicode blocking
 					 */
 					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"), ($this->plugin->getConfig()->get("remove-unicode") ?? false))));
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))), (bool) ($this->plugin->getConfig()->get("remove-unicode") ?? false));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
