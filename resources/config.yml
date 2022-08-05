@@ -56,6 +56,10 @@ bypass-permission: profanityfilter.bypass
 command-permission: profanityfilter.command
 # This is sets to all as operator only.
 
+# Remove Unicode Messages
+# It possible to bypass profanity from unicode characters.
+remove-unicode: false
+
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
 config-version: 0.0.6
