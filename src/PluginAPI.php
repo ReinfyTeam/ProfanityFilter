@@ -68,7 +68,7 @@ final class PluginAPI {
 	 *
 	 * TODO: Improve this blocking in future...
 	 */
-	public static function removeUnicode(string $text) : string {
+	public static function removeUnicode(string $text, bool $include_unicode = false) : string {
 
 		// Single Characters
 		$text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
@@ -152,10 +152,12 @@ final class PluginAPI {
 		$text = preg_replace("/[‰]/u", "%", $text);
 		$text = preg_replace("/[↨↕↓↑│]/u", "|", $text);
 		$text = preg_replace("/[∞∩∫⌂⌠⌡]/u", "", $text);
-
-		// Remove Unicode Characters
-		$text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
-
+                
+                if($include_unicode){
+                      // Remove Unicode Characters
+		      $text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
+                }
+                
 		return $text;
 	}
 
