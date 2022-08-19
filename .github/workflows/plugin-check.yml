@@ -55,7 +55,7 @@ jobs:
           git commit -m "Fix Code Standard Violations (Auto-Generated)"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4.0.4
+        uses: peter-evans/create-pull-request@v4.1.1
         id: php-cs-fixer
         continue-on-error: true
         with:
