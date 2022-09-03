@@ -31,11 +31,11 @@ use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
 class EventListener implements Listener {
-        private Loader $plugin;
+	private Loader $plugin;
 
 	private string $type;
-        
-        private ?array $duration;
+
+	private ?array $duration;
 
 	public function __construct(string $type) {
 		$this->plugin = Loader::getInstance();
@@ -58,7 +58,7 @@ class EventListener implements Listener {
 				case "block":
 					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
-                                        $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), ["{player_name}"], [$player->getName()]));
+					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), ["{player_name}"], [$player->getName()]));
 					break;
 				case "hide":
 					/**
@@ -70,7 +70,7 @@ class EventListener implements Listener {
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
-                                        $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), ["{player_name}"], [$player->getName()]));
+					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), ["{player_name}"], [$player->getName()]));
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
@@ -81,12 +81,12 @@ class EventListener implements Listener {
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
-                                                $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
+						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					case "kick":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
-                                                $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
+						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					default:
 						throw new Exception("Cannot Identify the type of punishment in config.yml");
@@ -112,7 +112,7 @@ class EventListener implements Listener {
 				case "block":
 					$event->cancel();
 					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
-                                        $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), ["{player_name}"], [$player->getName()]));
+					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), ["{player_name}"], [$player->getName()]));
 					break;
 				case "hide":
 					/**
@@ -124,7 +124,7 @@ class EventListener implements Listener {
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
-                                        $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), ["{player_name}"], [$player->getName()]));
+					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), ["{player_name}"], [$player->getName()]));
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
@@ -135,12 +135,12 @@ class EventListener implements Listener {
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
-                                                $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
+						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					case "kick":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
-                                                $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
+						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					default:
 						throw new Exception("Cannot Identify the type of punishment in config.yml");

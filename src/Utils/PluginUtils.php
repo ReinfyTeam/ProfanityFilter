@@ -31,7 +31,6 @@ use function array_values;
 use function str_replace;
 
 final class PluginUtils {
-
 	/**
 	 * Colorise Messages turns & to § and etc.
 	 */
@@ -75,12 +74,12 @@ final class PluginUtils {
 		}
 	}
 
-        public static function format(string $message, array $options, array $value) : string{
-                foreach($value as $v){
-                        foreach($options as $o){
-                                   $message = str_replace($o, $v, $message);
-                        }
-                }
-                return $message;
-        }
+		public static function format(string $message, array $options, array $value) : string {
+			foreach ($value as $v) {
+				foreach ($options as $o) {
+					$message = str_replace($o, $v, $message);
+				}
+			}
+			return $message;
+		}
 }
