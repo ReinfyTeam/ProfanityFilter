@@ -34,7 +34,6 @@ use function str_replace;
 use function strlen;
 
 final class PluginAPI {
-
 	/**
 	 * Whether to detect message on provided words.
 	 */
@@ -69,7 +68,6 @@ final class PluginAPI {
 	 * TODO: Improve this blocking in future...
 	 */
 	public static function removeUnicode(string $text, bool $include_unicode = false) : string {
-
 		// Single Characters
 		$text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
 		$text = preg_replace("/[∆лДΛдАÁÀÂÃÄ]/u", "A", $text);
@@ -152,12 +150,12 @@ final class PluginAPI {
 		$text = preg_replace("/[‰]/u", "%", $text);
 		$text = preg_replace("/[↨↕↓↑│]/u", "|", $text);
 		$text = preg_replace("/[∞∩∫⌂⌠⌡]/u", "", $text);
-                
-                if($include_unicode){
-                      // Remove Unicode Characters
-		      $text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
-                }
-                
+
+		if ($include_unicode) {
+			// Remove Unicode Characters
+			$text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
+		}
+
 		return $text;
 	}
 
