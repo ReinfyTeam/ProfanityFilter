@@ -22,6 +22,14 @@ removeUnicode: false
 # If "block" has selected, you can add your own message right here.
 block-message: "&cHey, Watch your Language!"
 
+# Punishment Messages Logging
+# Its useful to track players punishments.
+block-warning-message: "&e{player_name} &cwas blocked message contains profanity message."
+hide-warning-message: "&e{player_name} &cwas hidden message contains profanity message."
+# Moderation Actions Logging
+ban-warning-message: "&e{player_name} &cwas banned due the maximum profanity violation."
+kick-warning-message: "&e{player_name} &cwas kicked due the maximum profanity violation."
+
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
 # and make file custom.yml in ~/plugin_data/ProfanityFilter/languages
