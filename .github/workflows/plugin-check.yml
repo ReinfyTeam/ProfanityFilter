@@ -37,7 +37,7 @@ jobs:
       - name: Code Syntax Fixer
         uses: 'docker://oskarstark/php-cs-fixer-ga'
         with:
-          args: '--diff --show-progress=estimating'
+          args: '--show-progress=estimating'
       - name: PHPStan Lints
         run: ./vendor/bin/phpstan analyze
         continue-on-error: true
