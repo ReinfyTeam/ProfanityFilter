@@ -74,4 +74,13 @@ final class PluginUtils {
 			return $message;
 		}
 	}
+
+        public static function format(string $message, array $options, array $value) : string{
+                foreach($value as $v){
+                        foreach($options as $o){
+                                   $message = str_replace($o, $v, $message);
+                        }
+                }
+                return $message;
+        }
 }
