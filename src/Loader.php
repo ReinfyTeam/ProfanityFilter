@@ -72,8 +72,8 @@ class Loader extends PluginBase {
 		$this->loadListeners();
 	}
 public static function getInstance() : Loader {
-		return Loader::$instance;
-	}
+	return Loader::$instance;
+}
 
 	private function checkConfig() : void {
 		$log = $this->getLogger();
