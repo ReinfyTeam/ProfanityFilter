@@ -37,6 +37,7 @@ use ReinfyTeam\ProfanityFilter\Tasks\UpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
 use function count;
 use function fclose;
+use function file;
 use function file_exists;
 use function ltrim;
 use function mkdir;
@@ -102,10 +103,10 @@ public static function getInstance() : Loader {
 	private function loadListeners() : void {
 		switch ($this->getConfig()->get("type")) {
 			case "block":
-				$this->getServer()->getPluginManager()->registerEvents(new EventListener("block"), $this);
+				$this->getServer()->getPluginManager()->registerEvents(new EventListener("block", $this->getConfig()->get("profanity")), $this);
 				break;
 			case "hide":
-				$this->getServer()->getPluginManager()->registerEvents(new EventListener("hide"), $this);
+				$this->getServer()->getPluginManager()->registerEvents(new EventListener("hide", $this->getConfig()->get("profanity")), $this);
 				break;
 			default:
 				$this->getLogger()->critical("Invalid Profanity Type. Please check instruction on your configuration.");
@@ -234,5 +235,9 @@ public static function getInstance() : Loader {
 		$permManager = PermissionManager::getInstance();
 		$permManager->addPermission($permission);
 		$permManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission->getName(), true);
+	}
+
+	public static function getProvidedProfanities() {
+		return file($this->getDataFolder() . "profanity_filter.wlist");
 	}
 }

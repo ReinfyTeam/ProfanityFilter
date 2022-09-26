@@ -29,6 +29,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
+use function strtolower;
 
 class EventListener implements Listener {
 	private Loader $plugin;
@@ -37,10 +38,11 @@ class EventListener implements Listener {
 
 	private ?array $duration;
 
-	public function __construct(string $type) {
+	public function __construct(string $type, string $provider) {
 		$this->plugin = Loader::getInstance();
 		$this->type = $type;
 		$this->duration = Loader::getInstance()->getDuration();
+		$this->provider = $provider;
 	}
 
 	/**
@@ -49,7 +51,11 @@ class EventListener implements Listener {
 	public function onChat(PlayerChatEvent $event) : void {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
-		$words = $this->plugin->getProfanity()->get("banned-words");
+		if (strtolower($this->provider) === "custom") {
+			$words = $this->plugin->getProfanity()->get("banned-words");
+		} else {
+			$words = (array) Loader::getProvidedProfanities();
+		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
 		}

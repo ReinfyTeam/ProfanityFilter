@@ -163,7 +163,7 @@ final class PluginAPI {
 	 * Returns array batch in english default profanity.
 	 */
 	public static function defaultProfanity() : array {
-		return $words = [
+		$words = [
 			"anal",
 			"anus",
 			"arse",

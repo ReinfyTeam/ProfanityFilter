@@ -2,6 +2,8 @@
 # These are currently banned words in the filter.
 # You can add more if you want it.
 # or you can make pull request to add it.
+#
+# Also you can use default profanity detailed on the config.
 banned-words:
   - arse
   - ass

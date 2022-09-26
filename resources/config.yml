@@ -64,6 +64,11 @@ bypass-permission: profanityfilter.bypass
 command-permission: profanityfilter.command
 # This is sets to all as operator only.
 
+# Default Profanity Choise
+# You can choose a custom profanity or self provided Profanity List.
+# choose 'custom' if you want to add your own custom profanity words or choose 'provided' to use default plugin provided profanities.
+profanity: custom
+
 # Remove Unicode Messages
 # It possible to bypass profanity from unicode characters.
 remove-unicode: false
