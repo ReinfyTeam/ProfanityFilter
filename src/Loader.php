@@ -32,6 +32,7 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use pocketmine\utils\SingletonTrait;
 use ReinfyTeam\ProfanityFilter\Command\DefaultCommand;
 use ReinfyTeam\ProfanityFilter\Tasks\UpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
@@ -55,7 +56,7 @@ use function unlink;
 use function yaml_parse;
 
 class Loader extends PluginBase {
-	private static Loader $instance;
+	use SingletonTrait;
 
 	public array $punishment = [];
 
@@ -72,9 +73,6 @@ class Loader extends PluginBase {
 		$this->registerCommands();
 		$this->loadListeners();
 	}
-public static function getInstance() : Loader {
-	return Loader::$instance;
-}
 
 	private function checkConfig() : void {
 		$log = $this->getLogger();
@@ -237,7 +235,7 @@ public static function getInstance() : Loader {
 		$permManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission->getName(), true);
 	}
 
-	public static function getProvidedProfanities() {
+	public function getProvidedProfanities() {
 		return file($this->getDataFolder() . "profanity_filter.wlist");
 	}
 }

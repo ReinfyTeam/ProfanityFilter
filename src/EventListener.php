@@ -35,6 +35,8 @@ class EventListener implements Listener {
 	private Loader $plugin;
 
 	private string $type;
+	
+	private string $provider;
 
 	private ?array $duration;
 
@@ -54,7 +56,7 @@ class EventListener implements Listener {
 		if (strtolower($this->provider) === "custom") {
 			$words = $this->plugin->getProfanity()->get("banned-words");
 		} else {
-			$words = (array) Loader::getProvidedProfanities();
+			$words = (array) $this->plugin->getProvidedProfanities();
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
