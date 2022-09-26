@@ -235,7 +235,7 @@ class Loader extends PluginBase {
 		$permManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission->getName(), true);
 	}
 
-	public function getProvidedProfanities() : array{
+	public function getProvidedProfanities() : array {
 		return file($this->getDataFolder() . "profanity_filter.wlist");
 	}
 }
