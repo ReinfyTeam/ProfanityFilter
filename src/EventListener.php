@@ -35,7 +35,7 @@ class EventListener implements Listener {
 	private Loader $plugin;
 
 	private string $type;
-	
+
 	private string $provider;
 
 	private ?array $duration;
