@@ -47,18 +47,8 @@ jobs:
         with:
           files: |
              *
-  commit_changes:
-    name: Commit Changes
-    if: steps.verify-changed-files.outputs.files_changed == 'true'
-    runs-on: '${{ matrix.image }}'
-    strategy:
-      fail-fast: false
-      matrix:
-        image:
-          - ubuntu-latest
-    steps:
       - name: Commit Stages
-        continue-on-error: true
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: >
           git config user.name 'github-actions[bot]'
 
@@ -71,7 +61,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4.1.2
         id: php-cs-fixer
-        continue-on-error: true
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
         with:
           base: '${{ github.head_ref }}'
           token: '${{ secrets.ReinfyToken }}'
@@ -99,12 +89,3 @@ jobs:
           labels: |
             Pull: Enhancement
             Pull: Auto
-      - name: Complete the job
-        run: >
-          echo The job was successful.
-
-          echo Removing all files...
-
-          rm -rf ./*
-
-          echo Time Successful: $(date "+%F %H:%I:%S.%s")
