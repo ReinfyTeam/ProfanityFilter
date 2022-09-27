@@ -41,6 +41,22 @@ jobs:
       - name: PHPStan Lints
         run: ./vendor/bin/phpstan analyze
         continue-on-error: true
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v11.1
+        id: verify-changed-files
+        with:
+          files: |
+             *
+  commit_changes:
+    name: Commit Changes
+    if: steps.verify-changed-files.outputs.files_changed == 'true'
+    runs-on: '${{ matrix.image }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - ubuntu-latest
+    steps:
       - name: Commit Stages
         continue-on-error: true
         run: >
@@ -91,10 +107,4 @@ jobs:
 
           rm -rf ./*
 
-          echo Time Successful:
-
-          date
-
-          echo Done! The job was successful removed all files in current working
-          directory.
-          echo Last Exit Status: $?
+          echo Time Successful: $(date "+%F %H:%I:%S.%s")
