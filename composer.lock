@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bac55f81079bee27bb0a01d938e16a9",
+    "content-hash": "a32f417e5da3ec89f68fe74578535077",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -728,16 +728,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "4.12.8",
+            "version": "4.12.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "bb7df60a4d6a26bffefa9fc5547a10b68bde0750"
+                "reference": "0eb751c1c9672e183eef758b2f4a329807340385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/bb7df60a4d6a26bffefa9fc5547a10b68bde0750",
-                "reference": "bb7df60a4d6a26bffefa9fc5547a10b68bde0750",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/0eb751c1c9672e183eef758b2f4a329807340385",
+                "reference": "0eb751c1c9672e183eef758b2f4a329807340385",
                 "shasum": ""
             },
             "require": {
@@ -790,7 +790,7 @@
                 "webmozart/path-util": "^2.3"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.7",
+                "phpstan/phpstan": "1.9.11",
                 "phpstan/phpstan-phpunit": "^1.1.0",
                 "phpstan/phpstan-strict-rules": "^1.2.0",
                 "phpunit/phpunit": "^9.2"
@@ -812,7 +812,7 @@
             "homepage": "https://pmmp.io",
             "support": {
                 "issues": "https://github.com/pmmp/PocketMine-MP/issues",
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.12.8"
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.12.9"
             },
             "funding": [
                 {
@@ -824,7 +824,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-01-09T00:04:40+00:00"
+            "time": "2023-01-16T18:25:17+00:00"
         },
         {
             "name": "pocketmine/raklib",
@@ -1042,16 +1042,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.7.1",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "a1acf96007170234a8399586a6e2ab8feba109d1"
+                "reference": "433b2014e3979047db08a17a205f410ba3869cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/a1acf96007170234a8399586a6e2ab8feba109d1",
-                "reference": "a1acf96007170234a8399586a6e2ab8feba109d1",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/433b2014e3979047db08a17a205f410ba3869cf2",
+                "reference": "433b2014e3979047db08a17a205f410ba3869cf2",
                 "shasum": ""
             },
             "require": {
@@ -1118,7 +1118,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.7.1"
+                "source": "https://github.com/ramsey/uuid/tree/4.7.3"
             },
             "funding": [
                 {
@@ -1130,7 +1130,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-31T22:20:34+00:00"
+            "time": "2023-01-12T18:13:24+00:00"
         },
         {
             "name": "symfony/filesystem",
