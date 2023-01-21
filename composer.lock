@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "315c0f80ea7eafe25e4455c36e90ec26",
+    "content-hash": "a13d75bd1adede61d4c2aa9eee5f47b1",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -728,16 +728,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "4.12.9",
+            "version": "4.12.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "0eb751c1c9672e183eef758b2f4a329807340385"
+                "reference": "2f5e08067d2558559d65e90945f3297624cf7bb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/0eb751c1c9672e183eef758b2f4a329807340385",
-                "reference": "0eb751c1c9672e183eef758b2f4a329807340385",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/2f5e08067d2558559d65e90945f3297624cf7bb0",
+                "reference": "2f5e08067d2558559d65e90945f3297624cf7bb0",
                 "shasum": ""
             },
             "require": {
@@ -790,7 +790,7 @@
                 "webmozart/path-util": "^2.3"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.11",
+                "phpstan/phpstan": "1.9.12",
                 "phpstan/phpstan-phpunit": "^1.1.0",
                 "phpstan/phpstan-strict-rules": "^1.2.0",
                 "phpunit/phpunit": "^9.2"
@@ -812,7 +812,7 @@
             "homepage": "https://pmmp.io",
             "support": {
                 "issues": "https://github.com/pmmp/PocketMine-MP/issues",
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.12.9"
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.12.10"
             },
             "funding": [
                 {
@@ -824,7 +824,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-01-16T18:25:17+00:00"
+            "time": "2023-01-18T15:16:30+00:00"
         },
         {
             "name": "pocketmine/raklib",
