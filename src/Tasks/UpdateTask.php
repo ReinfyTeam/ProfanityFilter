@@ -62,12 +62,12 @@ class UpdateTask extends AsyncTask {
 
 	public function onCompletion() : void {
 		$lang = new Language();
+		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
+		if($highestVersion === null || $artifactUrl === null || $api === null) return; // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
 		}
-
-		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if ($err !== null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			return;
