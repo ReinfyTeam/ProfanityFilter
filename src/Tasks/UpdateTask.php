@@ -46,6 +46,7 @@ class UpdateTask extends AsyncTask {
 		$api = "";
 		if ($json !== null) {
 			$releases = json_decode($json->getBody(), true);
+			if($releases === null) return; // Issue Fix: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 			foreach ($releases as $release) {
 				if (version_compare($highestVersion, $release["version"], ">=")) {
 					continue;
