@@ -28,11 +28,13 @@ use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Loader;
+use ReinfyTeam\ProfanityFilter\Tasks\GithubUpdateTask;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
 
-class UpdateTask extends AsyncTask {
+class PoggitUpdateTask extends AsyncTask {
 	private const POGGIT_RELEASES_URL = "https://poggit.pmmp.io/releases.min.json?name=";
 
 	public function __construct(private string $pluginName, private string $pluginVersion) {
@@ -66,6 +68,8 @@ class UpdateTask extends AsyncTask {
 		$lang = new Language();
 		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
 		if ($highestVersion === null || $artifactUrl === null || $api === null) {
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
+			Loader::getInstance()->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
 			return;
 		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
@@ -73,7 +77,8 @@ class UpdateTask extends AsyncTask {
 			return;
 		}
 		if ($err !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
+			Loader::getInstance()->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
 			return;
 		}
 

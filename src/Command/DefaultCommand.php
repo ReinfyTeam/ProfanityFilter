@@ -30,6 +30,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as T;
 use ReinfyTeam\ProfanityFilter\Loader;
+use ReinfyTeam\ProfanityFilter\PluginAPI;
 use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
@@ -93,6 +94,7 @@ class DefaultCommand extends Command implements PluginOwned {
 					foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
 						$sender->sendMessage("- " . $word);
 					}
+					$sender->sendMessage($this->language->translateMessage("banned-words-description-1"));
 					$sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
 					break;
 				default:
@@ -133,6 +135,14 @@ class DefaultCommand extends Command implements PluginOwned {
 					$sender->sendMessage($this->language->translateMessage("banned-words-description"));
 					foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
 						$sender->sendMessage("- " . $word);
+					}
+					foreach (PluginAPI::defaultProfanity() as $word) {
+						$sender->sendMessage("- " . $word);
+					}
+					if (Loader::getInstance()->getProvidedProfanities() !== null) {
+						foreach (Loader::getInstance()->getProvidedProfanities() as $word) {
+							$sender->sendMessage("- " . $word);
+						}
 					}
 					$sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
 					break;

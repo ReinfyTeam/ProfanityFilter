@@ -43,7 +43,7 @@ class EventListener implements Listener {
 	public function __construct(string $type, string $provider) {
 		$this->plugin = Loader::getInstance();
 		$this->type = $type;
-		$this->duration = Loader::getInstance()->getDuration();
+		$this->duration = PluginUtils::getDuration();
 		$this->provider = $provider;
 	}
 
@@ -54,9 +54,9 @@ class EventListener implements Listener {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
 		if (strtolower($this->provider) === "custom") {
-			$words = $this->plugin->getProfanity()->get("banned-words");
+			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
-			$words = (array) $this->plugin->getProvidedProfanities();
+			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;

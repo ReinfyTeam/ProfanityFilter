@@ -24,34 +24,21 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter;
 
-use DateInterval;
-use DateTime;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
-use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 use ReinfyTeam\ProfanityFilter\Command\DefaultCommand;
-use ReinfyTeam\ProfanityFilter\Tasks\UpdateTask;
+use ReinfyTeam\ProfanityFilter\Tasks\PoggitUpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
-use function count;
 use function fclose;
 use function file;
 use function file_exists;
-use function ltrim;
 use function mkdir;
-use function preg_match_all;
-use function preg_replace;
 use function rename;
-use function str_replace;
 use function stream_get_contents;
-use function strlen;
-use function strtoupper;
-use function strval;
-use function substr;
-use function trim;
 use function unlink;
 use function yaml_parse;
 
@@ -117,24 +104,8 @@ class Loader extends PluginBase {
 		$this->getServer()->getCommandMap()->register($this->getDescription()->getName(), new DefaultCommand());
 	}
 
-	/**
-	 * Format Message. Dont call it directly.
-	 */
-	public function formatMessage(string $message, ?Player $player = null) : string { // TODO: Move this in the event class
-		$message = str_replace("{type}", $this->getConfig()->get("punishment-type") . "ed", $message);
-
-		if ($player === null) {
-			return $message;
-		}
-
-		$message = str_replace("{player_name}", $player->getName(), $message);
-		$message = str_replace("{player_ping}", strval($player->getNetworkSession()->getPing()), $message);
-
-		return $message;
-	}
-
 	private function checkUpdate() : void {
-		$this->getServer()->getAsyncPool()->submitTask(new UpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
+		$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 	}
 
 	/**
@@ -161,64 +132,6 @@ class Loader extends PluginBase {
 		}
 	}
 
-	public function getDuration() {
-		if ($this->getConfig()->get("ban-duration") === "Forever") {
-			return null;
-		} else {
-			return $this->stringToTimestamp($this->getConfig()->get("ban-duration"));
-		}
-	}
-
-	/**
-	 * Convert String to Timestamp
-	 *
-	 * @return ?array
-	 */
-	private function stringToTimestamp(string $string) : ?array {
-		/**
-		 * Rules:
-		 * Integers without suffix are considered as seconds
-		 * "s" is for seconds
-		 * "m" is for minutes
-		 * "h" is for hours
-		 * "d" is for days
-		 * "w" is for weeks
-		 * "mo" is for months
-		 * "y" is for years
-		 */
-		if (trim($string) === "") {
-			return null;
-		}
-		$t = new DateTime();
-		preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $string, $found);
-		if (count($found[0]) < 1) {
-			return null;
-		}
-		$found[2] = preg_replace("/[^0-9]/", "", $found[0]);
-		foreach ($found[2] as $k => $i) {
-			switch ($c = $found[1][$k]) {
-				case "y":
-				case "w":
-				case "d":
-					$t->add(new DateInterval("P" . $i . strtoupper($c)));
-					break;
-				case "mo":
-					$t->add(new DateInterval("P" . $i . strtoupper(substr($c, 0, strlen($c) - 1))));
-					break;
-				case "h":
-				case "m":
-				case "s":
-					$t->add(new DateInterval("PT" . $i . strtoupper($c)));
-					break;
-				default:
-					$t->add(new DateInterval("PT" . $i . "S"));
-					break;
-			}
-			$string = str_replace($found[0][$k], "", $string);
-		}
-		return [$t, ltrim(str_replace($found[0], "", $string))];
-	}
-
 	private function loadPermission() : void {
 		$this->registerPermission(($this->getConfig()->get("command-permission") ?? "profanityfilter.command"));
 		$this->registerPermission(($this->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"));
@@ -227,6 +140,8 @@ class Loader extends PluginBase {
 	/**
 	 * Register Permission on Plugin
 	 * Custom Permission in Config.yml
+	 * ---
+	 * Introduced in v0.0.6-BETA
 	 */
 	private function registerPermission(string $perm) : void {
 		$permission = new Permission($perm);
