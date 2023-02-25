@@ -33,6 +33,7 @@ credits-description: "&eAng mga ito ay kasalukuyang mga pampublikong tagapag-amb
 ui-pf-manage-title: "&l&6Profanity Filter"
 ui-pf-manage-description: "&bMaaari mong pamahalaan dito."
 ui-pf-manage-button-1: "&eTingnan ang mga Bawal na Salita"
+ui-pf-manage-button-2: "&4Huwag paganahin/Paganahin ang ProfanityFilter"
 ui-pf-manage-button-exit: "&4Umalis"
 ui-pf-manage-button-return: "&cBumalik"
 ui-pf-manage-disabled-profanityfilter: "&cMatagumpay na pinatigil ang &dProfanityFilter &csa iyong server."
