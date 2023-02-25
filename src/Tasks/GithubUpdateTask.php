@@ -45,7 +45,7 @@ class GithubUpdateTask extends AsyncTask {
 		$api = "";
 		if ($err === null) {
 			$releases = json_decode($json->getBody(), true);
-			$highestVersion = $releases["highestVersion"];
+			$highestVersion = $releases["version"];
 			$artifactUrl = $releases["artifactUrl"];
 			$api = $releases["api"];
 		}
