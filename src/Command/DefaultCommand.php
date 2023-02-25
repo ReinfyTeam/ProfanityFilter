@@ -97,6 +97,15 @@ class DefaultCommand extends Command implements PluginOwned {
 					$sender->sendMessage($this->language->translateMessage("banned-words-description-1"));
 					$sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
 					break;
+				case "toggle":
+					if (Loader::$enabled) {
+						$sender->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
+						Loader::$enabled = false;
+					} else {
+						Loader::$enabled = true;
+						$sender->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
+					}
+					break;
 				default:
 					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
 					break;
@@ -146,6 +155,15 @@ class DefaultCommand extends Command implements PluginOwned {
 					}
 					$sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
 					break;
+				case "toggle":
+					if (Loader::$enabled) {
+						$sender->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
+						Loader::$enabled = false;
+					} else {
+						Loader::$enabled = true;
+						$sender->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
+					}
+					break;
 				default:
 					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
 					break;
@@ -167,6 +185,15 @@ class DefaultCommand extends Command implements PluginOwned {
 					$this->viewList($player);
 					break;
 				case 1:
+					if (Loader::$enabled) {
+						$player->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
+						Loader::$enabled = false;
+					} else {
+						Loader::$enabled = true;
+						$player->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
+					}
+					break;
+				case 2:
 					break;
 			}
 		});
@@ -174,6 +201,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
 		$form->setContent($this->language->translateMessage("ui-pf-manage-description"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-2"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-exit"));
 		$player->sendForm($form);
 	}
