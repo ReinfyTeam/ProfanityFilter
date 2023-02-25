@@ -45,6 +45,8 @@ use function yaml_parse;
 class Loader extends PluginBase {
 	use SingletonTrait;
 
+	public static bool $enabled = true;
+
 	public array $punishment = [];
 
 	public function onLoad() : void {

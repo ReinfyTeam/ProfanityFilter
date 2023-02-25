@@ -19,6 +19,7 @@ help-page:
   - "&e/pf ui &7— &bQuản lý ProfanityFilter bẳng GUI"
   - "&e/pf credits &7— &bXem tác giả và Cộng tác viên của plugin"
   - "&e/pf banned-words/list &7— &bXem tất cả danh sách các từ bị cấm hiện tại."
+  - "&e/pf toggle - Chuyển đổi/Bật hoặc Tắt Bộ lọc Thô tục trên máy chủ."
 profanity-command-only-ingame: "&eBạn chỉ có thể sử dụng lệnh này trong trò chơi!"
 profanity-command-usage: "&e/pf &6<help/subcommand> &d[args]"
 profanity-command-usage-execute: "&cSử dụng: &e/pf <help/subcommand> [args]"
@@ -30,6 +31,9 @@ credits-description: "&eĐây hiện là những người đóng góp tích cự
 ui-pf-manage-title: "&l&6Profanity Filter"
 ui-pf-manage-description: "&bBạn có thể quản lý tại đây."
 ui-pf-manage-button-1: "&eXem các từ bị cấm"
+ui-pf-manage-button-2: "&4Tắt/Bật Bộ lọc thô tục"
 ui-pf-manage-button-exit: "&4Thoát"
 ui-pf-manage-button-return: "&cTrở về"
+ui-pf-manage-disabled-profanityfilter: "&cĐã tắt thành công &dProfanityFilter &c vào máy chủ của bạn."
+ui-pf-manage-enabled-profanityfilter: "&aĐã kích hoạt thành công &dBộ lọc thô tục &c vào máy chủ của bạn."
 ...

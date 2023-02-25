@@ -29,7 +29,6 @@ use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
 use function json_decode;
-use function version_compare;
 use function vsprintf;
 
 class GithubUpdateTask extends AsyncTask {
@@ -41,21 +40,16 @@ class GithubUpdateTask extends AsyncTask {
 
 	public function onRun() : void {
 		$json = Internet::getURL(self::GIT_URL, 10, [], $err);
-		
-		if($json->getBody() != null){
+		$highestVersion = "";
+		$artifactUrl = "";
+		$api = "";
+		if ($err === null) {
 			$releases = json_decode($json->getBody(), true);
-			if($releases != null){
-				$highestVersion = $releases["highestVersion"];
-				$artifactUrl = $releases["artifactUrl"];
-				$api = $releases["api"];
-			} else {
-				$highestVersion = "";
-				$artifactUrl = "";
-				$api = "";
-				$err = "Unable to read json object properties.";
-			}
+			$highestVersion = $releases["highestVersion"];
+			$artifactUrl = $releases["artifactUrl"];
+			$api = $releases["api"];
 		}
-		
+
 		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
 	}
 
@@ -67,7 +61,8 @@ class GithubUpdateTask extends AsyncTask {
 			return;
 		}
 		if ($err !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err . " Giving up..."]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
+			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry-failed"));
 			return;
 		}
 

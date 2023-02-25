@@ -53,6 +53,11 @@ class EventListener implements Listener {
 	public function onChat(PlayerChatEvent $event) : void {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
+
+		if (!Loader::$enabled) {
+			return;
+		}
+
 		if (strtolower($this->provider) === "custom") {
 			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
@@ -74,7 +79,7 @@ class EventListener implements Listener {
 					 * TODO: Improve this unicode blocking
 					 */
 					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (bool) ($this->plugin->getConfig()->get("remove-unicode") ?? false)));
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1)));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
