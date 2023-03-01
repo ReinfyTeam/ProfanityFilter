@@ -32,7 +32,7 @@ use function json_decode;
 use function vsprintf;
 
 class GithubUpdateTask extends AsyncTask {
-	private const GIT_URL = "https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/main/build_info.json";
+	private const GIT_URL = "https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/build_info.json";
 
 	public function __construct(private string $pluginName, private string $pluginVersion) {
 		//NOOP
@@ -48,8 +48,8 @@ class GithubUpdateTask extends AsyncTask {
 			$releases = json_decode($json->getBody(), true);
 			$highestVersion = $releases["version"];
 			$artifactUrl = $releases["artifactUrl"];
-			$api_to = $releases["api"]["to"];
-			$api_from = $releases["api"]["from"];
+			$api_to = $releases["api_to"];
+			$api_from = $releases["api_from"];
 		}
 
 		$this->setResult([$highestVersion, $artifactUrl, $api_to, $err, $api_from]);
