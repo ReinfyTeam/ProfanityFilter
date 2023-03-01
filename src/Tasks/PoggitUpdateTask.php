@@ -56,7 +56,8 @@ class PoggitUpdateTask extends AsyncTask {
 				}
 				$highestVersion = $release["version"];
 				$artifactUrl = $release["artifact_url"];
-				$api = $release["api"][0]["from"] . " - " . $release["api"][0]["to"];
+				$api_from = $release["api"][0]["from"];
+				$api_to = $release["api"][0]["to"];
 			}
 		}
 
@@ -65,25 +66,27 @@ class PoggitUpdateTask extends AsyncTask {
 
 	public function onCompletion() : void {
 		$lang = new Language();
-		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
-		if ($highestVersion === null || $artifactUrl === null || $api === null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
-			Loader::getInstance()->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
-			return;
-		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
 		}
+		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
+		if ($highestVersion === null || $artifactUrl === null || $api === null) {
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
+			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
+			return;
+		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		if ($err !== null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry"));
-			Loader::getInstance()->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
+			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
 			return;
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
 			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$api_from, $api_to]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
 		} else {
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}

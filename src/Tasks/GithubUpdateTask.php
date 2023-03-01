@@ -32,7 +32,7 @@ use function json_decode;
 use function vsprintf;
 
 class GithubUpdateTask extends AsyncTask {
-	private const GIT_URL = "https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/main/github.json";
+	private const GIT_URL = "https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/main/build_info.json";
 
 	public function __construct(private string $pluginName, private string $pluginVersion) {
 		//NOOP
@@ -42,24 +42,27 @@ class GithubUpdateTask extends AsyncTask {
 		$json = Internet::getURL(self::GIT_URL, 10, [], $err);
 		$highestVersion = "";
 		$artifactUrl = "";
-		$api = "";
+		$api_to = "";
+		$api_from = "";
 		if ($err === null) {
 			$releases = json_decode($json->getBody(), true);
 			$highestVersion = $releases["version"];
 			$artifactUrl = $releases["artifactUrl"];
-			$api = $releases["api"];
+			$api_to = $releases["api"]["to"];
+			$api_from = $releases["api"]["from"];
 		}
 
-		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
+		$this->setResult([$highestVersion, $artifactUrl, $api_to, $err, $api_from]);
 	}
 
 	public function onCompletion() : void {
 		$lang = new Language();
-		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
+		[$highestVersion, $artifactUrl, $api_to, $err, $api_from] = $this->getResult();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
 		}
+
 		if ($err !== null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry-failed"));
@@ -67,7 +70,9 @@ class GithubUpdateTask extends AsyncTask {
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api_from]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$api_from, $api_to]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
 		} else {
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}

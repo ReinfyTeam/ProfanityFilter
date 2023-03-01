@@ -81,5 +81,9 @@ remove-unicode: 0
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.6
+config-version: 0.0.7
+
+# Plugin Updater
+# Do you want to check latest plugin updates from github servers or poggit?
+check-updates: true
 ...
