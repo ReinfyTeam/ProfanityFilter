@@ -1,7 +1,7 @@
 --- # Open the ProfanityFilter CI at https://poggit.pmmp.io/ci/ReinfyTeam/ProfanityFilter
 build-by-default: true
 branches:
-- stable
+- stable 
 projects:
   ProfanityFilter:
     path: ""
