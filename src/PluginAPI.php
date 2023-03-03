@@ -256,7 +256,6 @@ final class PluginAPI {
 				break;
 			default:
 				throw new \RuntimeException("Unable to read properties of " . $block_type . ", because the id could'nt be found. Check your configuration if its correct.");
-				break;
 		}
 		return $text;
 	}
