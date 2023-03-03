@@ -61,6 +61,7 @@ class EventListener implements Listener {
 		if (strtolower($this->provider) === "custom") {
 			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
+                        /** @phpstan-ignore-next-line */
 			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
@@ -124,6 +125,7 @@ class EventListener implements Listener {
 		if (strtolower($this->provider) === "custom") {
 			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
+                        /** @phpstan-ignore-next-line */
 			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
