@@ -80,7 +80,7 @@ final class PluginUtils {
 	 * Format Message. Dont call it directly.
 	 */
 	public static function formatMessage(string $message, ?Player $player = null) : string { // TODO: Move this in the event class
-		$message = str_replace("{type}", $this->getConfig()->get("punishment-type") . "ed", $message);
+		$message = str_replace("{type}", Loader::getInstance()->getConfig()->get("punishment-type") . "ed", $message);
 
 		// FOR PLAYERS
 		if ($player === null) {
