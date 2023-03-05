@@ -1,9 +1,9 @@
 --- # Open the ProfanityFilter CI at https://poggit.pmmp.io/ci/ReinfyTeam/ProfanityFilter
 build-by-default: true
 branches:
-- main
+- stable 
 projects:
   ProfanityFilter:
     path: ""
-    icon: "ProfanityFilter.png"
+    icon: "ProfanityFilter.png" 
 ...
