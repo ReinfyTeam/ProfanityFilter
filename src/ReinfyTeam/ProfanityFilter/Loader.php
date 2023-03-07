@@ -108,7 +108,7 @@ class Loader extends PluginBase {
 
 	private function checkUpdate() : void {
 		$lang = new Language();
-		if ((bool) ($this->getConfig()->get("check-updates") ?? true)) {
+		if (($this->getConfig()->get("check-updates")) {
 			$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 		} else {
 			$this->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
