@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19cbdb86a3c72188e933468d4d0ed702",
+    "content-hash": "666ed14065bb4c93526edfda35edc498",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -249,17 +249,43 @@
             "time": "2022-12-08T20:46:14+00:00"
         },
         {
-            "name": "pocketmine/bedrock-data",
-            "version": "1.14.0+bedrock-1.19.60",
+            "name": "pocketmine/bedrock-block-upgrade-schema",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pmmp/BedrockData.git",
-                "reference": "7b06234ec6e1f4fb06ad4b2f177e606c25df9b46"
+                "url": "https://github.com/pmmp/BedrockBlockUpgradeSchema.git",
+                "reference": "78c965a2316986ac0eaf3235d75efb187127e7a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BedrockData/zipball/7b06234ec6e1f4fb06ad4b2f177e606c25df9b46",
-                "reference": "7b06234ec6e1f4fb06ad4b2f177e606c25df9b46",
+                "url": "https://api.github.com/repos/pmmp/BedrockBlockUpgradeSchema/zipball/78c965a2316986ac0eaf3235d75efb187127e7a2",
+                "reference": "78c965a2316986ac0eaf3235d75efb187127e7a2",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC0-1.0"
+            ],
+            "description": "Schemas describing how to upgrade saved block data in older Minecraft: Bedrock Edition world saves",
+            "support": {
+                "issues": "https://github.com/pmmp/BedrockBlockUpgradeSchema/issues",
+                "source": "https://github.com/pmmp/BedrockBlockUpgradeSchema/tree/1.1.0"
+            },
+            "time": "2023-03-06T17:53:36+00:00"
+        },
+        {
+            "name": "pocketmine/bedrock-data",
+            "version": "2.0.0+bedrock-1.19.60",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BedrockData.git",
+                "reference": "957e49b2381641af29f595e4f32ded3e76ce4723"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BedrockData/zipball/957e49b2381641af29f595e4f32ded3e76ce4723",
+                "reference": "957e49b2381641af29f595e4f32ded3e76ce4723",
                 "shasum": ""
             },
             "type": "library",
@@ -270,22 +296,48 @@
             "description": "Blobs of data generated from Minecraft: Bedrock Edition, used by PocketMine-MP",
             "support": {
                 "issues": "https://github.com/pmmp/BedrockData/issues",
-                "source": "https://github.com/pmmp/BedrockData/tree/bedrock-1.19.60"
+                "source": "https://github.com/pmmp/BedrockData/tree/2.0.0+bedrock-1.19.60"
             },
-            "time": "2023-02-08T18:32:01+00:00"
+            "time": "2023-02-23T21:25:04+00:00"
         },
         {
-            "name": "pocketmine/bedrock-protocol",
-            "version": "19.2.0+bedrock-1.19.62",
+            "name": "pocketmine/bedrock-item-upgrade-schema",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/pmmp/BedrockProtocol.git",
-                "reference": "a156db582d0b1a6c20c9d9cc9b1df7ef907efd0b"
+                "url": "https://github.com/pmmp/BedrockItemUpgradeSchema.git",
+                "reference": "7e53f77ea34ba30b1f94d3c24e64e19d3c4296e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/BedrockProtocol/zipball/a156db582d0b1a6c20c9d9cc9b1df7ef907efd0b",
-                "reference": "a156db582d0b1a6c20c9d9cc9b1df7ef907efd0b",
+                "url": "https://api.github.com/repos/pmmp/BedrockItemUpgradeSchema/zipball/7e53f77ea34ba30b1f94d3c24e64e19d3c4296e7",
+                "reference": "7e53f77ea34ba30b1f94d3c24e64e19d3c4296e7",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC0-1.0"
+            ],
+            "description": "JSON schemas for upgrading items found in older Minecraft: Bedrock world saves",
+            "support": {
+                "issues": "https://github.com/pmmp/BedrockItemUpgradeSchema/issues",
+                "source": "https://github.com/pmmp/BedrockItemUpgradeSchema/tree/1.0.0"
+            },
+            "time": "2023-02-01T22:50:02+00:00"
+        },
+        {
+            "name": "pocketmine/bedrock-protocol",
+            "version": "19.3.0+bedrock-1.19.62",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pmmp/BedrockProtocol.git",
+                "reference": "a5bf4753c7f30f781c4541918e238f5bb637e7ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pmmp/BedrockProtocol/zipball/a5bf4753c7f30f781c4541918e238f5bb637e7ad",
+                "reference": "a5bf4753c7f30f781c4541918e238f5bb637e7ad",
                 "shasum": ""
             },
             "require": {
@@ -317,9 +369,9 @@
             "description": "An implementation of the Minecraft: Bedrock Edition protocol in PHP",
             "support": {
                 "issues": "https://github.com/pmmp/BedrockProtocol/issues",
-                "source": "https://github.com/pmmp/BedrockProtocol/tree/19.2.0+bedrock-1.19.62"
+                "source": "https://github.com/pmmp/BedrockProtocol/tree/19.3.0+bedrock-1.19.62"
             },
-            "time": "2023-02-17T16:32:49+00:00"
+            "time": "2023-02-19T16:11:03+00:00"
         },
         {
             "name": "pocketmine/binaryutils",
@@ -728,16 +780,16 @@
         },
         {
             "name": "pocketmine/pocketmine-mp",
-            "version": "4.15.2",
+            "version": "4.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/PocketMine-MP.git",
-                "reference": "308cdb68631f1e4190d3741231e1219e80080e90"
+                "reference": "fa131dab1259c25d48c41b4ce82de5f833eb0326"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/308cdb68631f1e4190d3741231e1219e80080e90",
-                "reference": "308cdb68631f1e4190d3741231e1219e80080e90",
+                "url": "https://api.github.com/repos/pmmp/PocketMine-MP/zipball/fa131dab1259c25d48c41b4ce82de5f833eb0326",
+                "reference": "fa131dab1259c25d48c41b4ce82de5f833eb0326",
                 "shasum": ""
             },
             "require": {
@@ -770,8 +822,10 @@
                 "netresearch/jsonmapper": "^4.0",
                 "php": "^8.0",
                 "php-64bit": "*",
-                "pocketmine/bedrock-data": "~1.14.0+bedrock-1.19.60",
-                "pocketmine/bedrock-protocol": "~19.2.0+bedrock-1.19.62",
+                "pocketmine/bedrock-block-upgrade-schema": "^1.0.0",
+                "pocketmine/bedrock-data": "~2.0.0+bedrock-1.19.60",
+                "pocketmine/bedrock-item-upgrade-schema": "^1.0.0",
+                "pocketmine/bedrock-protocol": "~19.3.0+bedrock-1.19.62",
                 "pocketmine/binaryutils": "^0.2.1",
                 "pocketmine/callback-validator": "^1.0.2",
                 "pocketmine/classloader": "^0.2.0",
@@ -790,7 +844,7 @@
                 "webmozart/path-util": "^2.3"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.9.18",
+                "phpstan/phpstan": "1.10.4",
                 "phpstan/phpstan-phpunit": "^1.1.0",
                 "phpstan/phpstan-strict-rules": "^1.2.0",
                 "phpunit/phpunit": "^9.2"
@@ -812,7 +866,7 @@
             "homepage": "https://pmmp.io",
             "support": {
                 "issues": "https://github.com/pmmp/PocketMine-MP/issues",
-                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.15.2"
+                "source": "https://github.com/pmmp/PocketMine-MP/tree/4.16.0"
             },
             "funding": [
                 {
@@ -824,20 +878,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-02-24T22:18:34+00:00"
+            "time": "2023-03-07T16:19:50+00:00"
         },
         {
             "name": "pocketmine/raklib",
-            "version": "0.14.5",
+            "version": "0.14.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/RakLib.git",
-                "reference": "85b4e5cb7117d37e010eeadb3ff53b21276c6f48"
+                "reference": "aeca667d5ecc4cc18fded612f29e3511bbf62f42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/85b4e5cb7117d37e010eeadb3ff53b21276c6f48",
-                "reference": "85b4e5cb7117d37e010eeadb3ff53b21276c6f48",
+                "url": "https://api.github.com/repos/pmmp/RakLib/zipball/aeca667d5ecc4cc18fded612f29e3511bbf62f42",
+                "reference": "aeca667d5ecc4cc18fded612f29e3511bbf62f42",
                 "shasum": ""
             },
             "require": {
@@ -849,7 +903,7 @@
                 "pocketmine/log": "^0.3.0 || ^0.4.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "1.7.7",
+                "phpstan/phpstan": "1.9.17",
                 "phpstan/phpstan-strict-rules": "^1.0"
             },
             "type": "library",
@@ -865,9 +919,9 @@
             "description": "A RakNet server implementation written in PHP",
             "support": {
                 "issues": "https://github.com/pmmp/RakLib/issues",
-                "source": "https://github.com/pmmp/RakLib/tree/0.14.5"
+                "source": "https://github.com/pmmp/RakLib/tree/0.14.6"
             },
-            "time": "2022-08-25T16:16:44+00:00"
+            "time": "2023-03-07T15:10:23+00:00"
         },
         {
             "name": "pocketmine/raklib-ipc",

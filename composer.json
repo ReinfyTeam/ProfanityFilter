@@ -6,7 +6,7 @@
     "license": "LGPL-2.1",
     "require": {
         "php": "^8.0",
-        "pocketmine/pocketmine-mp": "4.15.2"
+        "pocketmine/pocketmine-mp": "4.16.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "v3.14.4",
