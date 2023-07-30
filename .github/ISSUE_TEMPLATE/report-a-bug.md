@@ -16,8 +16,11 @@ Steps to reproduce the behavior:
 2.
 3.
 
-**Expected behavior**
+**Expected happend**
 Tell us what you're expecting.
+
+**Unexpected happend**
+Tell us what you're unexpecting.
 
 **Screenshots**
 Upload an screenshots for optional evidence.

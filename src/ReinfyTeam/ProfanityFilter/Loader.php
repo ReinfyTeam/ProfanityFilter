@@ -82,7 +82,7 @@ class Loader extends PluginBase {
 		}
 
 		$log->notice($lang->translateMessage("outdated-config"));
-		@rename($this->getDataFolder() . "config.yml", "old-config.yml");
+		@rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "old-config.yml");
 		@unlink($this->getDataFolder() . "old-config.yml");
 		$this->saveResource("config.yml");
 	}
@@ -107,7 +107,12 @@ class Loader extends PluginBase {
 	}
 
 	private function checkUpdate() : void {
-		$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
+		$lang = new Language();
+		if ($this->getConfig()->get("check-updates")) {
+			$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
+		} else {
+			$this->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
+		}
 	}
 
 	/**
