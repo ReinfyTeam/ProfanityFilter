@@ -61,7 +61,6 @@ class EventListener implements Listener {
 		if (strtolower($this->provider) === "custom") {
 			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
-                        /** @phpstan-ignore-next-line */
 			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
@@ -80,7 +79,7 @@ class EventListener implements Listener {
 					 * TODO: Improve this unicode blocking
 					 */
 					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1)));
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1), (bool) ($this->plugin->getConfig()->get("mb-strlen") ?? false));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
@@ -94,12 +93,12 @@ class EventListener implements Listener {
 					case "ban":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
+						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					case "kick":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
+						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					default:
@@ -117,17 +116,7 @@ class EventListener implements Listener {
 	public function onCommand(PlayerCommandPreprocessEvent $event) : void {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
-
-		if (!Loader::$enabled) {
-			return;
-		}
-
-		if (strtolower($this->provider) === "custom") {
-			$words = Loader::getInstance()->getProfanity()->get("banned-words");
-		} else {
-                        /** @phpstan-ignore-next-line */
-			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
-		}
+		$words = $this->plugin->getProfanity()->get("banned-words");
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
 			return;
 		}
@@ -144,7 +133,7 @@ class EventListener implements Listener {
 					 * TODO: Improve this unicode blocking
 					 */
 					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1)));
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (bool) ($this->plugin->getConfig()->get("remove-unicode") ?? false)));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}

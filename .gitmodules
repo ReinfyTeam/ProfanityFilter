@@ -1,6 +1,0 @@
-[submodule "ExamplePlugin"]
-	path = ExamplePlugin
-	url = https://github.com/ReinfyTeam/ProfanityFilter-ExamplePlugin
-[submodule "Virion"]
-	path = Virion
-	url = https://github.com/ReinfyTeam/libpf

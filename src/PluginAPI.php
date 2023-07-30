@@ -255,7 +255,8 @@ final class PluginAPI {
 				$text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
 				break;
 			default:
-				throw new \RuntimeException("Unable to read properties of " . $block_type . ", because the id could'nt be found. Check your configuration if its correct.");
+				throw new \RuntimeException("Unable to read properties of " . $block_type . ", because the id could'nt be found. Check your configuration if it is correct.");
+				break;
 		}
 		return $text;
 	}
