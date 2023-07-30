@@ -108,7 +108,11 @@ class Loader extends PluginBase {
 
 	private function checkUpdate() : void {
 		$lang = new Language();
+<<<<<<< HEAD:src/Loader.php
 		if ((bool) ($this->getConfig()->get("check-updates") ?? true)) {
+=======
+		if ($this->getConfig()->get("check-updates")) {
+>>>>>>> 5db9edb693762ec361579ba6997c376955254b63:src/ReinfyTeam/ProfanityFilter/Loader.php
 			$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 		} else {
 			$this->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
