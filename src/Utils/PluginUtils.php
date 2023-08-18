@@ -167,4 +167,22 @@ final class PluginUtils {
 			return self::stringToTimestamp(Loader::getInstance()->getConfig()->get("ban-duration"));
 		}
 	}
+	
+	public static function removeProfanityWord(string $word) : bool{
+		$words = Loader::getInstance()->getProfanity()->get("banned-words");
+		$newArray = array_diff($words, array($word));
+		Loader::getInstance()->getProfanity()->set("banned-words", (array) array_values($newArray));
+		Loader::getInstance()->getProfanity()->save();
+		Loader::getInstance()->getProfanity()->reload();
+		return true;
+	}
+	
+	public static function addProfanityWord(string $word) :bool {
+		$words = Loader::getInstance()->getProfanity()->get("banned-words");
+		$words[] = $word;
+		Loader::getInstance()->getProfanity()->set("banned-words", (array) $words);
+		Loader::getInstance()->getProfanity()->save();
+		Loader::getInstance()->getProfanity()->reload();
+		return true;
+	}
 }

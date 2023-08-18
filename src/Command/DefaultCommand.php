@@ -71,6 +71,11 @@ class DefaultCommand extends Command implements PluginOwned {
 			case "ui":
 			case "gui":
 			case "form":
+				if(!Loader::getInstance()->getConfig()->get("profanity") === "custom"){
+					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
+					return;
+				}
+			
 				if (!$sender instanceof Player) {
 					$sender->sendMessage($this->language->translateMessage("profanity-command-only-ingame"));
 				} else {
@@ -105,6 +110,36 @@ class DefaultCommand extends Command implements PluginOwned {
 					$sender->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
 				}
 				break;
+			case "remove":
+			
+				if(!Loader::getInstance()->getConfig()->get("profanity") === "custom"){
+					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
+					return;
+				}
+			
+				if(!isset($args[1])){
+					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+					return;
+				}
+				
+				PluginUtils::removeProfanityWord($args[1]);
+				$sender->sendMessage($this->language->translateMessage("profanity-command-removed-word"));
+				break;
+			case "add":
+			
+				if(!Loader::getInstance()->getConfig()->get("profanity") === "custom"){
+					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
+					return;
+				}
+			
+				if(!isset($args[1])){
+					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+					return;
+				}
+				
+				PluginUtils::addProfanityWord($args[1]);
+				$sender->sendMessage($this->language->translateMessage("profanity-command-added-word"));
+				break;
 			default:
 				$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
 				break;
@@ -134,6 +169,9 @@ class DefaultCommand extends Command implements PluginOwned {
 					}
 					break;
 				case 2:
+					$this->addProfanityWordForm($player);
+					break;
+				default:
 					break;
 			}
 		});
@@ -142,6 +180,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		$form->setContent($this->language->translateMessage("ui-pf-manage-description"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-2"));
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-3"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-exit"));
 		$player->sendForm($form);
 	}
@@ -149,7 +188,7 @@ class DefaultCommand extends Command implements PluginOwned {
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function viewList(Player $player) {
+	private function viewList(Player $player, bool $removed = false) {
 		$form = new SimpleForm(function (Player $player, $data) {
 			if ($data === null) {
 				$this->sendForm($player);
@@ -161,37 +200,64 @@ class DefaultCommand extends Command implements PluginOwned {
 					$this->sendForm($player);
 					break;
 				default:
-					$this->viewAction($player, $word[$data], $data);
+					$this->viewAction($player, $data);
 					break;
 			}
 		});
 
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
+		if($removed) $form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", -1);
 		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
-			$form->addButton(T::RED . $word);
+			$form->addButton(T::RED . $word, 0, "", $word);
 		}
 		$player->sendForm($form);
 	}
 	
-	public function viewActions(Player $player, $word, $data) :void{
-		$form = new SimpleForm(function (Player $player, $data) {
+	public function viewActions(Player $player, $word) :void{
+		$form = new SimpleForm(function (Player $player, $data) use ($word){
 			if ($data === null) {
 				$this->viewList($player);
 				return;
 			}
 
 			switch ($data) {
-				case 3:
-					$this->viewList($player);
+				case 0:
+					PluginUtils::removeProfanityWord($word);
+					$this->viewList($player, true);
 					break;
-				default:
-					
+				case 1:
+					$this->viewList($player);
 					break;
 			}
 		});
 		
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
+		$form->setContent(TF::RED . $word); 
+		$form->addTitle($this->language->translateMessage("ui-pf-manage-actions-button-remove"), 0, "", $data);
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
+		$player->sendForm($form);
+	}
+	
+	public function addProfanityWordForm(Player $player, bool $nodata = false) :void {
+		$form = new CustomForm(function (Player $player, $data) use ($nodata){
+			if ($data === null) {
+				$this->viewList($player);
+				return;
+			}
+
+			if($data[0] === "") $this->addProfanityWordForm($player, true);
+			
+			PluginUtils::addProfanityWord($data[0]);
+		});
+		
+		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
+		if ($nodata){
+			$form->addLabel($this->language->translateMessage("ui-pf-addform-specify"));
+		} else {
+			$form->addLabel($this->language->translateMessage("ui-pf-addform-description"));
+		}
+		$form->addInput("", $this->language->translateMessage("ui-pf-addform-example"));
+		$player->sendForm($form);
 	}
 }

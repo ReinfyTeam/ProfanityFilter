@@ -1,9 +1,9 @@
 {
   "plugin_name": "ProfanityFilter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "channel": "stable",
-  "api_from": "4.0.0",
-  "api_to": "5.0.0",
+  "api_from": "5.0.0",
+  "api_to": "5.4.2",
   "author": "ReinfyTeam",
   "artifactUrl": "https://github.com/ReinfyTeam/ProfanityFilter/releases/download/v0.1.0/ProfanityFilter.phar"
 }
