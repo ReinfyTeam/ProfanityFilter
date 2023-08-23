@@ -26,6 +26,11 @@ You found a bug or a plugin issue?
 # Disclaimer
 **This plugin was designed and work in pocketmine. If you are using fork/spoon of PocketMine-MP. Your issues will automatically closed.**
 
+# Screenshots
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/chat-filter.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/punish-from-player.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+
 # Contributors and Collaborators
 | Name                                        | Contributors                                                                                     |
 |---------------------------------------------|--------------------------------------------------------------------------------------------------|
