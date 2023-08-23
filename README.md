@@ -1,7 +1,9 @@
-# ProfanityFilter
-  <p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/xqwtxon-patch-2/ProfanityFilter.png"></a></p>
+<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/xqwtxon-patch-2/ProfanityFilter.png"></a></p>
 <p align="center">
   <b>A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat.</b><br><br>
+  Are you tired of someone always cursing, saying offensive words in the chat? Are the players too toxic? Do you want to punish them? <br>
+  Well, this plugin might help you. <b>ProfanityFilter</b> can destroy toxic players, punish them to your server! <br>
+  It's configurable and easy to use. You can manually add words easily at the game. <br><br>
   <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.state/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.api/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl.total/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl/ProfanityFilter"></a> <a href="https://gitlocalize.com/repo/8866/whole_project?utm_source=badge"> <img src="https://gitlocalize.com/repo/8866/whole_project/badge.svg" /> </a>
   <br>
   <b>
@@ -9,9 +11,7 @@
   </b>
 </p>
 
-Are you tired of someone always cursing, saying offensive words in the chat? Are the players too toxic? Do you want to punish them? <br>
-Well, this plugin might help you. <b>ProfanityFilter</b> can destroy toxic players, punish them to your server! <br>
-It's configurable and easy to use. You can manually add words easily at the game. <br><br>
+
 
 # Features
 - Ability to customize words that are currently blocked at in-game or customize it at `profanity.yml`
