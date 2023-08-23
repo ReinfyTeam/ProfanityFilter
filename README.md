@@ -1,4 +1,4 @@
-<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/xqwtxon-patch-2/ProfanityFilter.png"></a></p>
+<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ProfanityFilter.png"></a></p>
 <p align="center">
   <b>A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat.</b><br><br>
   Are you tired of someone always cursing, saying offensive words in the chat? Are the players too toxic? Do you want to punish them? <br>
