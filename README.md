@@ -4,6 +4,12 @@ Are you tired of someone always cursing, saying offensive words in the chat? Are
 Well, this plugin might help you. **ProfanityFilter** can destroy toxic players, punish them to your server!
 It's configurable and easy to use. You can manually add words easily at the game.
 
+<p align="center">
+  <b>
+  <a href="https://github.com/ReinfyTeam/ProfanityFilter/wiki">Wiki/Documentation</a> | <a href="https://poggit.pmmp.io/p/ProfanityFilter">Poggit</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/">Github Repository</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/issues">Create an issue.</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/discussions">Discussions</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/pulls">Create a pull request.</a>
+  </b>
+</p>
+
 # Features
 - Ability to customize words that are currently blocked at in-game or customize it at `profanity.yml`
 - Ability to automatic punish (kick/ban) directly at the game.
