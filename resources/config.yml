@@ -56,7 +56,7 @@ max-violations: 5
 kick-message: You have been {type} for reason 'Profanity'.
 # If punisment-type is ban. Here you can type, what duration do you want to apply them.
 # Example: 1d 2hr 5s (1 day, 2 hours, 5 seconds)
-ban-duration: "7d"\
+ban-duration: "7d"
 # Custom Command
 # If "command" is selected type of punishment-type.
 # Execute as player or console? If you want to execute command as player or else console.
