@@ -46,11 +46,15 @@ class GithubUpdateTask extends AsyncTask {
 		$api_from = "";
 		if ($err === null) {
 			$releases = json_decode($json->getBody(), true);
-			$highestVersion = $releases["version"];
-			$artifactUrl = $releases["artifactUrl"];
-			$api_to = $releases["api_to"];
-			$api_from = $releases["api_from"];
-		}
+            if($releases === null){
+                $err = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
+            } else {
+                $highestVersion = $releases["version"];
+                $artifactUrl = $releases["artifactUrl"];
+                $api_to = $releases["api_to"];
+                $api_from = $releases["api_from"];
+            }
+        }
 
 		$this->setResult([$highestVersion, $artifactUrl, $api_to, $err, $api_from]);
 	}

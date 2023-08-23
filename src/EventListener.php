@@ -28,6 +28,7 @@ use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
+use pocketmine\console\ConsoleCommandSender;
 use function strtolower;
 
 class EventListener implements Listener {
@@ -100,8 +101,17 @@ class EventListener implements Listener {
 						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
+                    case "command":
+                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
+                        $this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("command-warning-message")), ["{player_name}"], [$player->getName()]));
+                        if((bool)$this->plugin->getConfig()->get("execute-as-player")){
+                            $this->plugin->getServer()->dispatchCommand($player, $this->plugin->getConfig()->get("command"));
+                        } else {
+                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getLanguage()), $this->plugin->getConfig()->get("command"));
+                        }
+                        break;
 					default:
-						throw new Exception("Cannot Identify the type of punishment in config.yml");
+						throw new Exception("Cannot Identify the type of punishment in config.yml!");
 				}
 			} else {
 				$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;

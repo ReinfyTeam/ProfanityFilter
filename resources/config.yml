@@ -5,18 +5,19 @@
 # Copyright (c) by @xqwtxon
 
 # Please use & instead of using §, you can use {COLOR} if you want.
+# Example: {BLACK}, {BLUE}, {GOLD}, {AQUA}, &0, &1, &6, &b
 
 # Profanity Type
-# Options: "block","hide"
-# Check https://github.com/xqwtxon/HiveProfanityFilter/wiki/Profanity-Types
+# Options: "block", "hide"
+# Check https://github.com/ReinfyTeam/ProfanityFilter/wiki/Profanity-Types
 # for more information about profanity types.
 type: "block"
 
 # Characters are replaced for obscene words
-# Example: hello -> ####
+# Example: hello -> #####
 replacementCharacter: "#"
 # If true, all unicode characters will be removed from the player's message
-# # This should only be enabled if English is the primary language used by the players on your server.
+# This should only be enabled if English is the primary language used by the players on your server.
 removeUnicode: false
 
 # If "block" has selected, you can add your own message right here.
@@ -29,6 +30,7 @@ hide-warning-message: "&e{player_name} &cwas hidden message contains profanity m
 # Moderation Actions Logging
 ban-warning-message: "&e{player_name} &cwas banned due the maximum profanity violation."
 kick-warning-message: "&e{player_name} &cwas kicked due the maximum profanity violation."
+command-warning-message: "&e{player_name} &cwas successfully executed command due the maximum profanity violation."
 
 # Plugin Languages
 # You can make your own plugin language by option: "custom"
@@ -42,7 +44,7 @@ lang: eng
 # Max Violation
 # Player Violation Punishment
 # If player reached max violations. It will be?
-# Options: kick,ban
+# Options: kick,ban,command
 punishment-type: kick
 # If player reached max violations will be kicked.
 # You can set max player violations here.
@@ -54,7 +56,14 @@ max-violations: 5
 kick-message: You have been {type} for reason 'Profanity'.
 # If punisment-type is ban. Here you can type, what duration do you want to apply them.
 # Example: 1d 2hr 5s (1 day, 2 hours, 5 seconds)
-ban-duration: "7d"
+ban-duration: "7d"\
+# Custom Command
+# If "command" is selected type of punishment-type.
+# Execute as player or console? If you want to execute command as player or else console.
+execute-as-player: false
+# Command will be execute:
+# {player_name} - for player username
+command: "/kick {player_name} Profanity"
 
 # Custom Permissions!
 # This is working for plugins that manage permissions.
@@ -85,7 +94,7 @@ mb-strlen: true
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.8
+config-version: 0.0.9
 
 # Plugin Updater
 # Do you want to check latest plugin updates from github servers or poggit?

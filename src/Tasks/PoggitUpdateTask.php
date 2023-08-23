@@ -48,6 +48,8 @@ class PoggitUpdateTask extends AsyncTask {
 		if ($json !== null) {
 			$releases = json_decode($json->getBody(), true);
 			if ($releases === null) {
+                $err["json_decode() parse failed. Is the result is not json type or has a syntax error?"]; // v0.1.2 (json_decode() failes fix)
+                $this->setResult([null, null, null, $err]);
 				return;
 			} // Issue Fix: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 			foreach ($releases as $release) {

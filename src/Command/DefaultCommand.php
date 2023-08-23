@@ -233,7 +233,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		});
 		
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		$form->setContent(TF::RED . $word); 
+		$form->setContent(TF::RED . "Manage: " . $word); 
 		$form->addTitle($this->language->translateMessage("ui-pf-manage-actions-button-remove"), 0, "", $data);
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
 		$player->sendForm($form);
