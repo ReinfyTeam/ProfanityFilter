@@ -79,9 +79,13 @@ profanity: custom
 # 0 - All (Default)
 remove-unicode: 0
 
+# mb_strlen() (1.0.0)
+# This converts non-utf8 characters to utf8
+mb-strlen: true
+
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.7
+config-version: 0.0.8
 
 # Plugin Updater
 # Do you want to check latest plugin updates from github servers or poggit?

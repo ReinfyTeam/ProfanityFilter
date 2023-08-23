@@ -27,7 +27,6 @@ namespace ReinfyTeam\ProfanityFilter;
 use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 use function strtolower;
 
@@ -61,7 +60,6 @@ class EventListener implements Listener {
 		if (strtolower($this->provider) === "custom") {
 			$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		} else {
-                        /** @phpstan-ignore-next-line */
 			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
 		}
 		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
@@ -80,7 +78,7 @@ class EventListener implements Listener {
 					 * TODO: Improve this unicode blocking
 					 */
 					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1)));
+						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#"))), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1), (bool) ($this->plugin->getConfig()->get("mb-strlen") ?? false));
 					} else {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
@@ -94,76 +92,12 @@ class EventListener implements Listener {
 					case "ban":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
+						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					case "kick":
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
-						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
-						break;
-					default:
-						throw new Exception("Cannot Identify the type of punishment in config.yml");
-				}
-			} else {
-				$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]) ? $this->plugin->punishment[$player->getName()] + 1 : 1;
-			}
-		}
-	}
-
-	/**
-	 * When player chats command.
-	 */
-	public function onCommand(PlayerCommandPreprocessEvent $event) : void {
-		$message = $event->getMessage();
-		$player = $event->getPlayer();
-
-		if (!Loader::$enabled) {
-			return;
-		}
-
-		if (strtolower($this->provider) === "custom") {
-			$words = Loader::getInstance()->getProfanity()->get("banned-words");
-		} else {
-                        /** @phpstan-ignore-next-line */
-			$words = (array) ($this->plugin->getProvidedProfanities() ?? PluginAPI::defaultProfanity());
-		}
-		if ($player->hasPermission(($this->plugin->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
-			return;
-		}
-		if (PluginAPI::detectProfanity($message, $words)) {
-			switch ($this->type) {
-				case "block":
-					$event->cancel();
-					$player->sendMessage(PluginUtils::colorize($this->plugin->getConfig()->get("block-message")));
-					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), ["{player_name}"], [$player->getName()]));
-					break;
-				case "hide":
-					/**
-					 * Detect if theres unicode inside of profanity. It will removed if config was set to true...
-					 * TODO: Improve this unicode blocking
-					 */
-					if ((bool) $this->plugin->getConfig()->get("removeUnicode")) {
-						$event->setMessage(PluginAPI::removeUnicode(PluginAPI::removeProfanity($message, $words, ($this->plugin->getConfig()->get("replacementCharacter") ?? "#")), (int) ($this->plugin->getConfig()->get("remove-unicode") ?? 1)));
-					} else {
-						$event->setMessage(PluginAPI::removeProfanity($message, $words));
-					}
-					$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), ["{player_name}"], [$player->getName()]));
-					break;
-				default:
-					throw new Exception("Cannot Identify the type of profanity in config.yml");
-			}
-			if (($this->plugin->punishment[$player->getName()] ?? 0) === $this->plugin->getConfig()->get("max-violations")) {
-				switch ($this->plugin->getConfig()->get("punishment-type")) {
-					case "ban":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
-						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
-						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), ["{player_name}"], [$player->getName()]));
-						break;
-					case "kick":
-						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
-						$player->kick(PluginUtils::colorize(PluginUtils::formatMessage($this->plugin->getConfig()->get("kick-message"))));
+						$player->kick(PluginUtils::colorize($this->plugin->formatMessage($this->plugin->getConfig()->get("kick-message"))));
 						$this->plugin->getLogger()->warning(PluginUtils::format(PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), ["{player_name}"], [$player->getName()]));
 						break;
 					default:

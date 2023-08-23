@@ -48,6 +48,8 @@ class Loader extends PluginBase {
 	public static bool $enabled = true;
 
 	public array $punishment = [];
+	
+	public ?Config $profanity = null;
 
 	public function onLoad() : void {
 		Loader::$instance = $this;
@@ -119,7 +121,9 @@ class Loader extends PluginBase {
 	 * Get Profanity List. Do not call it directly.
 	 */
 	public function getProfanity() : Config {
-		return new Config($this->getDataFolder() . "profanity.yml", Config::YAML);
+		if($this->profanity === null) $this->profanity = new Config($this->getDataFolder() . "profanity.yml", Config::YAML);
+		
+		return $this->profanity;
 	}
 
 	/**
