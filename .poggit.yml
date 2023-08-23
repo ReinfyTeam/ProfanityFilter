@@ -6,4 +6,5 @@ projects:
   ProfanityFilter:
     path: ""
     icon: "ProfanityFilter.png" 
+    lint: false
 ...
