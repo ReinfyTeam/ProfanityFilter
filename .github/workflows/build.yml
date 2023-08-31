@@ -6,11 +6,11 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - name: Download php-binaries.
-       run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/latest/PHP-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
+       run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/latest/download/PHP-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
      - name: Extract php-binaries.
        run: "tar -xvzf php.tar.gz"
      - name: Install php-cs-fixer.
-       run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/latest/php-cs-fixer.phar -o php-cs-fixer.phar"
+       run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
      - name: Run php-cs-fixer.
        run: "./bin/php7/php php-cs-fixer.phar fix"
      - name: Run build.php
