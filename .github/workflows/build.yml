@@ -33,4 +33,4 @@ jobs:
           name: Build information
           path: build_info.json
      - name: Codespace Cleanup
-       run: "rm *"
+       run: "rm -rf *"
