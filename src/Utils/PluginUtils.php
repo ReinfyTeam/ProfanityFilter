@@ -76,31 +76,6 @@ final class PluginUtils {
 		$message = str_replace(array_keys($replacements), array_values($replacements), $message);
 		return $message;
 	}
-	/**
-	 * Format Message. Dont call it directly.
-	 */
-	public static function formatMessage(string $message, ?Player $player = null) : string { // TODO: Move this in the event class
-		$message = str_replace("{type}", Loader::getInstance()->getConfig()->get("punishment-type") . "ed", $message);
-
-		// FOR PLAYERS
-		if ($player === null) {
-			return $message;
-		}
-		$message = str_replace("{player_name}", "Unknown", $message);
-		$message = str_replace("{player_name}", $player->getName(), $message);
-		$message = str_replace("{player_ping}", strval($player->getNetworkSession()->getPing()), $message);
-
-		return $message;
-	}
-
-	public static function format(string $message, array $options, array $value) : string {
-		foreach ($value as $v) {
-			foreach ($options as $o) {
-				$message = str_replace($o, $v, $message);
-			}
-		}
-		return $message;
-	}
 
 	public static function assumeNotFalse(mixed $given, string $message = "This line should be not false. PLEASE REPORT THIS TO THE DEVELOPER.", bool $invert = false) {
 		if (is_bool($given)) {
