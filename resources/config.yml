@@ -63,7 +63,8 @@ ban-duration: "7d"
 execute-as-player: false
 # Command will be execute:
 # {player_name} - for player username
-command: "/kick {player_name} Profanity"
+# Do not add / (slash) it will be as // double slash if you add.
+command: "kick {player_name} Profanity"
 
 # Custom Permissions!
 # This is working for plugins that manage permissions.
@@ -94,7 +95,7 @@ mb-strlen: true
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.0.9
+config-version: 0.1.1
 
 # Plugin Updater
 # Do you want to check latest plugin updates from github servers or poggit?
