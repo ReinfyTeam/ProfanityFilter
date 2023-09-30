@@ -49,7 +49,7 @@ punishment-type: kick
 # If player reached max violations will be kicked.
 # You can set max player violations here.
 # When player is kicked. The player violations will reset.
-max-violations: 5
+max-violations: 15
 # Kick Violation Message
 # However it cool if theres a message will leaved if player
 # violates.
@@ -63,7 +63,7 @@ ban-duration: "7d"
 execute-as-player: false
 # Command will be execute:
 # {player_name} - for player username
-# Do not add / (slash) it will be as // double slash if you add.
+# Do not add / (slash) it will be treated as // double slash.
 command: "kick {player_name} Profanity"
 
 # Custom Permissions!
@@ -89,13 +89,14 @@ profanity: custom
 # 0 - All (Default)
 remove-unicode: 0
 
+# ADVANCE BLOCKING (OPTIONAL)
 # mb_strlen() (1.0.0)
 # This converts non-utf8 characters to utf8
 mb-strlen: true
 
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.1.3
+config-version: 0.1.4
 
 # Plugin Updater
 # Do you want to check latest plugin updates from github servers or poggit?
