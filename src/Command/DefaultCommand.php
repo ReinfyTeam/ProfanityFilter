@@ -212,10 +212,10 @@ class DefaultCommand extends Command implements PluginOwned {
 
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
 		if($removed) $form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", "return");
 		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
 			$form->addButton(T::RED . $word, 0, "", $word);
 		}
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", "return");
 		$player->sendForm($form);
 	}
 	
