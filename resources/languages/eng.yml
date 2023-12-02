@@ -45,6 +45,7 @@ ui-pf-manage-disabled-profanityfilter: "&cSuccessfully disabled &dProfanityFilte
 ui-pf-manage-enabled-profanityfilter: "&aSuccessfully enabled &dProfanityFilter &ato your server."
 profanity-command-use-custom-pf-instead: "&cWe do not support yet provided profanities. Please change config.yml the \"profanity\" value to \"custom\". Feel free to contribute to our plugin by checking /profanityfilter credits."
 ui-pf-manage-remove-done: "&aThe word has been deleted/removed. Please restart your server to take effect."
+ui-pf-manage-added-done: "&aThe word has been added. Please restart your server to take effect."
 profanity-command-removed-word: "&aThe word has been deleted/removed. Please restart your server to take effect."
 profanity-command-added-word: "&aThe word has been added. Please restart your server to take effect."
 ui-pf-addform-specify: "&cPlease specify the word do you want to be added."

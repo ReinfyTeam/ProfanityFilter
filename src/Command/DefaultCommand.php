@@ -150,7 +150,7 @@ class DefaultCommand extends Command implements PluginOwned {
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function sendForm(Player $player) {
+	private function sendForm(Player $player, bool $added = false) {
 		$form = new SimpleForm(function (Player $player, $data) {
 			if ($data === null) {
 				return;
@@ -178,7 +178,11 @@ class DefaultCommand extends Command implements PluginOwned {
 		});
 
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		$form->setContent($this->language->translateMessage("ui-pf-manage-description"));
+		if($added){
+			$form->setContent($this->language->translateMessage("ui-pf-manage-added-done"));
+		}else {
+			$form->setContent($this->language->translateMessage("ui-pf-manage-description"));
+		}
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-2"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-3"));
@@ -250,6 +254,7 @@ class DefaultCommand extends Command implements PluginOwned {
 			if($data[1] === "") $this->addProfanityWordForm($player, true);
 			
 			PluginUtils::addProfanityWord($data[1]);
+			$this->sendForm($player, true);
 		});
 		
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
