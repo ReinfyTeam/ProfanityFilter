@@ -96,7 +96,7 @@ class DefaultCommand extends Command implements PluginOwned {
 			case "list":
 			case "words":
 			case "banned-words":
-				$sender->sendMessage($this->language->translateMessage("banned-words-description=1"));
+				$sender->sendMessage($this->language->translateMessage("banned-words-description-1"));
 				foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
 					$sender->sendMessage("- " . $word);
 				}
