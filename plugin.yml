@@ -1,6 +1,6 @@
 ---
 name: ProfanityFilter
-version: 0.1.3
+version: 0.1.4
 main: ReinfyTeam\ProfanityFilter\Loader
 api:
 - 5.0.0

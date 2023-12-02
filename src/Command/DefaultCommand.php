@@ -29,8 +29,10 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as T;
+use pocketmine\utils\TextFormat as TF;
 use ReinfyTeam\ProfanityFilter\Loader;
 use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
+use ReinfyTeam\ProfanityFilter\Utils\Forms\CustomForm;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
@@ -196,18 +198,18 @@ class DefaultCommand extends Command implements PluginOwned {
 			}
 
 			switch ($data) {
-				case -1:
+				case "return":
 					$this->sendForm($player);
 					break;
 				default:
-					$this->viewAction($player, $data);
+					$this->viewActions($player, $data);
 					break;
 			}
 		});
 
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
 		if($removed) $form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", -1);
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", "return");
 		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
 			$form->addButton(T::RED . $word, 0, "", $word);
 		}
@@ -234,7 +236,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
 		$form->setContent(TF::RED . "Manage: " . $word); 
-		$form->addTitle($this->language->translateMessage("ui-pf-manage-actions-button-remove"), 0, "", $data);
+		$form->addButton($this->language->translateMessage("ui-pf-manage-actions-button-remove"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
 		$player->sendForm($form);
 	}
@@ -246,9 +248,9 @@ class DefaultCommand extends Command implements PluginOwned {
 				return;
 			}
 
-			if($data[0] === "") $this->addProfanityWordForm($player, true);
+			if($data[1] === "") $this->addProfanityWordForm($player, true);
 			
-			PluginUtils::addProfanityWord($data[0]);
+			PluginUtils::addProfanityWord($data[1]);
 		});
 		
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
