@@ -251,7 +251,11 @@ class DefaultCommand extends Command implements PluginOwned {
 				return;
 			}
 
-			if($data[1] === "") $this->addProfanityWordForm($player, true);
+			if($data[1] === "") 
+			{
+				$this->addProfanityWordForm($player, true);
+				return;
+			}
 			
 			PluginUtils::addProfanityWord($data[1]);
 			$this->sendForm($player, true);
