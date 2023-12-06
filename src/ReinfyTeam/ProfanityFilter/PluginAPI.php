@@ -57,7 +57,7 @@ final class PluginAPI {
 			throw new Exception("Cannot replace character longer than 1 character.");
 		}
 		foreach ($words as $profanity) {
-			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity, "utf8")), $message);
+			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity)), $message);
 		}
 		return $message;
 	}
