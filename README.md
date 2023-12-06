@@ -42,6 +42,14 @@ You found a bug or a plugin issue?
 
 [![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/console.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
 
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-main.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-add-words.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-words-actions.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-profanitylist.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+
 # Contributors and Collaborators
 | Name                                        | Contributors                                                                                     |
 |---------------------------------------------|--------------------------------------------------------------------------------------------------|
