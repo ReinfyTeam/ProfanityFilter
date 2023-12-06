@@ -104,7 +104,7 @@ class EventListener implements Listener {
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("kick-message")), [
 							"player" => $player,
-							"type" => $punishType,
+							"type" => $punishType . "ed",
 						], $player));
 						$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), [
 							"player" => $player,
@@ -115,7 +115,7 @@ class EventListener implements Listener {
 						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
 						$player->kick(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("kick-message")), [
 							"player" => $player,
-							"type" => $punishType,
+							"type" => $punishType . "ed", //why??
 						], $player));
 						$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("kick-warning-message")), [
 							"player" => $player,
@@ -125,9 +125,9 @@ class EventListener implements Listener {
                     case "command":
                         $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
                         $this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("command-warning-message")), [
-				"player" => $player,
-				"player_name" => $player->getName(), // backwards compatibility
-			]));
+							"player" => $player,
+							"player_name" => $player->getName(), // backwards compatibility
+						]));
 			if((bool)$this->plugin->getConfig()->get("execute-as-player")){
                             $this->plugin->getServer()->dispatchCommand($player, $this->plugin->getConfig()->get("command"));
                         } else {

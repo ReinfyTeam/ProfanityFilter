@@ -38,7 +38,7 @@ command-warning-message: "&e{player_name} &cwas successfully executed command du
 # You can make your own pull request for more languages.
 # If you create a pull request, you need to comply with international standard ISO 639-2 language code
 # List of ISO 639-2 language codes: https://www.loc.gov/standards/iso639-2/php/code_list.php
-# Available languages: eng (English), vie (Vietnamese), deu (German).
+# Available languages: eng (English)
 lang: eng
 
 # Max Violation

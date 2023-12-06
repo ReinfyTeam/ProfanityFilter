@@ -141,6 +141,11 @@ class DefaultCommand extends Command implements PluginOwned {
 				PluginUtils::addProfanityWord($args[1]);
 				$sender->sendMessage($this->language->translateMessage("profanity-command-added-word"));
 				break;
+			case "reload":
+				$this->plugin->getProfanity(true);
+				$this->plugin->getConfig()->reload();
+				$sender->sendMessage($this->language->translateMessage("profanity-command-reload-complete"));
+				break;
 			default:
 				$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
 				break;
@@ -172,6 +177,11 @@ class DefaultCommand extends Command implements PluginOwned {
 				case 2:
 					$this->addProfanityWordForm($player);
 					break;
+				case 3:
+					$this->plugin->getProfanity(true);
+					$this->plugin->getConfig()->reload();
+					$player->sendMessage($this->language->translateMessage("profanity-ui-reload-complete"));
+					break;
 				default:
 					break;
 			}
@@ -186,6 +196,7 @@ class DefaultCommand extends Command implements PluginOwned {
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-2"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-3"));
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-4"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-exit"));
 		$player->sendForm($form);
 	}

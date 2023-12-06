@@ -120,8 +120,9 @@ class Loader extends PluginBase {
 	/**
 	 * Get Profanity List. Do not call it directly.
 	 */
-	public function getProfanity() : Config {
+	public function getProfanity(bool $reload = false) : Config {
 		if($this->profanity === null) $this->profanity = new Config($this->getDataFolder() . "profanity.yml", Config::YAML);
+		if($reload) $this->profanity->reload();
 		
 		return $this->profanity;
 	}
