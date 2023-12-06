@@ -104,7 +104,7 @@ class EventListener implements Listener {
 						$player->getServer()->getNameBans()->addBan($player->getName(), "Profanity", $this->duration[0], $player->getServer()->getName());
 						$player->kick(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("kick-message")), [
 							"player" => $player,
-							"type" => $punishType . "ed",
+							"type" => $punishType . "ned",
 						], $player));
 						$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("ban-warning-message")), [
 							"player" => $player,
