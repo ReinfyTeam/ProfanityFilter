@@ -131,7 +131,7 @@ class EventListener implements Listener {
 			if((bool)$this->plugin->getConfig()->get("execute-as-player")){
                             $this->plugin->getServer()->dispatchCommand($player, $this->plugin->getConfig()->get("command"));
                         } else {
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getLanguage()), $this->plugin->getConfig()->get("command"));
+                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getServer()->getLanguage()), $this->plugin->getConfig()->get("command"));
                         }
                         break;
 					default:
