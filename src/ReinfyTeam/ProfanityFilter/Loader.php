@@ -31,7 +31,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 use ReinfyTeam\ProfanityFilter\Command\DefaultCommand;
-use ReinfyTeam\ProfanityFilter\Tasks\PoggitUpdateTask;
+use ReinfyTeam\ProfanityFilter\Tasks\GithubUpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\Language;
 use function fclose;
 use function file;
@@ -111,7 +111,7 @@ class Loader extends PluginBase {
 	private function checkUpdate() : void {
 		$lang = new Language();
 		if ($this->getConfig()->get("check-updates")) {
-			$this->getServer()->getAsyncPool()->submitTask(new PoggitUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
+			$this->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 		} else {
 			$this->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
 		}
