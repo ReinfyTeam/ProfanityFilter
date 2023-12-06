@@ -128,13 +128,13 @@ class EventListener implements Listener {
 							"player" => $player,
 							"player_name" => $player->getName(), // backwards compatibility
 						]));
-			if((bool)$this->plugin->getConfig()->get("execute-as-player")){
-                            $this->plugin->getServer()->dispatchCommand($player, InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("command")), [
+						if((bool)$this->plugin->getConfig()->get("execute-as-player")){
+                            $this->plugin->getServer()->dispatchCommand($player, InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
 								"player" => $player,
 								"player_name" => $player->getName(), // backwards compatibility
 							]));
                         } else {
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getServer()->getLanguage()), InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("command")), [
+                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getServer()->getLanguage()), InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
 								"player" => $player,
 								"player_name" => $player->getName(), // backwards compatibility
 							]));
