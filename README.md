@@ -40,6 +40,8 @@ You found a bug or a plugin issue?
 
 [![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/punish-from-player.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
 
+[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/console.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+
 # Contributors and Collaborators
 | Name                                        | Contributors                                                                                     |
 |---------------------------------------------|--------------------------------------------------------------------------------------------------|
