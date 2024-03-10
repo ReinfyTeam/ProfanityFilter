@@ -29,7 +29,7 @@ use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
-use ReinfyTeam\ProfanityFilter\libs\_a3d133e78ba689e4\SOFe\InfoAPI\InfoAPI;
+use ReinfyTeam\ProfanityFilter\libs\_bc4f5edf57a27244\SOFe\InfoAPI\InfoAPI;
 
 use function strtolower;
 
