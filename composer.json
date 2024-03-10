@@ -4,7 +4,8 @@
     "type": "pocketmine-plugin",
     "scripts": {
         "analyze": "vendor/bin/phpstan",
-        "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=ProfanityFilter.phar"
+        "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=ProfanityFilter.phar",
+        "build-source": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -o=./output/"
     },
     "require": {
         "pocketmine/pocketmine-mp": "^5.0.0",
