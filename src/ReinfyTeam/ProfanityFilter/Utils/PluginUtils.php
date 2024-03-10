@@ -26,9 +26,9 @@ namespace ReinfyTeam\ProfanityFilter\Utils;
 
 use DateInterval;
 use DateTime;
-use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use ReinfyTeam\ProfanityFilter\Loader;
+use function array_diff;
 use function array_keys;
 use function array_values;
 use function count;
@@ -39,7 +39,6 @@ use function preg_replace;
 use function str_replace;
 use function strlen;
 use function strtoupper;
-use function strval;
 use function substr;
 use function trim;
 
@@ -142,17 +141,17 @@ final class PluginUtils {
 			return self::stringToTimestamp(Loader::getInstance()->getConfig()->get("ban-duration"));
 		}
 	}
-	
-	public static function removeProfanityWord(string $word) : bool{
+
+	public static function removeProfanityWord(string $word) : bool {
 		$words = Loader::getInstance()->getProfanity()->get("banned-words");
-		$newArray = array_diff($words, array($word));
+		$newArray = array_diff($words, [$word]);
 		Loader::getInstance()->getProfanity()->set("banned-words", (array) array_values($newArray));
 		Loader::getInstance()->getProfanity()->save();
 		Loader::getInstance()->getProfanity()->reload();
 		return true;
 	}
-	
-	public static function addProfanityWord(string $word) :bool {
+
+	public static function addProfanityWord(string $word) : bool {
 		$words = Loader::getInstance()->getProfanity()->get("banned-words");
 		$words[] = $word;
 		Loader::getInstance()->getProfanity()->set("banned-words", (array) $words);

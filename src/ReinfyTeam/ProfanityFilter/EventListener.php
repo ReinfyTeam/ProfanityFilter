@@ -25,11 +25,11 @@ declare(strict_types=1);
 namespace ReinfyTeam\ProfanityFilter;
 
 use Exception;
+use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
-use pocketmine\console\ConsoleCommandSender;
-use SOFe\InfoAPI\InfoAPI;
+use ReinfyTeam\ProfanityFilter\libs\_c6d3c962069a4ddc\SOFe\InfoAPI\InfoAPI;
 
 use function strtolower;
 
@@ -74,9 +74,9 @@ class EventListener implements Listener {
 					$event->cancel();
 					$player->sendMessage(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("block-message")), [], $player));
 					$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("block-warning-message")), [
-							"player" => $player,
-							"player_name" => $player->getName(), // backwards compatibility
-						]));
+						"player" => $player,
+						"player_name" => $player->getName(), // backwards compatibility
+					]));
 					break;
 				case "hide":
 					/**
@@ -89,9 +89,9 @@ class EventListener implements Listener {
 						$event->setMessage(PluginAPI::removeProfanity($message, $words));
 					}
 					$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("hide-warning-message")), [
-							"player" => $player,
-							"player_name" => $player->getName(), // backwards compatibility
-						]));
+						"player" => $player,
+						"player_name" => $player->getName(), // backwards compatibility
+					]));
 					break;
 				default:
 					throw new Exception("Cannot Identify the type of profanity in config.yml");
@@ -122,24 +122,24 @@ class EventListener implements Listener {
 							"player_name" => $player->getName(), // backwards compatibility
 						]));
 						break;
-                    case "command":
-                        $this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
-                        $this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("command-warning-message")), [
+					case "command":
+						$this->plugin->punishment[$player->getName()] = isset($this->plugin->punishment[$player->getName()]);
+						$this->plugin->getLogger()->warning(InfoAPI::render($this->plugin, PluginUtils::colorize($this->plugin->getConfig()->get("command-warning-message")), [
 							"player" => $player,
 							"player_name" => $player->getName(), // backwards compatibility
 						]));
-						if((bool)$this->plugin->getConfig()->get("execute-as-player")){
-                            $this->plugin->getServer()->dispatchCommand($player, InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
+						if ((bool) $this->plugin->getConfig()->get("execute-as-player")) {
+							$this->plugin->getServer()->dispatchCommand($player, InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
 								"player" => $player,
 								"player_name" => $player->getName(), // backwards compatibility
 							]));
-                        } else {
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getServer()->getLanguage()), InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
+						} else {
+							$this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender($this->plugin->getServer(), $this->plugin->getServer()->getLanguage()), InfoAPI::render($this->plugin, $this->plugin->getConfig()->get("command"), [
 								"player" => $player,
 								"player_name" => $player->getName(), // backwards compatibility
 							]));
-                        }
-                        break;
+						}
+						break;
 					default:
 						throw new Exception("Cannot Identify the type of punishment in config.yml!");
 				}
