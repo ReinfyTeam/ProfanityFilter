@@ -40,8 +40,9 @@ jobs:
        uses: s0/git-publish-subdir-action@develop
        env:
           REPO: self
-          BRANCH: build # The branch name where you want to push the assets
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
-          MESSAGE: "ProfanityFilter Build: ({sha}) {msg}" # The commit message
+          BRANCH: build
+          FOLDER: "./"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          MESSAGE: "ProfanityFilter Build: ({sha}) {msg}" 
      - name: Codespace Cleanup
        run: "rm -rf *"
