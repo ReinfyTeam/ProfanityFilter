@@ -62,6 +62,8 @@ jobs:
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar install"
        - name: Build with pharynx
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build-source"
+       - name: Move .poggit.yml to output folder.
+         run: "mv .poggit.yml ./output/"
        - name: Push build from other branch
          uses: s0/git-publish-subdir-action@develop
          env:
