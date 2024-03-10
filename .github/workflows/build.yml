@@ -20,6 +20,14 @@ jobs:
        run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
      - name: Run php-cs-fixer.
        run: "./bin/php7/bin/php php-cs-fixer.phar fix src"
+     - name: Push build from other branch
+       uses: s0/git-publish-subdir-action@develop
+       env:
+          REPO: self
+          BRANCH: build
+          FOLDER: "./"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          MESSAGE: "ProfanityFilter Poggit Build: ({sha}) {msg}" 
      - name: Install composer.phar
        run: "curl -sL https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar"
      - name: Install dependencies.
@@ -36,13 +44,5 @@ jobs:
        with:
           name: Build information
           path: build_info.json
-     - name: Push build from other branch
-       uses: s0/git-publish-subdir-action@develop
-       env:
-          REPO: self
-          BRANCH: build
-          FOLDER: "./"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          MESSAGE: "ProfanityFilter Build: ({sha}) {msg}" 
      - name: Codespace Cleanup
        run: "rm -rf *"
