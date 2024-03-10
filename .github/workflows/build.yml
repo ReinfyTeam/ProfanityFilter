@@ -67,7 +67,7 @@ jobs:
          env:
           REPO: self
           BRANCH: build
-          FOLDER: "./"
+          FOLDER: "./output/"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           MESSAGE: "ProfanityFilter Poggit Build: ({sha}) {msg}" 
        - name: Codespace Cleanup
