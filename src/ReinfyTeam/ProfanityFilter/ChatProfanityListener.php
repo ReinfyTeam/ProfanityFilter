@@ -120,22 +120,9 @@ class ChatProfanityListener implements Listener {
 	 * @param string[] $words
 	 */
 	private function applyHide(PlayerChatEvent $event, string $message, array $words, Player $player) : void {
-		if ((bool) $this->pluginInstance->getConfig()->get("removeUnicode")) {
-			$replacementConfig = $this->pluginInstance->getConfig()->get("replacementCharacter");
-			$replacementCharacter = is_string($replacementConfig) ? $replacementConfig : ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER;
-			$blockTypeConfig = $this->pluginInstance->getConfig()->get("remove-unicode");
-			$blockType = is_int($blockTypeConfig) ? $blockTypeConfig : ProfanityFilterService::UNICODE_BLOCK_LETTERS;
-			$useMultibyteLength = (bool) ($this->pluginInstance->getConfig()->get("mb-strlen") ?? false);
-			$event->setMessage(
-				ProfanityFilterService::sanitizeUnicode(
-					ProfanityFilterService::maskProfanity($message, $words, $replacementCharacter),
-					$blockType,
-					$useMultibyteLength
-				)
-			);
-		} else {
-			$event->setMessage(ProfanityFilterService::maskProfanity($message, $words));
-		}
+		$replacementConfig = $this->pluginInstance->getConfig()->get("replacementCharacter");
+		$replacementCharacter = is_string($replacementConfig) ? $replacementConfig : ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER;
+		$event->setMessage(ProfanityFilterService::maskProfanity($message, $words, $replacementCharacter));
 		$this->pluginInstance->getLogger()->warning($this->renderMessage("hide-warning-message", $player, $player->getName()));
 	}
 

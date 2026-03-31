@@ -16,9 +16,6 @@ type: "block"
 # Characters are replaced for obscene words
 # Example: hello -> #####
 replacementCharacter: "#"
-# If true, all unicode characters will be removed from the player's message
-# This should only be enabled if English is the primary language used by the players on your server.
-removeUnicode: false
 
 # If "block" has selected, you can add your own message right here.
 block-message: "&cHey, Watch your Language!"
@@ -79,24 +76,9 @@ command-permission: profanityfilter.command
 # choose 'custom' if you want to add your own custom profanity words or choose 'provided' to use default plugin provided profanities
 profanity: custom
 
-# Remove Unicode Messages
-# It possible to bypass profanity from unicode characters.
-# Levels of Removing unicode messages:
-# 1 - Only Single Characters (like άαáàâã)
-# 2 - Only Punctuation (like `‛′’‘)
-# 3 - Only Exciting combinations (like ыЫ)
-# 4 - Only Remove Unicode Characters (emojis, minecraft unicodes, etc...)
-# 0 - All (Default)
-remove-unicode: 0
-
-# ADVANCE BLOCKING (OPTIONAL)
-# mb_strlen() (1.0.0)
-# This converts non-utf8 characters to utf8
-mb-strlen: true
-
 # Configuration Version
 # Please dont change this, change this IF YOU KNOW WHAT ARE YOU DOING!
-config-version: 0.1.5
+config-version: 0.1.6
 
 # Plugin Updater
 # Do you want to check latest plugin updates from github servers or poggit?

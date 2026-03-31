@@ -26,15 +26,8 @@ namespace ReinfyTeam\ProfanityFilter;
 
 use ReinfyTeam\ProfanityFilter\Utils\ProfanityPatternCompiler;
 use ReinfyTeam\ProfanityFilter\Utils\ProfanityWordList;
-use ReinfyTeam\ProfanityFilter\Utils\UnicodeSanitizer;
 
 final class ProfanityFilterService {
-	public const UNICODE_BLOCK_ALL = UnicodeSanitizer::BLOCK_ALL;
-	public const UNICODE_BLOCK_LETTERS = UnicodeSanitizer::BLOCK_LETTERS;
-	public const UNICODE_BLOCK_PUNCTUATION = UnicodeSanitizer::BLOCK_PUNCTUATION;
-	public const UNICODE_BLOCK_SYMBOLS = UnicodeSanitizer::BLOCK_SYMBOLS;
-	public const UNICODE_BLOCK_CONTROL = UnicodeSanitizer::BLOCK_CONTROL;
-
 	public const DEFAULT_REPLACEMENT_CHARACTER = ProfanityPatternCompiler::DEFAULT_REPLACEMENT_CHARACTER;
 
 	/**
@@ -54,13 +47,6 @@ final class ProfanityFilterService {
 	 */
 	public static function maskProfanity(string $message, array $words, string $replacementCharacter = self::DEFAULT_REPLACEMENT_CHARACTER) : string {
 		return ProfanityPatternCompiler::maskProfanity($message, $words, $replacementCharacter);
-	}
-
-	/**
-	 * Remove Unicodes and other Non-Printable ASCII Characters from text.
-	 */
-	public static function sanitizeUnicode(string $text, int $blockType = self::UNICODE_BLOCK_LETTERS, bool $useMultibyteLength = true) : string {
-		return UnicodeSanitizer::sanitizeUnicode($text, $blockType, $useMultibyteLength);
 	}
 
 	/**
