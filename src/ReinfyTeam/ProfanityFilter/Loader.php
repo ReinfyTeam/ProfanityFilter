@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter;
 
+use CortexPE\Commando\PacketHooker;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
@@ -77,6 +78,7 @@ class Loader extends PluginBase {
 	}
 
 	public function onEnable() : void {
+		$this->registerPacketHooker();
 		$this->registerCommands();
 		$this->registerListeners();
 	}
@@ -146,7 +148,13 @@ class Loader extends PluginBase {
 	}
 
 	private function registerCommands() : void {
-		$this->getServer()->getCommandMap()->register($this->getDescription()->getName(), new ProfanityFilterCommand());
+		$this->getServer()->getCommandMap()->register($this->getDescription()->getName(), new ProfanityFilterCommand($this));
+	}
+
+	private function registerPacketHooker() : void {
+		if (!PacketHooker::isRegistered()) {
+			PacketHooker::register($this);
+		}
 	}
 
 	private function checkForUpdates() : void {

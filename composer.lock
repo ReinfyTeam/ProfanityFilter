@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d47159c1d00fd8cb5eaa87e4f10961b",
+    "content-hash": "ed27ea132983fd5712719d6b0eb747b8",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -119,6 +119,91 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "muqsit/simple-packet-handler",
+            "version": "0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Muqsit/SimplePacketHandler.git",
+                "reference": "3400302e0d77757e716ac69a4099561bde5634b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Muqsit/SimplePacketHandler/zipball/3400302e0d77757e716ac69a4099561bde5634b3",
+                "reference": "3400302e0d77757e716ac69a4099561bde5634b3",
+                "shasum": ""
+            },
+            "require": {
+                "pocketmine/pocketmine-mp": "^5.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "virion": {
+                    "spec": "3.0",
+                    "namespace-root": "muqsit\\simplepackethandler"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Muqsit",
+                    "email": "hackhack05@gmail.com"
+                }
+            ],
+            "description": "Handle specific data packets (virion for PMMP API 4.0.0)",
+            "support": {
+                "issues": "https://github.com/Muqsit/SimplePacketHandler/issues",
+                "source": "https://github.com/Muqsit/SimplePacketHandler/tree/0.1.5"
+            },
+            "time": "2025-02-16T23:26:12+00:00"
+        },
+        {
+            "name": "paroxity/commando",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Paroxity/Commando.git",
+                "reference": "444746c53e593e7ed942b396d50e4dd072c6f810"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Paroxity/Commando/zipball/444746c53e593e7ed942b396d50e4dd072c6f810",
+                "reference": "444746c53e593e7ed942b396d50e4dd072c6f810",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "virion": {
+                    "spec": "3.0",
+                    "namespace-root": "CortexPE\\Commando"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CortexPE\\Commando\\": [
+                        "src/CortexPE/Commando/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "description": "A Command Framework virion for PocketMine-MP ",
+            "support": {
+                "issues": "https://github.com/Paroxity/Commando/issues",
+                "source": "https://github.com/Paroxity/Commando/tree/3.2.0"
+            },
+            "time": "2024-05-10T11:51:17+00:00"
         },
         {
             "name": "pocketmine/bedrock-block-upgrade-schema",
