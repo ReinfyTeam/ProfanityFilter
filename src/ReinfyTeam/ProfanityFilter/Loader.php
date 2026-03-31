@@ -43,8 +43,11 @@ use function file_exists;
 use function file_put_contents;
 use function is_array;
 use function is_string;
+use function is_dir;
 use function mkdir;
 use function rename;
+use function sys_get_temp_dir;
+use function tempnam;
 use function trim;
 use function unlink;
 
@@ -89,6 +92,11 @@ class Loader extends PluginBase {
 
 	private function ensureConfigIsCurrent() : void {
 		$log = $this->getLogger();
+		$dataFolder = $this->getDataFolder();
+		if (!is_dir($dataFolder)) {
+			@mkdir($dataFolder, 0777, true);
+		}
+
 		$pluginConfigContents = $this->getResourceContents("config.yml");
 		if ($pluginConfigContents === null) {
 			$log->critical("Unable to read default config resource.");
@@ -110,8 +118,9 @@ class Loader extends PluginBase {
 		}
 
 		$log->notice($this->language->translateMessage("outdated-config"));
-		@rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "old-config.yml");
-		@unlink($this->getDataFolder() . "old-config.yml");
+		if (file_exists($dataFolder . "config.yml")) {
+			@rename($dataFolder . "config.yml", $dataFolder . "old-config.yml");
+		}
 		$this->saveResource("config.yml");
 	}
 
@@ -263,9 +272,13 @@ class Loader extends PluginBase {
 	 * @return array<int|string, mixed>|null
 	 */
 	private function parseYamlString(string $yaml) : ?array {
-		$tempFile = $this->getDataFolder() . ".default-config.tmp.yml";
+		$tempFile = tempnam(sys_get_temp_dir(), "pf-default-config-");
+		if ($tempFile === false) {
+			return null;
+		}
 		$written = file_put_contents($tempFile, $yaml);
 		if ($written === false) {
+			@unlink($tempFile);
 			return null;
 		}
 

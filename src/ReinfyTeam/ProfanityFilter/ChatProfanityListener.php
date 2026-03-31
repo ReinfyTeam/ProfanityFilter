@@ -31,10 +31,13 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\player\Player;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 use SOFe\InfoAPI\InfoAPI;
+use function in_array;
 use function filter_var;
 use function is_int;
 use function is_string;
+use function strlen;
 use function strtolower;
+use function trim;
 
 class ChatProfanityListener implements Listener {
 	private Loader $pluginInstance;
@@ -128,8 +131,7 @@ class ChatProfanityListener implements Listener {
 	 * @param string[] $words
 	 */
 	private function applyHide(PlayerChatEvent $event, string $message, array $words, Player $player) : void {
-		$replacementConfig = $this->pluginInstance->getConfig()->get("replacementCharacter");
-		$replacementCharacter = is_string($replacementConfig) ? $replacementConfig : ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER;
+		$replacementCharacter = $this->resolveReplacementCharacter();
 		$event->setMessage(ProfanityFilterService::maskProfanity($message, $words, $replacementCharacter));
 		$this->pluginInstance->getLogger()->warning($this->renderMessage("hide-warning-message", $player, $player->getName()));
 	}
@@ -137,24 +139,28 @@ class ChatProfanityListener implements Listener {
 	private function handlePunishment(Player $player) : void {
 		$playerName = $player->getName();
 		$maxViolations = $this->getMaxViolations();
-		if (($this->pluginInstance->violationCounts[$playerName] ?? 0) === $maxViolations) {
+		$currentCount = ($this->pluginInstance->violationCounts[$playerName] ?? 0) + 1;
+
+		if ($currentCount >= $maxViolations) {
 			$this->pluginInstance->violationCounts[$playerName] = 0;
 			$this->applyConfiguredPunishment($player, $playerName);
 			return;
 		}
 
-		$currentCount = $this->pluginInstance->violationCounts[$playerName] ?? 0;
-		$this->pluginInstance->violationCounts[$playerName] = $currentCount + 1;
+		$this->pluginInstance->violationCounts[$playerName] = $currentCount;
 	}
 
 	private function getMaxViolations() : int {
 		$maxViolations = filter_var($this->pluginInstance->getConfig()->get("max-violations"), FILTER_VALIDATE_INT);
-		return is_int($maxViolations) ? $maxViolations : 0;
+		if (!is_int($maxViolations) || $maxViolations < 1) {
+			return 1;
+		}
+
+		return $maxViolations;
 	}
 
 	private function applyConfiguredPunishment(Player $player, string $playerName) : void {
-		$punishConfig = $this->pluginInstance->getConfig()->get("punishment-type");
-		$punishType = is_string($punishConfig) ? $punishConfig : "kick";
+		$punishType = $this->normalizePunishType();
 		$banExpires = $this->banDuration[0] ?? null;
 
 		switch ($punishType) {
@@ -168,7 +174,9 @@ class ChatProfanityListener implements Listener {
 				$this->applyCommandPunishment($player, $playerName);
 				return;
 			default:
-				throw new Exception("Cannot Identify the type of punishment in config.yml!");
+				// This should never be reached due to normalization fallback.
+				$this->applyKick($player, $playerName);
+				return;
 		}
 	}
 
@@ -213,5 +221,27 @@ class ChatProfanityListener implements Listener {
 			"player_name" => $playerName ?? ($player?->getName() ?? ""),
 			...$extra,
 		], $player);
+	}
+
+	private function resolveReplacementCharacter() : string {
+		$replacementConfig = $this->pluginInstance->getConfig()->get("replacementCharacter");
+		$replacementCharacter = is_string($replacementConfig) ? $replacementConfig : "";
+		if (strlen($replacementCharacter) !== 1) {
+			$this->pluginInstance->getLogger()->warning("replacementCharacter must be exactly 1 character; falling back to default.");
+			return ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER;
+		}
+
+		return $replacementCharacter;
+	}
+
+	private function normalizePunishType() : string {
+		$punishConfig = $this->pluginInstance->getConfig()->get("punishment-type");
+		$punishType = is_string($punishConfig) ? strtolower(trim($punishConfig)) : "kick";
+		if (!in_array($punishType, ["ban", "kick", "command"], true)) {
+			$this->pluginInstance->getLogger()->warning("Invalid punishment-type '{$punishType}', defaulting to kick.");
+			return "kick";
+		}
+
+		return $punishType;
 	}
 }
