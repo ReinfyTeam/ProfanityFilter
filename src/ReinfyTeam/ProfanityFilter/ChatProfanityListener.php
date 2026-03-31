@@ -30,7 +30,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\player\Player;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
-use ReinfyTeam\ProfanityFilter\libs\_f4fbcdfc4cce84bc\SOFe\InfoAPI\InfoAPI;
+use ReinfyTeam\ProfanityFilter\libs\_eafedc926e03859c\SOFe\InfoAPI\InfoAPI;
 use function filter_var;
 use function in_array;
 use function is_int;
