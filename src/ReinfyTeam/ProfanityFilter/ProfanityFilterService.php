@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /*
  *
@@ -20,19 +20,26 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace ReinfyTeam\ProfanityFilter;
 
 use Exception;
 use RuntimeException;
 use function array_filter;
+use function array_map;
+use function array_shift;
+use function array_values;
+use function count;
+use function implode;
+use function is_string;
+use function json_encode;
 use function mb_strlen;
+use function md5;
 use function preg_match;
 use function preg_quote;
 use function preg_replace;
 use function preg_replace_callback;
-use function json_encode;
-use function array_shift;
-use function count;
 use function str_repeat;
 use function str_replace;
 use function strlen;
@@ -160,7 +167,7 @@ final class ProfanityFilterService {
 	 * -
 	 */
 	public static function sanitizeUnicode(string $text, int $blockType = self::UNICODE_BLOCK_LETTERS, bool $useMultibyteLength = true) : string {
-		return match($blockType) {
+		return match ($blockType) {
 			self::UNICODE_BLOCK_LETTERS => self::applyUnicodeBlock1($text),
 			self::UNICODE_BLOCK_PUNCTUATION => self::applyUnicodeBlock2($text),
 			self::UNICODE_BLOCK_SYMBOLS => self::applyUnicodeBlock3($text),

@@ -28,6 +28,7 @@ use pocketmine\form\FormValidationException;
 use function count;
 use function gettype;
 use function is_int;
+use function is_string;
 
 class SimpleForm extends Form {
 	const IMAGE_TYPE_PATH = 0;

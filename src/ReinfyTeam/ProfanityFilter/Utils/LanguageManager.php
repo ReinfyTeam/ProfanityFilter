@@ -27,6 +27,7 @@ namespace ReinfyTeam\ProfanityFilter\Utils;
 use pocketmine\utils\Config;
 use ReinfyTeam\ProfanityFilter\Loader;
 use function file_exists;
+use function is_string;
 
 class LanguageManager {
 	private Loader $plugin;

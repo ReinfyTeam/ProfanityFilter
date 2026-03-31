@@ -27,6 +27,7 @@ namespace ReinfyTeam\ProfanityFilter\Utils\Forms;
 use pocketmine\form\FormValidationException;
 use function gettype;
 use function is_bool;
+use function is_string;
 
 class ModalForm extends Form {
 	private string $content = "";

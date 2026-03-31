@@ -28,6 +28,8 @@ use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
+use function count;
+use function is_array;
 use function json_decode;
 use function vsprintf;
 

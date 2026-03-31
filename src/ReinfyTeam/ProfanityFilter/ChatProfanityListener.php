@@ -31,6 +31,9 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\player\Player;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 use SOFe\InfoAPI\InfoAPI;
+use function filter_var;
+use function is_int;
+use function is_string;
 use function strtolower;
 
 class ChatProfanityListener implements Listener {

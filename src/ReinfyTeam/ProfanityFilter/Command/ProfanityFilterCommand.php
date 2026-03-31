@@ -34,6 +34,8 @@ use ReinfyTeam\ProfanityFilter\Utils\Forms\CustomForm;
 use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
+use function is_string;
+use function strtolower;
 
 class ProfanityFilterCommand extends Command implements PluginOwned {
 	private const BUTTON_VIEW_LIST = 0;
