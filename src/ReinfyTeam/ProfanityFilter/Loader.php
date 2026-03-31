@@ -34,16 +34,19 @@ use pocketmine\utils\SingletonTrait;
 use ReinfyTeam\ProfanityFilter\Command\ProfanityFilterCommand;
 use ReinfyTeam\ProfanityFilter\Tasks\GithubUpdateTask;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
+use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 use function array_filter;
+use function array_map;
 use function array_values;
+use function explode;
 use function fclose;
-use function file;
 use function file_exists;
 use function is_array;
 use function is_string;
 use function mkdir;
 use function rename;
 use function stream_get_contents;
+use function trim;
 use function unlink;
 use function yaml_parse;
 
@@ -188,6 +191,8 @@ class Loader extends PluginBase {
 			@mkdir($this->getDataFolder() . "languages/");
 		}
 		$this->saveResource("languages/eng.yml");
+		// Keep the default profanity wordlist immutable by resetting it on every load.
+		$this->saveResource("profanity_filter.wlist", true);
 		if (!file_exists($this->getDataFolder() . "banned-words.yml")) {
 			$this->saveResource("banned-words.yml");
 		}
@@ -195,6 +200,9 @@ class Loader extends PluginBase {
 		foreach ($this->getResources() as $file) {
 			$this->saveResource($file->getFilename());
 		}
+
+		// Ensure custom profanity list never duplicates the provided defaults.
+		PluginUtils::sanitizeCustomProfanityList();
 	}
 
 	private function registerPermissions() : void {
@@ -228,14 +236,24 @@ class Loader extends PluginBase {
 			return $this->providedProfanityList;
 		}
 
-		$path = $this->getDataFolder() . "profanity_filter.wlist";
-		if (file_exists($path)) {
-			$contents = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
-			$strings = array_values(array_filter($contents, static fn($value) => is_string($value)));
-			$this->providedProfanityList = $strings;
-		} else {
-			$this->providedProfanityList = ProfanityFilterService::getDefaultProfanityList();
+		$resource = $this->getResource("profanity_filter.wlist");
+		if ($resource !== null) {
+			$contents = stream_get_contents($resource);
+			fclose($resource);
+			if ($contents !== false) {
+				$lines = array_values(
+					array_filter(
+						array_map(static fn(string $line) : string => trim($line), explode("\n", $contents)),
+						static fn(string $value) : bool => $value !== ""
+					)
+				);
+				$this->providedProfanityList = $lines;
+				return $this->providedProfanityList;
+			}
 		}
+
+		// Fallback to the smaller built-in list when resource reading fails.
+		$this->providedProfanityList = ProfanityFilterService::getDefaultProfanityList();
 
 		return $this->providedProfanityList;
 	}

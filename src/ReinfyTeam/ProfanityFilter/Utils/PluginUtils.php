@@ -38,12 +38,27 @@ use function preg_match_all;
 use function preg_replace;
 use function str_replace;
 use function strlen;
+use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
 
 final class PluginUtils {
 	private const FOREVER_BAN_VALUE = "Forever";
+
+	/** @var string[] */
+	public const FALLBACK_CUSTOM_WORDS = [
+		"f4ck",
+		"f@ck",
+		"fuk",
+		"b1tch",
+		"b!tch",
+		"sh!t",
+		"sh1tty",
+		"a55",
+		"a5shole",
+		"c0cks",
+	];
 
 	/** @var array<string, string> */
 	private const COLOR_REPLACEMENTS = [
@@ -129,9 +144,65 @@ final class PluginUtils {
 		return is_string($configValue) ? self::parseDurationString($configValue) : null;
 	}
 
+	/**
+	 * Make sure custom profanity words never collide with the provided default list.
+	 *
+	 * @param string[] $fallbackWords
+	 */
+	public static function sanitizeCustomProfanityList(array $fallbackWords = self::FALLBACK_CUSTOM_WORDS) : void {
+		$config = Loader::getInstance()->getProfanityConfig();
+		$rawWords = $config->get("banned-words");
+		$providedLookup = self::buildLookup(Loader::getInstance()->getProvidedProfanityList());
+
+		$filtered = [];
+		$seen = [];
+		$changed = false;
+
+		foreach ((array) $rawWords as $word) {
+			if (!is_string($word)) {
+				$changed = true;
+				continue;
+			}
+			$normalized = self::normalizeWord($word);
+			if ($normalized === "") {
+				$changed = true;
+				continue;
+			}
+			if (isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+				$changed = true;
+				continue;
+			}
+			$seen[$normalized] = true;
+			$filtered[] = $word;
+		}
+
+		if ($filtered === []) {
+			foreach ($fallbackWords as $fallback) {
+				if (!is_string($fallback)) {
+					continue;
+				}
+				$normalized = self::normalizeWord($fallback);
+				if ($normalized === "" || isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+					continue;
+				}
+				$filtered[] = $fallback;
+				$seen[$normalized] = true;
+			}
+			if ($filtered !== []) {
+				$changed = true;
+			}
+		}
+
+		if ($changed) {
+			$config->set("banned-words", array_values($filtered));
+			$config->save();
+			$config->reload();
+		}
+	}
+
 	public static function removeProfanityWord(string $word) : bool {
 		/** @var string[] $words */
-		$words = Loader::getInstance()->getProfanityConfig()->get("banned-words");
+		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
 		$newArray = array_diff($words, [$word]);
 		Loader::getInstance()->getProfanityConfig()->set("banned-words", array_values($newArray));
 		Loader::getInstance()->getProfanityConfig()->save();
@@ -141,11 +212,56 @@ final class PluginUtils {
 
 	public static function addProfanityWord(string $word) : bool {
 		/** @var string[] $words */
-		$words = Loader::getInstance()->getProfanityConfig()->get("banned-words");
-		$words[] = $word;
-		Loader::getInstance()->getProfanityConfig()->set("banned-words", $words);
+		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
+		$providedLookup = self::buildLookup(Loader::getInstance()->getProvidedProfanityList());
+
+		$filteredWords = [];
+		$customLookup = [];
+		foreach ($words as $existingWord) {
+			if (!is_string($existingWord)) {
+				continue;
+			}
+			$filteredWords[] = $existingWord;
+			$customLookup[self::normalizeWord($existingWord)] = true;
+		}
+
+		$normalized = self::normalizeWord($word);
+		if ($normalized === "") {
+			return false;
+		}
+
+		if (isset($providedLookup[$normalized]) || isset($customLookup[$normalized])) {
+			return false;
+		}
+
+		$filteredWords[] = $word;
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", $filteredWords);
 		Loader::getInstance()->getProfanityConfig()->save();
 		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
+	}
+
+	/**
+	 * @param string[] $words
+	 * @return array<string, bool>
+	 */
+	private static function buildLookup(array $words) : array {
+		$lookup = [];
+		foreach ($words as $word) {
+			if (!is_string($word)) {
+				continue;
+			}
+			$normalized = self::normalizeWord($word);
+			if ($normalized === "") {
+				continue;
+			}
+			$lookup[$normalized] = true;
+		}
+
+		return $lookup;
+	}
+
+	private static function normalizeWord(string $word) : string {
+		return strtolower(trim($word));
 	}
 }

@@ -55,4 +55,6 @@ ui-pf-addform-description: "&7Nhập từ bạn muốn thêm vào danh sách."
 ui-pf-addform-example: "VD: nigg3r, fuck3r, v.v."
 profanity-ui-reload-complete: "&eĐã tải lại toàn bộ cấu hình!"
 profanity-command-reload-complete: "&aĐã tải lại toàn bộ cấu hình!"
+ui-pf-addform-blocked: "&cTừ này đã có trong danh sách mặc định hoặc đã nằm trong danh sách của bạn."
+profanity-command-add-blocked: "&cTừ này đã có trong danh sách mặc định hoặc đã được thêm rồi, không thể thêm lại."
 ...

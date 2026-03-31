@@ -184,10 +184,10 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$player->sendForm($form);
 	}
 
-	private function addProfanityWordForm(Player $player, bool $nodata = false) : void {
+	private function addProfanityWordForm(Player $player, ?string $infoKey = null) : void {
 		$title = $this->language->translateMessage("ui-pf-manage-title");
 		$elements = [
-			new Label("info", $nodata ? $this->language->translateMessage("ui-pf-addform-specify") : $this->language->translateMessage("ui-pf-addform-description")),
+			new Label("info", $this->language->translateMessage($infoKey ?? "ui-pf-addform-description")),
 			new Input("word", "", $this->language->translateMessage("ui-pf-addform-example")),
 		];
 
@@ -197,10 +197,13 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 			function (Player $player, \dktapps\pmforms\CustomFormResponse $response) : void {
 				$word = trim($response->getString("word"));
 				if ($word === "") {
-					$this->addProfanityWordForm($player, true);
+					$this->addProfanityWordForm($player, "ui-pf-addform-specify");
 					return;
 				}
-				PluginUtils::addProfanityWord($word);
+				if (!PluginUtils::addProfanityWord($word)) {
+					$this->addProfanityWordForm($player, "ui-pf-addform-blocked");
+					return;
+				}
 				$this->sendForm($player, true);
 			},
 			function (Player $player) : void {

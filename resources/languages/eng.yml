@@ -53,6 +53,8 @@ profanity-command-added-word: "&aThe word has been added. Please restart your se
 ui-pf-addform-specify: "&cPlease specify the word do you want to be added."
 ui-pf-addform-description: "&7Type here the word do you want to add to the list."
 ui-pf-addform-example: "Ex. nigg3r, fuck3r, etc.."
+ui-pf-addform-blocked: "&cThat word is already covered by defaults or already on your list."
 profanity-ui-reload-complete: "&eSuccessfully reloaded all configurations!"
 profanity-command-reload-complete: "&aSuccessfully reloaded all configurations!"
+profanity-command-add-blocked: "&cThat word is already covered by the default list or already exists in your custom list."
 ...

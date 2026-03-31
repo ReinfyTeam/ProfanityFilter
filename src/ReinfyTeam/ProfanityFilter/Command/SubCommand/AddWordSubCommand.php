@@ -55,7 +55,11 @@ class AddWordSubCommand extends BaseProfanitySubCommand {
 			return;
 		}
 
-		PluginUtils::addProfanityWord($args[self::ARG_WORD]);
+		if (!PluginUtils::addProfanityWord($args[self::ARG_WORD])) {
+			$this->sendLang($sender, "profanity-command-add-blocked");
+			return;
+		}
+
 		$this->sendLang($sender, "profanity-command-added-word");
 	}
 }

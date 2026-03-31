@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
 use pocketmine\command\CommandSender;
+use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
 class ReloadSubCommand extends BaseProfanitySubCommand {
 	protected function prepare() : void {
@@ -36,6 +37,7 @@ class ReloadSubCommand extends BaseProfanitySubCommand {
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void {
 		$this->getLoader()->getProfanityConfig(true);
 		$this->getLoader()->getConfig()->reload();
+		PluginUtils::sanitizeCustomProfanityList();
 		$this->sendLang($sender, "profanity-command-reload-complete");
 	}
 }
