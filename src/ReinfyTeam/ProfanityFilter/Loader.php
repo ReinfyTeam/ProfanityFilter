@@ -154,7 +154,7 @@ class Loader extends PluginBase {
 		if ($this->getConfig()->get("check-updates")) {
 			$this->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 		} else {
-			$this->getServer()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
+			$this->getServer()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
 		}
 	}
 

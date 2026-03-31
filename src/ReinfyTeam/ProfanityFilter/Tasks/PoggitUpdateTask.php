@@ -65,17 +65,17 @@ class PoggitUpdateTask extends AsyncTask {
 		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		if ($error !== null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [(string) $error]));
-			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry"));
+			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry"));
 			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($plugin->getDescription()->getName(), $plugin->getDescription()->getVersion()));
 			return;
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $apiFrom]));
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$apiFrom, $apiTo]));
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
+			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $apiFrom]));
+			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$apiFrom, $apiTo]));
+			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
 		} else {
-			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
+			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
 	}
 
