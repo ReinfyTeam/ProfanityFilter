@@ -1,6 +1,6 @@
 ---
 # Vietnamese Translation
-# Dịch bởi: NhanAZ
+# Dịch bởi: @NhanAZ (https://github.com/NhanAZ)
 outdated-config: "&6Tệp cấu hình của bạn đã lỗi thời. Cấu hình sẽ được tự động cập nhật."
 outdated-plugin: "&cBạn đang dùng phiên bản plugin cũ. Hãy cập nhật từ poggit hoặc bản phát hành GitHub."
 new-update-prefix: "[Kiểm tra cập nhật]"
@@ -32,7 +32,7 @@ profanity-command-usage-execute: "&cCách dùng: &e/pf <help/subcommand> [args]"
 banned-words-description-1: "&bĐây là các từ đang bị cấm trong cấu hình. Chúng có thể bị thay bằng **** trong game. Nếu muốn xem hết, hãy kiểm tra thủ công tệp banned-words hoặc xem trên console."
 banned-words-description-2: "&eNếu muốn thêm, hãy bổ sung từ cấm trong cấu hình profanity."
 credits-title: "&l&6Bộ Lọc Profanity"
-credits-subtitle: "&bhttps://github.com/xqwtxon/ProfanityFilter"
+credits-subtitle: "&bhttps://github.com/ReinfyTeam/ProfanityFilter"
 credits-description: "&eCác cộng tác viên công khai của plugin."
 ui-pf-manage-title: "&l&6Bộ Lọc Profanity"
 ui-pf-manage-description: "&bBạn có thể quản lý ở đây."
