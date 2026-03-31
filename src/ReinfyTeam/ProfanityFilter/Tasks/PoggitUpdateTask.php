@@ -41,29 +41,7 @@ class PoggitUpdateTask extends AsyncTask {
 	}
 
 	public function onRun() : void {
-		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
-		$highestVersion = $this->pluginVersion;
-		$artifactUrl = "";
-		$api = "";
-		if ($json !== null) {
-			$releases = json_decode($json->getBody(), true);
-			if ($releases === null) {
-				$err["json_decode() parse failed. Is the result is not json type or has a syntax error?"]; // v0.1.2 (json_decode() failes fix)
-				$this->setResult([null, null, null, $err]);
-				return;
-			} // Issue Fix: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
-			foreach ($releases as $release) {
-				if (version_compare($highestVersion, $release["version"], ">=")) {
-					continue;
-				}
-				$highestVersion = $release["version"];
-				$artifactUrl = $release["artifact_url"];
-				$api_from = $release["api"][0]["from"];
-				$api_to = $release["api"][0]["to"];
-			}
-		}
-
-		$this->setResult([$highestVersion, $artifactUrl, $api, $err]);
+		$this->setResult($this->fetchReleases());
 	}
 
 	public function onCompletion() : void {
@@ -72,8 +50,8 @@ class PoggitUpdateTask extends AsyncTask {
 		if ($plugin === null) {
 			return;
 		}
-		[$highestVersion, $artifactUrl, $api, $err] = $this->getResult();
-		if ($highestVersion === null || $artifactUrl === null || $api === null) {
+		[$highestVersion, $artifactUrl, $api_from, $api_to, $err] = $this->getResult();
+		if ($highestVersion === null || $artifactUrl === null || $api_from === null || $api_to === null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
 			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
 			return;
@@ -86,11 +64,38 @@ class PoggitUpdateTask extends AsyncTask {
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api_from]));
 			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$api_from, $api_to]));
 			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
 		} else {
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
+	}
+
+	private function fetchReleases() : array {
+		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, 10, [], $err);
+		$highestVersion = $this->pluginVersion;
+		$artifactUrl = "";
+		$api_from = null;
+		$api_to = null;
+
+		if ($json !== null) {
+			$releases = json_decode($json->getBody(), true);
+			if ($releases === null) {
+				$err["json_decode() parse failed. Is the result is not json type or has a syntax error?"]; // v0.1.2 (json_decode() failes fix)
+				return [null, null, null, null, $err];
+			} // Issue Fix: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
+			foreach ($releases as $release) {
+				if (version_compare($highestVersion, $release["version"], ">=")) {
+					continue;
+				}
+				$highestVersion = $release["version"];
+				$artifactUrl = $release["artifact_url"];
+				$api_from = $release["api"][0]["from"];
+				$api_to = $release["api"][0]["to"];
+			}
+		}
+
+		return [$highestVersion, $artifactUrl, $api_from, $api_to, $err];
 	}
 }

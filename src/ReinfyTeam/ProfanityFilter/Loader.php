@@ -90,18 +90,25 @@ class Loader extends PluginBase {
 	}
 
 	private function loadListeners() : void {
-		switch ($this->getConfig()->get("type")) {
-			case "block":
-				$this->getServer()->getPluginManager()->registerEvents(new EventListener("block", $this->getConfig()->get("profanity")), $this);
-				break;
-			case "hide":
-				$this->getServer()->getPluginManager()->registerEvents(new EventListener("hide", $this->getConfig()->get("profanity")), $this);
-				break;
-			default:
-				$this->getLogger()->critical("Invalid Profanity Type. Please check instruction on your configuration.");
-				$this->getServer()->getPluginManager()->disablePlugin($this);
-				break;
+		$listener = $this->buildListener();
+		if ($listener === null) {
+			return;
 		}
+		$this->getServer()->getPluginManager()->registerEvents($listener, $this);
+	}
+
+	private function buildListener() : ?EventListener {
+		return match ($this->getConfig()->get("type")) {
+			"block" => new EventListener("block", $this->getConfig()->get("profanity")),
+			"hide" => new EventListener("hide", $this->getConfig()->get("profanity")),
+			default => $this->handleInvalidType(),
+		};
+	}
+
+	private function handleInvalidType() : ?EventListener {
+		$this->getLogger()->critical("Invalid Profanity Type. Please check instruction on your configuration.");
+		$this->getServer()->getPluginManager()->disablePlugin($this);
+		return null;
 	}
 
 	private function registerCommands() : void {

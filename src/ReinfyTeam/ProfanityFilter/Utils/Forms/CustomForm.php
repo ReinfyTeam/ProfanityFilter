@@ -77,9 +77,7 @@ class CustomForm extends Form {
 	}
 
 	public function addLabel(string $text, ?string $label = null) : void {
-		$this->addContent(["type" => "label", "text" => $text]);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => $v === null;
+		$this->addElement(["type" => "label", "text" => $text], static fn($v) => $v === null, $label);
 	}
 
 	public function addToggle(string $text, bool $default = null, ?string $label = null) : void {
@@ -87,9 +85,7 @@ class CustomForm extends Form {
 		if ($default !== null) {
 			$content["default"] = $default;
 		}
-		$this->addContent($content);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => is_bool($v);
+		$this->addElement($content, static fn($v) => is_bool($v), $label);
 	}
 
 	public function addSlider(string $text, int $min, int $max, int $step = -1, int $default = -1, ?string $label = null) : void {
@@ -100,9 +96,7 @@ class CustomForm extends Form {
 		if ($default !== -1) {
 			$content["default"] = $default;
 		}
-		$this->addContent($content);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => (is_float($v) || is_int($v)) && $v >= $min && $v <= $max;
+		$this->addElement($content, static fn($v) => (is_float($v) || is_int($v)) && $v >= $min && $v <= $max, $label);
 	}
 
 	public function addStepSlider(string $text, array $steps, int $defaultIndex = -1, ?string $label = null) : void {
@@ -110,24 +104,24 @@ class CustomForm extends Form {
 		if ($defaultIndex !== -1) {
 			$content["default"] = $defaultIndex;
 		}
-		$this->addContent($content);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => is_int($v) && isset($steps[$v]);
+		$this->addElement($content, static fn($v) => is_int($v) && isset($steps[$v]), $label);
 	}
 
 	public function addDropdown(string $text, array $options, int $default = null, ?string $label = null) : void {
-		$this->addContent(["type" => "dropdown", "text" => $text, "options" => $options, "default" => $default]);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => is_int($v) && isset($options[$v]);
+		$this->addElement(["type" => "dropdown", "text" => $text, "options" => $options, "default" => $default], static fn($v) => is_int($v) && isset($options[$v]), $label);
 	}
 
 	public function addInput(string $text, string $placeholder = "", string $default = null, ?string $label = null) : void {
-		$this->addContent(["type" => "input", "text" => $text, "placeholder" => $placeholder, "default" => $default]);
-		$this->labelMap[] = $label ?? count($this->labelMap);
-		$this->validationMethods[] = static fn ($v) => is_string($v);
+		$this->addElement(["type" => "input", "text" => $text, "placeholder" => $placeholder, "default" => $default], static fn($v) => is_string($v), $label);
 	}
 
 	private function addContent(array $content) : void {
 		$this->data["content"][] = $content;
+	}
+
+	private function addElement(array $content, callable $validator, ?string $label = null) : void {
+		$this->addContent($content);
+		$this->labelMap[] = $label ?? count($this->labelMap);
+		$this->validationMethods[] = $validator;
 	}
 }

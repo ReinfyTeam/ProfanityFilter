@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
  *
@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace ReinfyTeam\ProfanityFilter;
 
 use Exception;
+use RuntimeException;
 use function mb_strlen;
 use function preg_match;
 use function preg_replace;
@@ -40,8 +41,7 @@ final class PluginAPI {
 	public static function detectProfanity(string $message, array $words) : bool {
 		$filterCount = sizeof($words);
 		for ($i = 0; $i < $filterCount; $i++) {
-			$condition = preg_match("/" . $words[$i] . "/iu", $message) > 0;
-			if ($condition) {
+			if (preg_match("/" . $words[$i] . "/iu", $message) > 0) {
 				return true;
 			}
 		}
@@ -76,194 +76,113 @@ final class PluginAPI {
 			$text = mb_strlen($text, "utf8");
 		}
 
-		switch($block_type) {
-			case 1:
-				// Single Characters
-				$text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
-				$text = preg_replace("/[∆лДΛдАÁÀÂÃÄ]/u", "A", $text);
-				$text = preg_replace("/[ЂЪЬБъь]/u", "b", $text);
-				$text = preg_replace("/[βвВ]/u", "B", $text);
-				$text = preg_replace("/[çς©с]/u", "c", $text);
-				$text = preg_replace("/[ÇС]/u", "C", $text);
-				$text = preg_replace("/[δ]/u", "d", $text);
-				$text = preg_replace("/[éèêëέëèεе℮ёєэЭ]/u", "e", $text);
-				$text = preg_replace("/[ÉÈÊË€ξЄ€Е∑]/u", "E", $text);
-				$text = preg_replace("/[₣]/u", "F", $text);
-				$text = preg_replace("/[НнЊњ]/u", "H", $text);
-				$text = preg_replace("/[ђћЋ]/u", "h", $text);
-				$text = preg_replace("/[ÍÌÎÏ]/u", "I", $text);
-				$text = preg_replace("/[íìîïιίϊі]/u", "i", $text);
-				$text = preg_replace("/[Јј]/u", "j", $text);
-				$text = preg_replace("/[ΚЌК]/u", 'K', $text);
-				$text = preg_replace("/[ќк]/u", 'k', $text);
-				$text = preg_replace("/[ℓ∟]/u", 'l', $text);
-				$text = preg_replace("/[Мм]/u", "M", $text);
-				$text = preg_replace("/[ñηήηπⁿ]/u", "n", $text);
-				$text = preg_replace("/[Ñ∏пПИЙийΝЛ]/u", "N", $text);
-				$text = preg_replace("/[óòôõºöοФσόо]/u", "o", $text);
-				$text = preg_replace("/[ÓÒÔÕÖθΩθОΩ]/u", "O", $text);
-				$text = preg_replace("/[ρφрРф]/u", "p", $text);
-				$text = preg_replace("/[®яЯ]/u", "R", $text);
-				$text = preg_replace("/[ГЃгѓ]/u", "r", $text);
-				$text = preg_replace("/[Ѕ]/u", "S", $text);
-				$text = preg_replace("/[ѕ]/u","s", $text);
-				$text = preg_replace("/[Тт]/u", "T", $text);
-				$text = preg_replace("/[τ†‡]/u", "t", $text);
-				$text = preg_replace("/[úùûüџμΰµυϋύ]/u", "u", $text);
-				$text = preg_replace("/[√]/u", "v", $text);
-				$text = preg_replace("/[ÚÙÛÜЏЦц]/u", "U", $text);
-				$text = preg_replace("/[Ψψωώẅẃẁщш]/u", "w", $text);
-				$text = preg_replace("/[ẀẄẂШЩ]/u", "W", $text);
-				$text = preg_replace("/[ΧχЖХж]/u", "x", $text);
-				$text = preg_replace("/[ỲΫ¥]/u", "Y", $text);
-				$text = preg_replace("/[ỳγўЎУуч]/u", "y", $text);
-				$text = preg_replace("/[ζ]/u", "Z", $text);
-				break;
-			case 2:
-				// Punctuation
-				$text = preg_replace("/[‚‚]/u", ",", $text);
-				$text = preg_replace("/[`‛′’‘]/u", "'", $text);
-				$text = preg_replace("/[″“”«»„]/u", '"', $text);
-				$text = preg_replace("/[—–―−–‾⌐─↔→←]/u", '-', $text);
-				$text = preg_replace("/[  ]/u", ' ', $text);
-
-				$text = str_replace("…", "...", $text);
-				$text = str_replace("≠", "!=", $text);
-				$text = str_replace("≤", "<=", $text);
-				$text = str_replace("≥", ">=", $text);
-				$text = preg_replace("/[‗≈≡]/u", "=", $text);
-				break;
-			case 3:
-				// Exciting combinations
-				$text = str_replace("ыЫ", "bl", $text);
-				$text = str_replace("℅", "c/o", $text);
-				$text = str_replace("₧", "Pts", $text);
-				$text = str_replace("™", "tm", $text);
-				$text = str_replace("№", "No", $text);
-				$text = str_replace("Ч", "4", $text);
-				$text = str_replace("‰", "%", $text);
-				$text = preg_replace("/[∙•]/u", "*", $text);
-				$text = str_replace("‹", "<", $text);
-				$text = str_replace("›", ">", $text);
-				$text = str_replace("‼", "!!", $text);
-				$text = str_replace("⁄", "/", $text);
-				$text = str_replace("∕", "/", $text);
-				$text = str_replace("⅞", "7/8", $text);
-				$text = str_replace("⅝", "5/8", $text);
-				$text = str_replace("⅜", "3/8", $text);
-				$text = str_replace("⅛", "1/8", $text);
-				$text = preg_replace("/[‰]/u", "%", $text);
-				$text = preg_replace("/[Љљ]/u", "Ab", $text);
-				$text = preg_replace("/[Юю]/u", "IO", $text);
-				$text = preg_replace("/[ﬁﬂ]/u", "fi", $text);
-				$text = preg_replace("/[зЗ]/u", "3", $text);
-				$text = str_replace("£", "(pounds)", $text);
-				$text = str_replace("₤", "(lira)", $text);
-				$text = preg_replace("/[‰]/u", "%", $text);
-				$text = preg_replace("/[↨↕↓↑│]/u", "|", $text);
-				$text = preg_replace("/[∞∩∫⌂⌠⌡]/u", "", $text);
-				break;
-			case 4:
-				// Remove Unicode Characters
-				$text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
-				break;
-			case 0:
-				// Single Characters
-				$text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
-				$text = preg_replace("/[∆лДΛдАÁÀÂÃÄ]/u", "A", $text);
-				$text = preg_replace("/[ЂЪЬБъь]/u", "b", $text);
-				$text = preg_replace("/[βвВ]/u", "B", $text);
-				$text = preg_replace("/[çς©с]/u", "c", $text);
-				$text = preg_replace("/[ÇС]/u", "C", $text);
-				$text = preg_replace("/[δ]/u", "d", $text);
-				$text = preg_replace("/[éèêëέëèεе℮ёєэЭ]/u", "e", $text);
-				$text = preg_replace("/[ÉÈÊË€ξЄ€Е∑]/u", "E", $text);
-				$text = preg_replace("/[₣]/u", "F", $text);
-				$text = preg_replace("/[НнЊњ]/u", "H", $text);
-				$text = preg_replace("/[ђћЋ]/u", "h", $text);
-				$text = preg_replace("/[ÍÌÎÏ]/u", "I", $text);
-				$text = preg_replace("/[íìîïιίϊі]/u", "i", $text);
-				$text = preg_replace("/[Јј]/u", "j", $text);
-				$text = preg_replace("/[ΚЌК]/u", 'K', $text);
-				$text = preg_replace("/[ќк]/u", 'k', $text);
-				$text = preg_replace("/[ℓ∟]/u", 'l', $text);
-				$text = preg_replace("/[Мм]/u", "M", $text);
-				$text = preg_replace("/[ñηήηπⁿ]/u", "n", $text);
-				$text = preg_replace("/[Ñ∏пПИЙийΝЛ]/u", "N", $text);
-				$text = preg_replace("/[óòôõºöοФσόо]/u", "o", $text);
-				$text = preg_replace("/[ÓÒÔÕÖθΩθОΩ]/u", "O", $text);
-				$text = preg_replace("/[ρφрРф]/u", "p", $text);
-				$text = preg_replace("/[®яЯ]/u", "R", $text);
-				$text = preg_replace("/[ГЃгѓ]/u", "r", $text);
-				$text = preg_replace("/[Ѕ]/u", "S", $text);
-				$text = preg_replace("/[ѕ]/u","s", $text);
-				$text = preg_replace("/[Тт]/u", "T", $text);
-				$text = preg_replace("/[τ†‡]/u", "t", $text);
-				$text = preg_replace("/[úùûüџμΰµυϋύ]/u", "u", $text);
-				$text = preg_replace("/[√]/u", "v", $text);
-				$text = preg_replace("/[ÚÙÛÜЏЦц]/u", "U", $text);
-				$text = preg_replace("/[Ψψωώẅẃẁщш]/u", "w", $text);
-				$text = preg_replace("/[ẀẄẂШЩ]/u", "W", $text);
-				$text = preg_replace("/[ΧχЖХж]/u", "x", $text);
-				$text = preg_replace("/[ỲΫ¥]/u", "Y", $text);
-				$text = preg_replace("/[ỳγўЎУуч]/u", "y", $text);
-				$text = preg_replace("/[ζ]/u", "Z", $text);
-
-				// Punctuation
-				$text = preg_replace("/[‚‚]/u", ",", $text);
-				$text = preg_replace("/[`‛′’‘]/u", "'", $text);
-				$text = preg_replace("/[″“”«»„]/u", '"', $text);
-				$text = preg_replace("/[—–―−–‾⌐─↔→←]/u", '-', $text);
-				$text = preg_replace("/[  ]/u", ' ', $text);
-
-				$text = str_replace("…", "...", $text);
-				$text = str_replace("≠", "!=", $text);
-				$text = str_replace("≤", "<=", $text);
-				$text = str_replace("≥", ">=", $text);
-				$text = preg_replace("/[‗≈≡]/u", "=", $text);
-
-				// Exciting combinations
-				$text = str_replace("ыЫ", "bl", $text);
-				$text = str_replace("℅", "c/o", $text);
-				$text = str_replace("₧", "Pts", $text);
-				$text = str_replace("™", "tm", $text);
-				$text = str_replace("№", "No", $text);
-				$text = str_replace("Ч", "4", $text);
-				$text = str_replace("‰", "%", $text);
-				$text = preg_replace("/[∙•]/u", "*", $text);
-				$text = str_replace("‹", "<", $text);
-				$text = str_replace("›", ">", $text);
-				$text = str_replace("‼", "!!", $text);
-				$text = str_replace("⁄", "/", $text);
-				$text = str_replace("∕", "/", $text);
-				$text = str_replace("⅞", "7/8", $text);
-				$text = str_replace("⅝", "5/8", $text);
-				$text = str_replace("⅜", "3/8", $text);
-				$text = str_replace("⅛", "1/8", $text);
-				$text = preg_replace("/[‰]/u", "%", $text);
-				$text = preg_replace("/[Љљ]/u", "Ab", $text);
-				$text = preg_replace("/[Юю]/u", "IO", $text);
-				$text = preg_replace("/[ﬁﬂ]/u", "fi", $text);
-				$text = preg_replace("/[зЗ]/u", "3", $text);
-				$text = str_replace("£", "(pounds)", $text);
-				$text = str_replace("₤", "(lira)", $text);
-				$text = preg_replace("/[‰]/u", "%", $text);
-				$text = preg_replace("/[↨↕↓↑│]/u", "|", $text);
-				$text = preg_replace("/[∞∩∫⌂⌠⌡]/u", "", $text);
-
-				// Remove Unicode Characters
-				$text = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
-				break;
-			default:
-				throw new \RuntimeException("Unable to read properties of " . $block_type . ", because the id could'nt be found. Check your configuration if it is correct.");
-				break;
-		}
-		return $text;
+		return match($block_type) {
+			1 => self::applyUnicodeBlock1($text),
+			2 => self::applyUnicodeBlock2($text),
+			3 => self::applyUnicodeBlock3($text),
+			4 => self::applyUnicodeBlock4($text),
+			0 => self::applyAllUnicodeBlocks($text),
+			default => throw new RuntimeException("Unable to read properties of " . $block_type . ", because the id could'nt be found. Check your configuration if it is correct."),
+		};
 	}
 
-	/**
-	 * Returns array batch in english default profanity.
-	 */
+	private static function applyUnicodeBlock1(string $text) : string {
+		$text = preg_replace("/[âˆ‚Î¬Î±ï„ƒÃ¡Ã Ã¢Ã£ÂªÃ¤]/u", "a", $text);
+		$text = preg_replace("/[âˆ†Ð»Ð”Î›Ð´ÐÃÃ€Ã‚ÃƒÃ„]/u", "A", $text);
+		$text = preg_replace("/[Ð‚ÐªÐ¬Ð‘ÑŠÑŒ]/u", "b", $text);
+		$text = preg_replace("/[Î²Ð²Ð’]/u", "B", $text);
+		$text = preg_replace("/[Ã§Ï‚Â©Ñ]/u", "c", $text);
+		$text = preg_replace("/[Ã‡Ð¡]/u", "C", $text);
+		$text = preg_replace("/[Î´ï„„]/u", "d", $text);
+		$text = preg_replace("/[Ã©Ã¨ÃªÃ«Î­Ã«Ã¨Îµï„…Ðµâ„®Ñ‘Ñ”ÑÐ­]/u", "e", $text);
+		$text = preg_replace("/[Ã‰ÃˆÃŠÃ‹â‚¬Î¾Ð„â‚¬Ð•âˆ‘]/u", "E", $text);
+		$text = preg_replace("/[â‚£]/u", "F", $text);
+		$text = preg_replace("/[ÐÐ½ÐŠÑš]/u", "H", $text);
+		$text = preg_replace("/[Ñ’Ñ›Ð‹]/u", "h", $text);
+		$text = preg_replace("/[ÃÃŒÃŽÃ]/u", "I", $text);
+		$text = preg_replace("/[Ã­Ã¬Ã®Ã¯Î¹Î¯ÏŠÑ–]/u", "i", $text);
+		$text = preg_replace("/[ÐˆÑ˜]/u", "j", $text);
+		$text = preg_replace("/[ÎšÐŒÐš]/u", 'K', $text);
+		$text = preg_replace("/[ÑœÐº]/u", 'k', $text);
+		$text = preg_replace("/[â„“âˆŸ]/u", 'l', $text);
+		$text = preg_replace("/[ÐœÐ¼]/u", "M", $text);
+		$text = preg_replace("/[Ã±Î·Î®Î·Ï€â¿]/u", "n", $text);
+		$text = preg_replace("/[Ã‘âˆÐ¿ÐŸÐ˜Ð™Ð¸Ð¹ÎÐ›]/u", "N", $text);
+		$text = preg_replace("/[Ã³Ã²Ã´ÃµÂºÃ¶Î¿ï„†ï„ˆÐ¤ÏƒÏŒÐ¾]/u", "o", $text);
+		$text = preg_replace("/[Ã“Ã’Ã”Ã•Ã–Î¸Î©Î¸Ðžâ„¦]/u", "O", $text);
+		$text = preg_replace("/[ÏÏ†Ñ€Ð Ñ„]/u", "p", $text);
+		$text = preg_replace("/[Â®ÑÐ¯]/u", "R", $text);
+		$text = preg_replace("/[Ð“ÐƒÐ³Ñ“]/u", "r", $text);
+		$text = preg_replace("/[Ð…]/u", "S", $text);
+		$text = preg_replace("/[Ñ•]/u","s", $text);
+		$text = preg_replace("/[Ð¢Ñ‚]/u", "T", $text);
+		$text = preg_replace("/[Ï„â€ â€¡]/u", "t", $text);
+		$text = preg_replace("/[ÃºÃ¹Ã»Ã¼ÑŸÎ¼Î°ÂµÏ…Ï‹Ï]/u", "u", $text);
+		$text = preg_replace("/[âˆš]/u", "v", $text);
+		$text = preg_replace("/[ÃšÃ™Ã›ÃœÐÐ¦Ñ†]/u", "U", $text);
+		$text = preg_replace("/[Î¨ÏˆÏ‰ÏŽáº…áºƒáºÑ‰Ñˆï„‡]/u", "w", $text);
+		$text = preg_replace("/[áº€áº„áº‚Ð¨Ð©]/u", "W", $text);
+		$text = preg_replace("/[Î§Ï‡Ð–Ð¥Ð¶]/u", "x", $text);
+		$text = preg_replace("/[á»²Î«Â¥]/u", "Y", $text);
+		$text = preg_replace("/[á»³Î³ÑžÐŽÐ£ÑƒÑ‡]/u", "y", $text);
+		return preg_replace("/[Î¶]/u", "Z", $text);
+	}
+
+	private static function applyUnicodeBlock2(string $text) : string {
+		$text = preg_replace("/[â€šâ€šï€„ï€…]/u", ",", $text);
+		$text = preg_replace("/[`â€›â€²â€™â€˜]/u", "'", $text);
+		$text = preg_replace("/[â€³â€œâ€Â«Â»â€ž]/u", '"', $text);
+		$text = preg_replace("/[â€”â€“â€•âˆ’â€“â€¾âŒâ”€â†”â†’â†]/u", '-', $text);
+		$text = preg_replace("/[  ]/u", ' ', $text);
+
+		$text = str_replace("â€¦", "...", $text);
+		$text = str_replace("â‰ ", "!=", $text);
+		$text = str_replace("â‰¤", "<=", $text);
+		$text = str_replace("â‰¥", ">=", $text);
+		return preg_replace("/[â€—â‰ˆâ‰¡]/u", "=", $text);
+	}
+
+	private static function applyUnicodeBlock3(string $text) : string {
+		$text = str_replace("Ñ‹Ð«", "bl", $text);
+		$text = str_replace("â„…", "c/o", $text);
+		$text = str_replace("â‚§", "Pts", $text);
+		$text = str_replace("â„¢", "tm", $text);
+		$text = str_replace("â„–", "No", $text);
+		$text = str_replace("Ð§", "4", $text);
+		$text = str_replace("â€°", "%", $text);
+		$text = preg_replace("/[âˆ™â€¢]/u", "*", $text);
+		$text = str_replace("â€¹", "<", $text);
+		$text = str_replace("â€º", ">", $text);
+		$text = str_replace("â€¼", "!!", $text);
+		$text = str_replace("â„", "/", $text);
+		$text = str_replace("âˆ•", "/", $text);
+		$text = str_replace("â…ž", "7/8", $text);
+		$text = str_replace("â…", "5/8", $text);
+		$text = str_replace("â…œ", "3/8", $text);
+		$text = str_replace("â…›", "1/8", $text);
+		$text = preg_replace("/[â€°]/u", "%", $text);
+		$text = preg_replace("/[Ð‰Ñ™]/u", "Ab", $text);
+		$text = preg_replace("/[Ð®ÑŽ]/u", "IO", $text);
+		$text = preg_replace("/[ï¬ï¬‚ï€ï€‚]/u", "fi", $text);
+		$text = preg_replace("/[Ð·Ð—]/u", "3", $text);
+		$text = str_replace("Â£", "(pounds)", $text);
+		$text = str_replace("â‚¤", "(lira)", $text);
+		$text = preg_replace("/[â€°]/u", "%", $text);
+		$text = preg_replace("/[â†¨â†•â†“â†‘â”‚]/u", "|", $text);
+		return preg_replace("/[âˆžâˆ©âˆ«âŒ‚âŒ âŒ¡]/u", "", $text);
+	}
+
+	private static function applyUnicodeBlock4(string $text) : string {
+		return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
+	}
+
+	private static function applyAllUnicodeBlocks(string $text) : string {
+		$text = self::applyUnicodeBlock1($text);
+		$text = self::applyUnicodeBlock2($text);
+		$text = self::applyUnicodeBlock3($text);
+		return self::applyUnicodeBlock4($text);
+	}
+
 	public static function defaultProfanity() : array {
 		return [
 			"anal",
@@ -341,3 +260,5 @@ final class PluginAPI {
 		];
 	}
 }
+
+

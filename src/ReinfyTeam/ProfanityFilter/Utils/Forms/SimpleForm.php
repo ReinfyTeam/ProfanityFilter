@@ -78,10 +78,16 @@ class SimpleForm extends Form {
 	public function addButton(string $text, int $imageType = -1, string $imagePath = "", ?string $label = null) : void {
 		$content = ["text" => $text];
 		if ($imageType !== -1) {
-			$content["image"]["type"] = $imageType === 0 ? "path" : "url";
-			$content["image"]["data"] = $imagePath;
+			$content["image"] = $this->buildImage($imageType, $imagePath);
 		}
 		$this->data["buttons"][] = $content;
 		$this->labelMap[] = $label ?? count($this->labelMap);
+	}
+
+	private function buildImage(int $imageType, string $imagePath) : array {
+		return [
+			"type" => $imageType === self::IMAGE_TYPE_PATH ? "path" : "url",
+			"data" => $imagePath,
+		];
 	}
 }

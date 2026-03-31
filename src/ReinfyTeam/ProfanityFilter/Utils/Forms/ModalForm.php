@@ -33,11 +33,13 @@ class ModalForm extends Form {
 
 	public function __construct(?callable $callable) {
 		parent::__construct($callable);
-		$this->data["type"] = "modal";
-		$this->data["title"] = "";
-		$this->data["content"] = $this->content;
-		$this->data["button1"] = "";
-		$this->data["button2"] = "";
+		$this->data = [
+			"type" => "modal",
+			"title" => "",
+			"content" => $this->content,
+			"button1" => "",
+			"button2" => "",
+		];
 	}
 
 	public function processData(&$data) : void {

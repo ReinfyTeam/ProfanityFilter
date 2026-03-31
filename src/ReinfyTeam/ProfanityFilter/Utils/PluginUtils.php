@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*
  *
@@ -43,40 +43,41 @@ use function substr;
 use function trim;
 
 final class PluginUtils {
+	private const COLOR_REPLACEMENTS = [
+		"&" => "§",
+		"{BLACK}" => TextFormat::BLACK,
+		"{DARK_BLUE}" => TextFormat::DARK_BLUE,
+		"{DARK_GREEN}" => TextFormat::DARK_GREEN,
+		"{DARK_AQUA}" => TextFormat::DARK_AQUA,
+		"{DARK_RED}" => TextFormat::DARK_RED,
+		"{DARK_PURPLE}" => TextFormat::DARK_PURPLE,
+		"{GOLD}" => TextFormat::GOLD,
+		"{GRAY}" => TextFormat::GRAY,
+		"{DARK_GRAY}" => TextFormat::DARK_GRAY,
+		"{BLUE}" => TextFormat::BLUE,
+		"{GREEN}" => TextFormat::GREEN,
+		"{AQUA}" => TextFormat::AQUA,
+		"{RED}" => TextFormat::RED,
+		"{LIGHT_PURPLE}" => TextFormat::LIGHT_PURPLE,
+		"{YELLOW}" => TextFormat::YELLOW,
+		"{WHITE}" => TextFormat::WHITE,
+		"{OBFUSCATED}" => TextFormat::OBFUSCATED,
+		"{BOLD}" => TextFormat::BOLD,
+		"{STRIKETHROUGH}" => TextFormat::STRIKETHROUGH,
+		"{UNDERLINE}" => TextFormat::UNDERLINE,
+		"{ITALIC}" => TextFormat::ITALIC,
+		"{RESET}" => TextFormat::RESET,
+	];
 	/**
 	 * Colorise Messages turns & to § and etc.
 	 */
+		/**
+	 * Colorise Messages turns & to § and etc.
+	 */
 	public static function colorize(string $message) : string {
-		$replacements = [
-			"&" => "§",
-			"{BLACK}" => TextFormat::BLACK,
-			"{DARK_BLUE}" => TextFormat::DARK_BLUE,
-			"{DARK_GREEN}" => TextFormat::DARK_GREEN,
-			"{DARK_AQUA}" => TextFormat::DARK_AQUA,
-			"{DARK_RED}" => TextFormat::DARK_RED,
-			"{DARK_PURPLE}" => TextFormat::DARK_PURPLE,
-			"{GOLD}" => TextFormat::GOLD,
-			"{GRAY}" => TextFormat::GRAY,
-			"{DARK_GRAY}" => TextFormat::DARK_GRAY,
-			"{BLUE}" => TextFormat::BLUE,
-			"{GREEN}" => TextFormat::GREEN,
-			"{AQUA}" => TextFormat::AQUA,
-			"{RED}" => TextFormat::RED,
-			"{LIGHT_PURPLE}" => TextFormat::LIGHT_PURPLE,
-			"{YELLOW}" => TextFormat::YELLOW,
-			"{WHITE}" => TextFormat::WHITE,
-			"{OBFUSCATED}" => TextFormat::OBFUSCATED,
-			"{BOLD}" => TextFormat::BOLD,
-			"{STRIKETHROUGH}" => TextFormat::STRIKETHROUGH,
-			"{UNDERLINE}" => TextFormat::UNDERLINE,
-			"{ITALIC}" => TextFormat::ITALIC,
-			"{RESET}" => TextFormat::RESET,
-		];
-		$message = str_replace(array_keys($replacements), array_values($replacements), $message);
-		return $message;
+		return str_replace(array_keys(self::COLOR_REPLACEMENTS), array_values(self::COLOR_REPLACEMENTS), $message);
 	}
-
-	public static function assumeNotFalse(mixed $given, string $message = "This line should be not false. PLEASE REPORT THIS TO THE DEVELOPER.", bool $invert = false) {
+\tpublic static function assumeNotFalse(mixed $given, string $message = "This line should be not false. PLEASE REPORT THIS TO THE DEVELOPER.", bool $invert = false) {
 		if (is_bool($given)) {
 			if (!$given) {
 				throw new \RuntimeException($message); // assume not false ;(
@@ -158,3 +159,9 @@ final class PluginUtils {
 		return true;
 	}
 }
+
+
+
+
+
+

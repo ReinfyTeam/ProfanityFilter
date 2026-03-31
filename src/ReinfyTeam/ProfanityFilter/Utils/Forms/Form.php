@@ -30,8 +30,7 @@ use pocketmine\player\Player;
 abstract class Form implements IForm {
 	protected array $data = [];
 
-	/** @var callable|null */
-	private $callable;
+	private ?callable $callable;
 
 	public function __construct(?callable $callable) {
 		$this->callable = $callable;
@@ -49,15 +48,15 @@ abstract class Form implements IForm {
 		return $this->callable;
 	}
 
-	public function setCallable(?callable $callable) {
+	public function setCallable(?callable $callable) : void {
 		$this->callable = $callable;
 	}
 
 	public function handleResponse(Player $player, $data) : void {
 		$this->processData($data);
-		$callable = $this->getCallable();
-		if ($callable !== null) {
-			$callable($player, $data);
+		$handler = $this->getCallable();
+		if ($handler !== null) {
+			$handler($player, $data);
 		}
 	}
 

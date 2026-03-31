@@ -41,6 +41,8 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	private Language $language;
 
+	private const CMD_USAGE = "profanity-command-usage-execute";
+
 	public function getOwningPlugin() : Loader {
 		return $this->plugin;
 	}
@@ -58,98 +60,142 @@ class DefaultCommand extends Command implements PluginOwned {
 		}
 
 		if (!isset($args[0])) {
-			$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+			$this->sendLang($sender, self::CMD_USAGE);
 			return;
 		}
 
 		switch ($args[0]) {
 			case "help":
-				$sender->sendMessage($this->language->translateMessage("help-title"));
-				$sender->sendMessage($this->language->translateMessage("help-subtitle"));
-				foreach ($this->language->getLanguage()->get("help-page") as $command) {
-					$sender->sendMessage(PluginUtils::colorize("- " . $command));
-				}
+				$this->handleHelp($sender);
 				break;
 			case "ui":
 			case "gui":
 			case "form":
-				if (!Loader::getInstance()->getConfig()->get("profanity") === "custom") {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
-					return;
-				}
-
-				if (!$sender instanceof Player) {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-only-ingame"));
-				} else {
-					$this->sendForm($sender);
-				}
+				$this->handleForm($sender);
 				break;
 			case "info":
 			case "credits":
-				$sender->sendMessage($this->language->translateMessage("credits-title"));
-				$sender->sendMessage($this->language->translateMessage("credits-subtitle"));
-				$sender->sendMessage($this->language->translateMessage("credits-description"));
-				foreach ($this->plugin->getDescription()->getAuthors() as $author) {
-					$sender->sendMessage("- " . T::GREEN . $author);
-				}
+				$this->handleInfo($sender);
 				break;
 			case "list":
 			case "words":
 			case "banned-words":
-				$sender->sendMessage($this->language->translateMessage("banned-words-description-1"));
-				foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
-					$sender->sendMessage("- " . $word);
-				}
-				$sender->sendMessage($this->language->translateMessage("banned-words-description-2"));
+				$this->handleList($sender);
 				break;
 			case "toggle":
-				if (Loader::$enabled) {
-					$sender->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
-					Loader::$enabled = false;
-				} else {
-					Loader::$enabled = true;
-					$sender->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
-				}
+				$this->handleToggle($sender);
 				break;
 			case "remove":
-
-				if (!Loader::getInstance()->getConfig()->get("profanity") === "custom") {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
-					return;
-				}
-
-				if (!isset($args[1])) {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
-					return;
-				}
-
-				PluginUtils::removeProfanityWord($args[1]);
-				$sender->sendMessage($this->language->translateMessage("profanity-command-removed-word"));
+				$this->handleRemove($sender, $args);
 				break;
 			case "add":
-
-				if (!Loader::getInstance()->getConfig()->get("profanity") === "custom") {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-use-custom-pf-instead"));
-					return;
-				}
-
-				if (!isset($args[1])) {
-					$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
-					return;
-				}
-
-				PluginUtils::addProfanityWord($args[1]);
-				$sender->sendMessage($this->language->translateMessage("profanity-command-added-word"));
+				$this->handleAdd($sender, $args);
 				break;
 			case "reload":
-				$this->plugin->getProfanity(true);
-				$this->plugin->getConfig()->reload();
-				$sender->sendMessage($this->language->translateMessage("profanity-command-reload-complete"));
+				$this->handleReload($sender);
 				break;
 			default:
-				$sender->sendMessage($this->language->translateMessage("profanity-command-usage-execute"));
+				$this->sendLang($sender, self::CMD_USAGE);
 				break;
 		}
+	}
+
+	private function handleHelp(CommandSender $sender) : void {
+		$this->sendLang($sender, "help-title");
+		$this->sendLang($sender, "help-subtitle");
+		foreach ($this->language->getLanguage()->get("help-page") as $command) {
+			$sender->sendMessage(PluginUtils::colorize("- " . $command));
+		}
+	}
+
+	private function handleForm(CommandSender $sender) : void {
+		if ($this->shouldRejectCustom()) {
+			$this->sendLang($sender, "profanity-command-use-custom-pf-instead");
+			return;
+		}
+
+		if (!$sender instanceof Player) {
+			$this->sendLang($sender, "profanity-command-only-ingame");
+			return;
+		}
+
+		$this->sendForm($sender);
+	}
+
+	private function handleInfo(CommandSender $sender) : void {
+		$this->sendLang($sender, "credits-title");
+		$this->sendLang($sender, "credits-subtitle");
+		$this->sendLang($sender, "credits-description");
+		foreach ($this->plugin->getDescription()->getAuthors() as $author) {
+			$sender->sendMessage("- " . T::GREEN . $author);
+		}
+	}
+
+	private function handleList(CommandSender $sender) : void {
+		$this->sendLang($sender, "banned-words-description-1");
+		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
+			$sender->sendMessage("- " . $word);
+		}
+		$this->sendLang($sender, "banned-words-description-2");
+	}
+
+	private function handleToggle(CommandSender $sender) : void {
+		if (Loader::$enabled) {
+			$this->sendLang($sender, "ui-pf-manage-disabled-profanityfilter");
+			Loader::$enabled = false;
+			return;
+		}
+
+		Loader::$enabled = true;
+		$this->sendLang($sender, "ui-pf-manage-enabled-profanityfilter");
+	}
+
+	private function handleRemove(CommandSender $sender, array $args) : void {
+		if ($this->shouldRejectCustom()) {
+			$this->sendLang($sender, "profanity-command-use-custom-pf-instead");
+			return;
+		}
+
+		if (!$this->hasArg($args, 1)) {
+			$this->sendLang($sender, self::CMD_USAGE);
+			return;
+		}
+
+		PluginUtils::removeProfanityWord($args[1]);
+		$this->sendLang($sender, "profanity-command-removed-word");
+	}
+
+	private function handleAdd(CommandSender $sender, array $args) : void {
+		if ($this->shouldRejectCustom()) {
+			$this->sendLang($sender, "profanity-command-use-custom-pf-instead");
+			return;
+		}
+
+		if (!$this->hasArg($args, 1)) {
+			$this->sendLang($sender, self::CMD_USAGE);
+			return;
+		}
+
+		PluginUtils::addProfanityWord($args[1]);
+		$this->sendLang($sender, "profanity-command-added-word");
+	}
+
+	private function handleReload(CommandSender $sender) : void {
+		$this->plugin->getProfanity(true);
+		$this->plugin->getConfig()->reload();
+		$this->sendLang($sender, "profanity-command-reload-complete");
+	}
+
+	private function hasArg(array $args, int $index) : bool {
+		return isset($args[$index]) && $args[$index] !== "";
+	}
+
+	private function sendLang(CommandSender $sender, string $key) : void {
+		$sender->sendMessage($this->language->translateMessage($key));
+	}
+
+	private function shouldRejectCustom() : bool {
+		return !Loader::getInstance()->getConfig()->get("profanity") === "custom";
 	}
 
 	/**

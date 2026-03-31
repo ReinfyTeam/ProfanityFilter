@@ -39,24 +39,7 @@ class GithubUpdateTask extends AsyncTask {
 	}
 
 	public function onRun() : void {
-		$json = Internet::getURL(self::GIT_URL, 10, [], $err);
-		$highestVersion = "";
-		$artifactUrl = "";
-		$api_to = "";
-		$api_from = "";
-		if ($err === null) {
-			$releases = json_decode($json->getBody(), true);
-			if ($releases === null) {
-				$err = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
-			} else {
-				$highestVersion = $releases["version"];
-				$artifactUrl = $releases["artifactUrl"];
-				$api_to = $releases["api_to"];
-				$api_from = $releases["api_from"];
-			}
-		}
-
-		$this->setResult([$highestVersion, $artifactUrl, $api_to, $err, $api_from]);
+		$this->setResult($this->fetchLatest());
 	}
 
 	public function onCompletion() : void {
@@ -80,5 +63,26 @@ class GithubUpdateTask extends AsyncTask {
 		} else {
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
 		}
+	}
+
+	private function fetchLatest() : array {
+		$json = Internet::getURL(self::GIT_URL, 10, [], $err);
+		if ($err !== null) {
+			return ["", "", "", $err, ""];
+		}
+
+		$releases = json_decode($json->getBody(), true);
+		if ($releases === null) {
+			$err = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
+			return ["", "", "", $err, ""];
+		}
+
+		return [
+			$releases["version"],
+			$releases["artifactUrl"],
+			$releases["api_to"],
+			null,
+			$releases["api_from"],
+		];
 	}
 }

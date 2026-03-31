@@ -36,7 +36,7 @@ class Language {
 	}
 
 	public function getLanguage() : Config {
-		return new Config($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml");
+		return new Config($this->getLanguagePath());
 	}
 
 	public function getSelectedLanguage() : string {
@@ -51,8 +51,8 @@ class Language {
 		$lang = $this->getLanguage();
 
 		/** Check if selected language is missing. **/
-		if (!file_exists($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml")) {
-			throw new \Exception("Missing file in " . $this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml");
+		if (!file_exists($this->getLanguagePath())) {
+			throw new \Exception("Missing file in " . $this->getLanguagePath());
 		}
 
 		/** Check if option is exist. **/
@@ -67,5 +67,9 @@ class Language {
 		if (!file_exists($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml")) {
 			$this->plugin->saveResource("languages/" . $this->getSelectedLanguage() . ".yml");
 		}
+	}
+
+	private function getLanguagePath() : string {
+		return $this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml";
 	}
 }
