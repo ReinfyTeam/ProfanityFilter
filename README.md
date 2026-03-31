@@ -1,4 +1,4 @@
-<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ProfanityFilter.png"></a></p>
+<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="assets/images/ProfanityFilter.png"></a></p>
 <p align="center">
   <b>A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat.</b><br><br>
   Are you tired of someone always cursing, saying offensive words in the chat? Are the players too toxic? Do you want to punish them? <br>
@@ -36,19 +36,19 @@ You found a bug or a plugin issue?
 **This plugin was designed and work in pocketmine. If you are using fork/spoon of PocketMine-MP. Your issues will automatically closed.**
 
 # Screenshots
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/chat-filter.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/chat-filter.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/punish-from-player.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/punish-from-player.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/console.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/console.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-main.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/ui-main.png)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-add-words.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/ui-add-words.png)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-word-actions.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/ui-word-actions.png)](https://poggit.pmmp.io/p/ProfanityFilter)
 
-[![](https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/ui-profanitylist.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+[![](assets/images/ui-profanitylist.png)](https://poggit.pmmp.io/p/ProfanityFilter)
 
 # Contributors and Collaborators
 | Name                                        | Contributors                                                                                     |
