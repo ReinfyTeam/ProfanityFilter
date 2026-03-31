@@ -21,13 +21,13 @@
 - Configurable permissions (`command-permission`, `bypass-permission`), update checker toggle, and language system (English & Vietnamese, or add your own).
 
 # Commands
-- `/pf help` — show available subcommands.
-- `/pf ui` — open the management UI (in-game only).
-- `/pf list` — list banned words (custom list).
-- `/pf add <word>` — add a word to the custom list.
-- `/pf remove <word>` — remove a word.
-- `/pf toggle` — enable/disable filtering until reload.
-- `/pf reload` — reload plugin and profanity configs.
+- `/pf help` - show available subcommands.
+- `/pf ui` - open the management UI (in-game only).
+- `/pf list` - list banned words (custom list).
+- `/pf add <word>` - add a word to the custom list.
+- `/pf remove <word>` - remove a word.
+- `/pf toggle` - enable/disable filtering until reload.
+- `/pf reload` - reload plugin and profanity configs.
 
 Default command permission: `profanityfilter.command` (configurable). Bypass chat filtering with `profanityfilter.bypass`.
 

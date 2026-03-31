@@ -6,9 +6,9 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - name: Checkout the repository.
-       uses: actions/checkout@v3
+       uses: actions/checkout@v4
      - name: Download php-binaries.
-       run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/latest/download/PHP-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
+       run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
      - name: Extract php-binaries.
        run: "tar -xvzf php.tar.gz"
      - name: chmod the php-binaries.
@@ -27,12 +27,12 @@ jobs:
      - name: Build the ProfanityFilter.phar using pharynx
        run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build"
      - name: Upload build artifact
-       uses: actions/upload-artifact@v3
+       uses: actions/upload-artifact@v4
        with:
           name: ProfanityFilter Build Phar
           path: ProfanityFilter.phar
      - name: Upload build information artifact.
-       uses: actions/upload-artifact@v3
+       uses: actions/upload-artifact@v4
        with:
           name: Build information
           path: build_info.json
@@ -42,9 +42,9 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - name: Checkout the repository.
-         uses: actions/checkout@v3
+         uses: actions/checkout@v4
        - name: Download php-binaries.
-         run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/latest/download/PHP-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
+         run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
        - name: Extract php-binaries.
          run: "tar -xvzf php.tar.gz"
        - name: chmod the php-binaries.
