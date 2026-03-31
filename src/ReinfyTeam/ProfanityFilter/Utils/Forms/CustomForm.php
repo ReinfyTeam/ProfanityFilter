@@ -34,6 +34,8 @@ use function is_int;
 use function is_string;
 
 class CustomForm extends Form {
+	private const UNSET_INDEX = -1;
+
 	private array $labelMap = [];
 
 	private array $validationMethods = [];
@@ -88,20 +90,20 @@ class CustomForm extends Form {
 		$this->addElement($content, static fn($v) => is_bool($v), $label);
 	}
 
-	public function addSlider(string $text, int $min, int $max, int $step = -1, int $default = -1, ?string $label = null) : void {
+	public function addSlider(string $text, int $min, int $max, int $step = self::UNSET_INDEX, int $default = self::UNSET_INDEX, ?string $label = null) : void {
 		$content = ["type" => "slider", "text" => $text, "min" => $min, "max" => $max];
-		if ($step !== -1) {
+		if ($step !== self::UNSET_INDEX) {
 			$content["step"] = $step;
 		}
-		if ($default !== -1) {
+		if ($default !== self::UNSET_INDEX) {
 			$content["default"] = $default;
 		}
 		$this->addElement($content, static fn($v) => (is_float($v) || is_int($v)) && $v >= $min && $v <= $max, $label);
 	}
 
-	public function addStepSlider(string $text, array $steps, int $defaultIndex = -1, ?string $label = null) : void {
+	public function addStepSlider(string $text, array $steps, int $defaultIndex = self::UNSET_INDEX, ?string $label = null) : void {
 		$content = ["type" => "step_slider", "text" => $text, "steps" => $steps];
-		if ($defaultIndex !== -1) {
+		if ($defaultIndex !== self::UNSET_INDEX) {
 			$content["default"] = $defaultIndex;
 		}
 		$this->addElement($content, static fn($v) => is_int($v) && isset($steps[$v]), $label);

@@ -29,17 +29,25 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as T;
-use pocketmine\utils\TextFormat as TF;
 use ReinfyTeam\ProfanityFilter\Loader;
 use ReinfyTeam\ProfanityFilter\Utils\Forms\CustomForm;
 use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
-use ReinfyTeam\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 
-class DefaultCommand extends Command implements PluginOwned {
+class ProfanityFilterCommand extends Command implements PluginOwned {
+	private const BUTTON_VIEW_LIST = 0;
+	private const BUTTON_TOGGLE = 1;
+	private const BUTTON_ADD_WORD = 2;
+	private const BUTTON_RELOAD = 3;
+	private const BUTTON_RETURN_LABEL = "return";
+	private const ACTION_REMOVE_WORD = 0;
+	private const WORD_ARGUMENT_INDEX = 1;
+	private const WORD_FORM_INPUT_INDEX = 1;
+
 	private Loader $plugin;
 
-	private Language $language;
+	private LanguageManager $language;
 
 	private const CMD_USAGE = "profanity-command-usage-execute";
 
@@ -49,7 +57,7 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	public function __construct() {
 		$this->plugin = Loader::getInstance();
-		$this->language = new Language();
+		$this->language = new LanguageManager();
 		parent::__construct("profanityfilter", "ProfanityFilter Management", "/profanityfilter <help/subcommand>", ["pf"]);
 		$this->setPermission(($this->plugin->getConfig()->get("command-permission") ?? "profanityfilter.command"));
 	}
@@ -103,7 +111,7 @@ class DefaultCommand extends Command implements PluginOwned {
 	private function handleHelp(CommandSender $sender) : void {
 		$this->sendLang($sender, "help-title");
 		$this->sendLang($sender, "help-subtitle");
-		foreach ($this->language->getLanguage()->get("help-page") as $command) {
+		foreach ($this->language->getLanguageConfig()->get("help-page") as $command) {
 			$sender->sendMessage(PluginUtils::colorize("- " . $command));
 		}
 	}
@@ -133,20 +141,20 @@ class DefaultCommand extends Command implements PluginOwned {
 
 	private function handleList(CommandSender $sender) : void {
 		$this->sendLang($sender, "banned-words-description-1");
-		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
+		foreach ($this->plugin->getProfanityConfig()->get("banned-words") as $word) {
 			$sender->sendMessage("- " . $word);
 		}
 		$this->sendLang($sender, "banned-words-description-2");
 	}
 
 	private function handleToggle(CommandSender $sender) : void {
-		if (Loader::$enabled) {
+		if (Loader::$isFilterEnabled) {
 			$this->sendLang($sender, "ui-pf-manage-disabled-profanityfilter");
-			Loader::$enabled = false;
+			Loader::$isFilterEnabled = false;
 			return;
 		}
 
-		Loader::$enabled = true;
+		Loader::$isFilterEnabled = true;
 		$this->sendLang($sender, "ui-pf-manage-enabled-profanityfilter");
 	}
 
@@ -156,12 +164,12 @@ class DefaultCommand extends Command implements PluginOwned {
 			return;
 		}
 
-		if (!$this->hasArg($args, 1)) {
+		if (!$this->hasArg($args, self::WORD_ARGUMENT_INDEX)) {
 			$this->sendLang($sender, self::CMD_USAGE);
 			return;
 		}
 
-		PluginUtils::removeProfanityWord($args[1]);
+		PluginUtils::removeProfanityWord($args[self::WORD_ARGUMENT_INDEX]);
 		$this->sendLang($sender, "profanity-command-removed-word");
 	}
 
@@ -171,17 +179,17 @@ class DefaultCommand extends Command implements PluginOwned {
 			return;
 		}
 
-		if (!$this->hasArg($args, 1)) {
+		if (!$this->hasArg($args, self::WORD_ARGUMENT_INDEX)) {
 			$this->sendLang($sender, self::CMD_USAGE);
 			return;
 		}
 
-		PluginUtils::addProfanityWord($args[1]);
+		PluginUtils::addProfanityWord($args[self::WORD_ARGUMENT_INDEX]);
 		$this->sendLang($sender, "profanity-command-added-word");
 	}
 
 	private function handleReload(CommandSender $sender) : void {
-		$this->plugin->getProfanity(true);
+		$this->plugin->getProfanityConfig(true);
 		$this->plugin->getConfig()->reload();
 		$this->sendLang($sender, "profanity-command-reload-complete");
 	}
@@ -195,7 +203,7 @@ class DefaultCommand extends Command implements PluginOwned {
 	}
 
 	private function shouldRejectCustom() : bool {
-		return !Loader::getInstance()->getConfig()->get("profanity") === "custom";
+		return strtolower(Loader::getInstance()->getConfig()->get("profanity")) !== Loader::PROVIDER_CUSTOM;
 	}
 
 	/**
@@ -208,23 +216,23 @@ class DefaultCommand extends Command implements PluginOwned {
 			}
 
 			switch ($data) {
-				case 0:
+				case self::BUTTON_VIEW_LIST:
 					$this->viewList($player);
 					break;
-				case 1:
-					if (Loader::$enabled) {
+				case self::BUTTON_TOGGLE:
+					if (Loader::$isFilterEnabled) {
 						$player->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
-						Loader::$enabled = false;
+						Loader::$isFilterEnabled = false;
 					} else {
-						Loader::$enabled = true;
+						Loader::$isFilterEnabled = true;
 						$player->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
 					}
 					break;
-				case 2:
+				case self::BUTTON_ADD_WORD:
 					$this->addProfanityWordForm($player);
 					break;
-				case 3:
-					$this->plugin->getProfanity(true);
+				case self::BUTTON_RELOAD:
+					$this->plugin->getProfanityConfig(true);
 					$this->plugin->getConfig()->reload();
 					$player->sendMessage($this->language->translateMessage("profanity-ui-reload-complete"));
 					break;
@@ -258,7 +266,7 @@ class DefaultCommand extends Command implements PluginOwned {
 			}
 
 			switch ($data) {
-				case "return":
+				case self::BUTTON_RETURN_LABEL:
 					$this->sendForm($player);
 					break;
 				default:
@@ -271,10 +279,10 @@ class DefaultCommand extends Command implements PluginOwned {
 		if ($removed) {
 			$form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
 		}
-		foreach ($this->plugin->getProfanity()->get("banned-words") as $word) {
-			$form->addButton(T::DARK_RED . $word, 0, "", $word);
+		foreach ($this->plugin->getProfanityConfig()->get("banned-words") as $word) {
+			$form->addButton(T::DARK_RED . $word, SimpleForm::IMAGE_TYPE_PATH, "", $word);
 		}
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), -1, "", "return");
+		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), SimpleForm::IMAGE_TYPE_NONE, "", self::BUTTON_RETURN_LABEL);
 		$player->sendForm($form);
 	}
 
@@ -286,18 +294,18 @@ class DefaultCommand extends Command implements PluginOwned {
 			}
 
 			switch ($data) {
-				case 0:
+				case self::ACTION_REMOVE_WORD:
 					PluginUtils::removeProfanityWord($word);
 					$this->viewList($player, true);
 					break;
-				case 1:
+				case self::BUTTON_VIEW_LIST:
 					$this->viewList($player);
 					break;
 			}
 		});
 
 		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		$form->setContent(TF::RED . "Manage: " . $word);
+		$form->setContent(T::RED . "Manage: " . $word);
 		$form->addButton($this->language->translateMessage("ui-pf-manage-actions-button-remove"));
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
 		$player->sendForm($form);
@@ -310,12 +318,12 @@ class DefaultCommand extends Command implements PluginOwned {
 				return;
 			}
 
-			if ($data[1] === "") {
+			if ($data[self::WORD_FORM_INPUT_INDEX] === "") {
 				$this->addProfanityWordForm($player, true);
 				return;
 			}
 
-			PluginUtils::addProfanityWord($data[1]);
+			PluginUtils::addProfanityWord($data[self::WORD_FORM_INPUT_INDEX]);
 			$this->sendForm($player, true);
 		});
 
@@ -329,3 +337,6 @@ class DefaultCommand extends Command implements PluginOwned {
 		$player->sendForm($form);
 	}
 }
+
+
+

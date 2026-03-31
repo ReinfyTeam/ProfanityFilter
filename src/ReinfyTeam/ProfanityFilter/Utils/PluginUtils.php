@@ -32,7 +32,6 @@ use function array_diff;
 use function array_keys;
 use function array_values;
 use function count;
-use function is_bool;
 use function ltrim;
 use function preg_match_all;
 use function preg_replace;
@@ -43,6 +42,8 @@ use function substr;
 use function trim;
 
 final class PluginUtils {
+	private const FOREVER_BAN_VALUE = "Forever";
+
 	private const COLOR_REPLACEMENTS = [
 		"&" => "§",
 		"{BLACK}" => TextFormat::BLACK,
@@ -71,24 +72,14 @@ final class PluginUtils {
 	/**
 	 * Colorise Messages turns & to § and etc.
 	 */
-		/**
-	 * Colorise Messages turns & to § and etc.
-	 */
 	public static function colorize(string $message) : string {
 		return str_replace(array_keys(self::COLOR_REPLACEMENTS), array_values(self::COLOR_REPLACEMENTS), $message);
-	}
-\tpublic static function assumeNotFalse(mixed $given, string $message = "This line should be not false. PLEASE REPORT THIS TO THE DEVELOPER.", bool $invert = false) {
-		if (is_bool($given)) {
-			if (!$given) {
-				throw new \RuntimeException($message); // assume not false ;(
-			}
-		}
 	}
 
 	/**
 	 * Convert String to Timestamp
 	 */
-	private static function stringToTimestamp(string $string) : ?array {
+	private static function parseDurationString(string $durationString) : ?array {
 		/**
 		 * Rules:
 		 * Integers without suffix are considered as seconds
@@ -100,62 +91,63 @@ final class PluginUtils {
 		 * "mo" is for months
 		 * "y" is for years
 		 */
-		if (trim($string) === "") {
+		if (trim($durationString) === "") {
 			return null;
 		}
-		$t = new DateTime();
-		preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $string, $found);
-		if (count($found[0]) < 1) {
+		$dateTime = new DateTime();
+		preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $durationString, $matches);
+		if (count($matches[0]) < 1) {
 			return null;
 		}
-		$found[2] = preg_replace("/[^0-9]/", "", $found[0]);
-		foreach ($found[2] as $k => $i) {
-			switch ($c = $found[1][$k]) {
+		$matches[2] = preg_replace("/[^0-9]/", "", $matches[0]);
+		foreach ($matches[2] as $index => $amount) {
+			$unit = $matches[1][$index];
+			switch ($unit) {
 				case "y":
 				case "w":
 				case "d":
-					$t->add(new DateInterval("P" . $i . strtoupper($c)));
+					$dateTime->add(new DateInterval("P" . $amount . strtoupper($unit)));
 					break;
 				case "mo":
-					$t->add(new DateInterval("P" . $i . strtoupper(substr($c, 0, strlen($c) - 1))));
+					$dateTime->add(new DateInterval("P" . $amount . strtoupper(substr($unit, 0, strlen($unit) - 1))));
 					break;
 				case "h":
 				case "m":
 				case "s":
-					$t->add(new DateInterval("PT" . $i . strtoupper($c)));
+					$dateTime->add(new DateInterval("PT" . $amount . strtoupper($unit)));
 					break;
 				default:
-					$t->add(new DateInterval("PT" . $i . "S"));
+					$dateTime->add(new DateInterval("PT" . $amount . "S"));
 					break;
 			}
-			$string = str_replace($found[0][$k], "", $string);
+			$durationString = str_replace($matches[0][$index], "", $durationString);
 		}
-		return [$t, ltrim(str_replace($found[0], "", $string))];
+		return [$dateTime, ltrim(str_replace($matches[0], "", $durationString))];
 	}
 
-	public static function getDuration() {
-		if (Loader::getInstance()->getConfig()->get("ban-duration") === "Forever") {
+	public static function getConfiguredDuration() {
+		if (Loader::getInstance()->getConfig()->get("ban-duration") === self::FOREVER_BAN_VALUE) {
 			return null;
 		} else {
-			return self::stringToTimestamp(Loader::getInstance()->getConfig()->get("ban-duration"));
+			return self::parseDurationString(Loader::getInstance()->getConfig()->get("ban-duration"));
 		}
 	}
 
 	public static function removeProfanityWord(string $word) : bool {
-		$words = Loader::getInstance()->getProfanity()->get("banned-words");
+		$words = Loader::getInstance()->getProfanityConfig()->get("banned-words");
 		$newArray = array_diff($words, [$word]);
-		Loader::getInstance()->getProfanity()->set("banned-words", (array) array_values($newArray));
-		Loader::getInstance()->getProfanity()->save();
-		Loader::getInstance()->getProfanity()->reload();
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", (array) array_values($newArray));
+		Loader::getInstance()->getProfanityConfig()->save();
+		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
 	}
 
 	public static function addProfanityWord(string $word) : bool {
-		$words = Loader::getInstance()->getProfanity()->get("banned-words");
+		$words = Loader::getInstance()->getProfanityConfig()->get("banned-words");
 		$words[] = $word;
-		Loader::getInstance()->getProfanity()->set("banned-words", (array) $words);
-		Loader::getInstance()->getProfanity()->save();
-		Loader::getInstance()->getProfanity()->reload();
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", (array) $words);
+		Loader::getInstance()->getProfanityConfig()->save();
+		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
 	}
 }

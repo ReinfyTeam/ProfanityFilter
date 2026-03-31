@@ -28,14 +28,14 @@ use pocketmine\utils\Config;
 use ReinfyTeam\ProfanityFilter\Loader;
 use function file_exists;
 
-class Language {
+class LanguageManager {
 	private Loader $plugin;
 
 	public function __construct() {
 		$this->plugin = Loader::getInstance();
 	}
 
-	public function getLanguage() : Config {
+	public function getLanguageConfig() : Config {
 		return new Config($this->getLanguagePath());
 	}
 
@@ -48,7 +48,7 @@ class Language {
 	 * Do not call it directly.
 	 */
 	public function translateMessage(mixed $option) : mixed {
-		$lang = $this->getLanguage();
+		$lang = $this->getLanguageConfig();
 
 		/** Check if selected language is missing. **/
 		if (!file_exists($this->getLanguagePath())) {
@@ -64,7 +64,7 @@ class Language {
 	}
 
 	public function init() : void {
-		if (!file_exists($this->plugin->getDataFolder() . "language/" . $this->getSelectedLanguage() . ".yml")) {
+		if (!file_exists($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml")) {
 			$this->plugin->saveResource("languages/" . $this->getSelectedLanguage() . ".yml");
 		}
 	}

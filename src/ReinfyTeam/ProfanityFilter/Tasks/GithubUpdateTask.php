@@ -27,12 +27,13 @@ namespace ReinfyTeam\ProfanityFilter\Tasks;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use ReinfyTeam\ProfanityFilter\Utils\Language;
+use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use function json_decode;
 use function vsprintf;
 
 class GithubUpdateTask extends AsyncTask {
 	private const GIT_URL = "https://raw.githubusercontent.com/ReinfyTeam/ProfanityFilter/stable/build_info.json";
+	private const HTTP_TIMEOUT_SECONDS = 10;
 
 	public function __construct(private string $pluginName, private string $pluginVersion) {
 		//NOOP
@@ -43,22 +44,22 @@ class GithubUpdateTask extends AsyncTask {
 	}
 
 	public function onCompletion() : void {
-		$lang = new Language();
-		[$highestVersion, $artifactUrl, $api_to, $err, $api_from] = $this->getResult();
+		$lang = new LanguageManager();
+		[$highestVersion, $artifactUrl, $apiTo, $error, $apiFrom] = $this->getResult();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
 		}
 
-		if ($err !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$err]));
+		if ($error !== null) {
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$error]));
 			//Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry-failed"));
 			return;
 		}
 
 		if ($highestVersion !== $this->pluginVersion) {
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $api_from]));
-			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$api_from, $api_to]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-found"), [$highestVersion, $apiFrom]));
+			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-details"), [$apiFrom, $apiTo]));
 			Server::getInstance()->getLogger()->warning($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("new-update-download"), [$artifactUrl]));
 		} else {
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("no-updates-found"));
@@ -66,15 +67,16 @@ class GithubUpdateTask extends AsyncTask {
 	}
 
 	private function fetchLatest() : array {
-		$json = Internet::getURL(self::GIT_URL, 10, [], $err);
-		if ($err !== null) {
-			return ["", "", "", $err, ""];
+		$error = null;
+		$json = Internet::getURL(self::GIT_URL, self::HTTP_TIMEOUT_SECONDS, [], $error);
+		if ($error !== null) {
+			return ["", "", "", $error, ""];
 		}
 
 		$releases = json_decode($json->getBody(), true);
 		if ($releases === null) {
-			$err = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
-			return ["", "", "", $err, ""];
+			$errorMessage = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
+			return ["", "", "", $errorMessage, ""];
 		}
 
 		return [

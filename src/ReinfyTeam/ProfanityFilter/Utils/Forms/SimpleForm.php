@@ -31,8 +31,8 @@ use function is_int;
 
 class SimpleForm extends Form {
 	const IMAGE_TYPE_PATH = 0;
-
 	const IMAGE_TYPE_URL = 1;
+	const IMAGE_TYPE_NONE = -1;
 
 	private string $content = "";
 
@@ -75,9 +75,9 @@ class SimpleForm extends Form {
 		$this->data["content"] = $content;
 	}
 
-	public function addButton(string $text, int $imageType = -1, string $imagePath = "", ?string $label = null) : void {
+	public function addButton(string $text, int $imageType = self::IMAGE_TYPE_NONE, string $imagePath = "", ?string $label = null) : void {
 		$content = ["text" => $text];
-		if ($imageType !== -1) {
+		if ($imageType !== self::IMAGE_TYPE_NONE) {
 			$content["image"] = $this->buildImage($imageType, $imagePath);
 		}
 		$this->data["buttons"][] = $content;
