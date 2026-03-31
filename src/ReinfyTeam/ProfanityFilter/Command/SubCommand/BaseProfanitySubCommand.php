@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
-use ReinfyTeam\ProfanityFilter\libs\_a78acd1e7b2b6d62\CortexPE\Commando\BaseSubCommand;
+use ReinfyTeam\ProfanityFilter\libs\_ed051197693bb105\CortexPE\Commando\BaseSubCommand;
 use pocketmine\command\CommandSender;
 use ReinfyTeam\ProfanityFilter\Loader;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
