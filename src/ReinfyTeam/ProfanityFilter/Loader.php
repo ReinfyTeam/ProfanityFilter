@@ -77,11 +77,11 @@ class Loader extends PluginBase {
 	public function onLoad() : void {
 		Loader::$instance = $this;
 		$this->language = new LanguageManager();
-		$this->ensureConfigIsCurrent();
-		$this->checkForUpdates();
-		$this->language->init();
 		$this->initializeResources();
+		$this->language->init();
+		$this->ensureConfigIsCurrent();
 		$this->registerPermissions();
+		$this->checkForUpdates();
 	}
 
 	public function onEnable() : void {
