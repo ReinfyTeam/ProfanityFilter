@@ -187,7 +187,7 @@ class ChatProfanityListener implements Listener {
 	/**
 	 * @param array<string, mixed> $extra
 	 */
-	private function renderMessage(string $configKey, ?\pocketmine\player\Player $player = null, ?string $playerName = null, array $extra = []) : string {
+	private function renderMessage(string $configKey, ?Player $player = null, ?string $playerName = null, array $extra = []) : string {
 		$configValue = $this->pluginInstance->getConfig()->get($configKey);
 		$messageTemplate = is_string($configValue) ? $configValue : "";
 		return InfoAPI::render($this->pluginInstance, PluginUtils::colorize($messageTemplate), [
