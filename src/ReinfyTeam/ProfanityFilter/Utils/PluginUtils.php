@@ -32,131 +32,262 @@ use function array_diff;
 use function array_keys;
 use function array_values;
 use function count;
-use function is_bool;
+use function is_array;
+use function is_string;
 use function ltrim;
 use function preg_match_all;
 use function preg_replace;
 use function str_replace;
 use function strlen;
+use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
 
 final class PluginUtils {
-	/**
-	 * Colorise Messages turns & to § and etc.
-	 */
+	private const FOREVER_BAN_VALUE = "Forever";
+
+	/** @var string[] */
+	public const FALLBACK_CUSTOM_WORDS = [
+		"f4ck",
+		"f@ck",
+		"fuk",
+		"b1tch",
+		"b!tch",
+		"sh!t",
+		"sh1tty",
+		"a55",
+		"a5shole",
+		"c0cks",
+	];
+
+	/** @var array<string, string> */
+	private const COLOR_REPLACEMENTS = [
+		"&" => "§",
+		"{BLACK}" => TextFormat::BLACK,
+		"{DARK_BLUE}" => TextFormat::DARK_BLUE,
+		"{DARK_GREEN}" => TextFormat::DARK_GREEN,
+		"{DARK_AQUA}" => TextFormat::DARK_AQUA,
+		"{DARK_RED}" => TextFormat::DARK_RED,
+		"{DARK_PURPLE}" => TextFormat::DARK_PURPLE,
+		"{GOLD}" => TextFormat::GOLD,
+		"{GRAY}" => TextFormat::GRAY,
+		"{DARK_GRAY}" => TextFormat::DARK_GRAY,
+		"{BLUE}" => TextFormat::BLUE,
+		"{GREEN}" => TextFormat::GREEN,
+		"{AQUA}" => TextFormat::AQUA,
+		"{RED}" => TextFormat::RED,
+		"{LIGHT_PURPLE}" => TextFormat::LIGHT_PURPLE,
+		"{YELLOW}" => TextFormat::YELLOW,
+		"{WHITE}" => TextFormat::WHITE,
+		"{OBFUSCATED}" => TextFormat::OBFUSCATED,
+		"{BOLD}" => TextFormat::BOLD,
+		"{STRIKETHROUGH}" => TextFormat::STRIKETHROUGH,
+		"{UNDERLINE}" => TextFormat::UNDERLINE,
+		"{ITALIC}" => TextFormat::ITALIC,
+		"{RESET}" => TextFormat::RESET,
+	];
+
 	public static function colorize(string $message) : string {
-		$replacements = [
-			"&" => "§",
-			"{BLACK}" => TextFormat::BLACK,
-			"{DARK_BLUE}" => TextFormat::DARK_BLUE,
-			"{DARK_GREEN}" => TextFormat::DARK_GREEN,
-			"{DARK_AQUA}" => TextFormat::DARK_AQUA,
-			"{DARK_RED}" => TextFormat::DARK_RED,
-			"{DARK_PURPLE}" => TextFormat::DARK_PURPLE,
-			"{GOLD}" => TextFormat::GOLD,
-			"{GRAY}" => TextFormat::GRAY,
-			"{DARK_GRAY}" => TextFormat::DARK_GRAY,
-			"{BLUE}" => TextFormat::BLUE,
-			"{GREEN}" => TextFormat::GREEN,
-			"{AQUA}" => TextFormat::AQUA,
-			"{RED}" => TextFormat::RED,
-			"{LIGHT_PURPLE}" => TextFormat::LIGHT_PURPLE,
-			"{YELLOW}" => TextFormat::YELLOW,
-			"{WHITE}" => TextFormat::WHITE,
-			"{OBFUSCATED}" => TextFormat::OBFUSCATED,
-			"{BOLD}" => TextFormat::BOLD,
-			"{STRIKETHROUGH}" => TextFormat::STRIKETHROUGH,
-			"{UNDERLINE}" => TextFormat::UNDERLINE,
-			"{ITALIC}" => TextFormat::ITALIC,
-			"{RESET}" => TextFormat::RESET,
-		];
-		$message = str_replace(array_keys($replacements), array_values($replacements), $message);
-		return $message;
+		return str_replace(array_keys(self::COLOR_REPLACEMENTS), array_values(self::COLOR_REPLACEMENTS), $message);
 	}
 
-	public static function assumeNotFalse(mixed $given, string $message = "This line should be not false. PLEASE REPORT THIS TO THE DEVELOPER.", bool $invert = false) {
-		if (is_bool($given)) {
-			if (!$given) {
-				throw new \RuntimeException($message); // assume not false ;(
-			}
+	/**
+	 * Convert a duration string like "1d2h" into a DateTime and leftover text.
+	 * The leftover text is returned to preserve any trailing reason string.
+	 *
+	 * @return array{0: DateTime, 1: string}|null
+	 */
+	private static function parseDurationString(string $durationString) : ?array {
+		if (trim($durationString) === "") {
+			return null;
+		}
+
+		$dateTime = new DateTime();
+		preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $durationString, $matches);
+		if (count($matches[0]) < 1) {
+			return null;
+		}
+
+		$amounts = preg_replace("/[^0-9]/", "", $matches[0]);
+		if (!is_array($amounts)) {
+			return null;
+		}
+		foreach ($amounts as $index => $amount) {
+			$unit = $matches[1][$index] ?? "";
+			$dateTime->add(new DateInterval(self::buildIntervalSpec($amount, $unit)));
+			$durationString = str_replace($matches[0][$index], "", $durationString);
+		}
+
+		return [$dateTime, ltrim(str_replace($matches[0], "", $durationString))];
+	}
+
+	private static function buildIntervalSpec(string $amount, string $unit) : string {
+		switch ($unit) {
+			case "y":
+			case "w":
+			case "d":
+				return "P" . $amount . strtoupper($unit);
+			case "mo":
+				return "P" . $amount . strtoupper(substr($unit, 0, strlen($unit) - 1));
+			case "h":
+			case "m":
+			case "s":
+				return "PT" . $amount . strtoupper($unit);
+			default:
+				return "PT" . $amount . "S";
 		}
 	}
 
 	/**
-	 * Convert String to Timestamp
-	 *
-	 * @return ?array
+	 * @return array{0: DateTime, 1: string}|null
 	 */
-	private static function stringToTimestamp(string $string) : ?array {
-		/**
-		 * Rules:
-		 * Integers without suffix are considered as seconds
-		 * "s" is for seconds
-		 * "m" is for minutes
-		 * "h" is for hours
-		 * "d" is for days
-		 * "w" is for weeks
-		 * "mo" is for months
-		 * "y" is for years
-		 */
-		if (trim($string) === "") {
+	public static function getConfiguredDuration() : ?array {
+		$configValue = Loader::getInstance()->getConfig()->get("ban-duration");
+		if ($configValue === self::FOREVER_BAN_VALUE) {
 			return null;
 		}
-		$t = new DateTime();
-		preg_match_all("/[0-9]+(y|mo|w|d|h|m|s)|[0-9]+/", $string, $found);
-		if (count($found[0]) < 1) {
-			return null;
-		}
-		$found[2] = preg_replace("/[^0-9]/", "", $found[0]);
-		foreach ($found[2] as $k => $i) {
-			switch ($c = $found[1][$k]) {
-				case "y":
-				case "w":
-				case "d":
-					$t->add(new DateInterval("P" . $i . strtoupper($c)));
-					break;
-				case "mo":
-					$t->add(new DateInterval("P" . $i . strtoupper(substr($c, 0, strlen($c) - 1))));
-					break;
-				case "h":
-				case "m":
-				case "s":
-					$t->add(new DateInterval("PT" . $i . strtoupper($c)));
-					break;
-				default:
-					$t->add(new DateInterval("PT" . $i . "S"));
-					break;
-			}
-			$string = str_replace($found[0][$k], "", $string);
-		}
-		return [$t, ltrim(str_replace($found[0], "", $string))];
+
+		return is_string($configValue) ? self::parseDurationString($configValue) : null;
 	}
 
-	public static function getDuration() {
-		if (Loader::getInstance()->getConfig()->get("ban-duration") === "Forever") {
-			return null;
-		} else {
-			return self::stringToTimestamp(Loader::getInstance()->getConfig()->get("ban-duration"));
+	/**
+	 * Make sure custom profanity words never collide with the provided default list.
+	 *
+	 * @param string[] $fallbackWords
+	 */
+	public static function sanitizeCustomProfanityList(array $fallbackWords = self::FALLBACK_CUSTOM_WORDS) : void {
+		$config = Loader::getInstance()->getProfanityConfig();
+		$rawWords = $config->get("banned-words");
+		$providedLookup = self::buildLookup(Loader::getInstance()->getProvidedProfanityList());
+
+		$filtered = [];
+		$seen = [];
+		$changed = false;
+
+		foreach ((array) $rawWords as $word) {
+			$changed = self::accumulateValidWord($word, $providedLookup, $seen, $filtered) || $changed;
 		}
+
+		if ($filtered === []) {
+			$changed = self::applyFallbackWords($fallbackWords, $providedLookup, $seen, $filtered) || $changed;
+		}
+
+		if ($changed) {
+			$config->set("banned-words", array_values($filtered));
+			$config->save();
+			$config->reload();
+		}
+	}
+
+	/**
+	 * @param array<string, bool> $providedLookup
+	 * @param array<string, bool> $seen
+	 * @param string[] $filtered
+	 */
+	private static function accumulateValidWord(mixed $word, array $providedLookup, array &$seen, array &$filtered) : bool {
+		if (!is_string($word)) {
+			return true;
+		}
+		$normalized = self::normalizeWord($word);
+		if ($normalized === "") {
+			return true;
+		}
+		if (isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+			return true;
+		}
+
+		$seen[$normalized] = true;
+		$filtered[] = $word;
+		return false;
+	}
+
+	/**
+	 * @param string[] $fallbackWords
+	 * @param array<string, bool> $providedLookup
+	 * @param array<string, bool> $seen
+	 * @param string[] $filtered
+	 */
+	private static function applyFallbackWords(array $fallbackWords, array $providedLookup, array &$seen, array &$filtered) : bool {
+		$changed = false;
+		foreach ($fallbackWords as $fallback) {
+			if (!is_string($fallback)) {
+				continue;
+			}
+			$normalized = self::normalizeWord($fallback);
+			if ($normalized === "" || isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+				continue;
+			}
+			$filtered[] = $fallback;
+			$seen[$normalized] = true;
+			$changed = true;
+		}
+
+		return $changed;
 	}
 
 	public static function removeProfanityWord(string $word) : bool {
-		$words = Loader::getInstance()->getProfanity()->get("banned-words");
+		/** @var string[] $words */
+		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
 		$newArray = array_diff($words, [$word]);
-		Loader::getInstance()->getProfanity()->set("banned-words", (array) array_values($newArray));
-		Loader::getInstance()->getProfanity()->save();
-		Loader::getInstance()->getProfanity()->reload();
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", array_values($newArray));
+		Loader::getInstance()->getProfanityConfig()->save();
+		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
 	}
 
 	public static function addProfanityWord(string $word) : bool {
-		$words = Loader::getInstance()->getProfanity()->get("banned-words");
-		$words[] = $word;
-		Loader::getInstance()->getProfanity()->set("banned-words", (array) $words);
-		Loader::getInstance()->getProfanity()->save();
-		Loader::getInstance()->getProfanity()->reload();
+		/** @var string[] $words */
+		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
+		$providedLookup = self::buildLookup(Loader::getInstance()->getProvidedProfanityList());
+
+		$filteredWords = [];
+		$customLookup = [];
+		foreach ($words as $existingWord) {
+			if (!is_string($existingWord)) {
+				continue;
+			}
+			$filteredWords[] = $existingWord;
+			$customLookup[self::normalizeWord($existingWord)] = true;
+		}
+
+		$normalized = self::normalizeWord($word);
+		if ($normalized === "") {
+			return false;
+		}
+
+		if (isset($providedLookup[$normalized]) || isset($customLookup[$normalized])) {
+			return false;
+		}
+
+		$filteredWords[] = $word;
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", $filteredWords);
+		Loader::getInstance()->getProfanityConfig()->save();
+		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
+	}
+
+	/**
+	 * @param string[] $words
+	 * @return array<string, bool>
+	 */
+	private static function buildLookup(array $words) : array {
+		$lookup = [];
+		foreach ($words as $word) {
+			if (!is_string($word)) {
+				continue;
+			}
+			$normalized = self::normalizeWord($word);
+			if ($normalized === "") {
+				continue;
+			}
+			$lookup[$normalized] = true;
+		}
+
+		return $lookup;
+	}
+
+	private static function normalizeWord(string $word) : string {
+		return strtolower(trim($word));
 	}
 }

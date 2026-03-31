@@ -1,0 +1,82 @@
+<?php
+
+/*
+ *
+ *  ____           _            __           _____
+ * |  _ \    ___  (_)  _ __    / _|  _   _  |_   _|   ___    __ _   _ __ ___
+ * | |_) |  / _ \ | | | '_ \  | |_  | | | |   | |    / _ \  / _` | | '_ ` _ \
+ * |  _ <  |  __/ | | | | | | |  _| | |_| |   | |   |  __/ | (_| | | | | | | |
+ * |_| \_\  \___| |_| |_| |_| |_|    \__, |   |_|    \___|  \__,_| |_| |_| |_|
+ *                                   |___/
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * @author ReinfyTeam
+ * @link https://github.com/ReinfyTeam/
+ *
+ *
+ */
+
+declare(strict_types=1);
+
+namespace ReinfyTeam\ProfanityFilter\Utils;
+
+use pocketmine\utils\Config;
+use ReinfyTeam\ProfanityFilter\Loader;
+use function file_exists;
+use function is_string;
+
+class LanguageManager {
+	private Loader $plugin;
+
+	public function __construct() {
+		$this->plugin = Loader::getInstance();
+	}
+
+	public function getLanguageConfig() : Config {
+		return new Config($this->getLanguagePath());
+	}
+
+	public function getSelectedLanguage() : string {
+		$lang = $this->plugin->getConfig()->get("lang");
+		return is_string($lang) ? $lang : "eng";
+	}
+
+	/**
+	 * Translate Message from Language Configuration
+	 * Do not call it directly.
+	 */
+	public function translateMessage(string $option) : string {
+		$lang = $this->getLanguageConfig();
+
+		/** Check if selected language is missing. **/
+		if (!file_exists($this->getLanguagePath())) {
+			throw new \Exception("Missing file in " . $this->getLanguagePath());
+		}
+
+		/** Check if option is exist. **/
+		if ($lang->get($option) === null) {
+			throw new \Exception("Trying to access on null.");
+		}
+
+		$value = $lang->get($option);
+		if (!is_string($value)) {
+			throw new \Exception("Trying to access non-string language value.");
+		}
+
+		return PluginUtils::colorize($value);
+	}
+
+	public function init() : void {
+		if (!file_exists($this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml")) {
+			$this->plugin->saveResource("languages/" . $this->getSelectedLanguage() . ".yml");
+		}
+	}
+
+	private function getLanguagePath() : string {
+		return $this->plugin->getDataFolder() . "languages/" . $this->getSelectedLanguage() . ".yml";
+	}
+}
