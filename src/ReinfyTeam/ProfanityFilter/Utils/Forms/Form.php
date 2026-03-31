@@ -28,6 +28,7 @@ use pocketmine\form\Form as IForm;
 use pocketmine\player\Player;
 
 abstract class Form implements IForm {
+	/** @var array<string, mixed> */
 	protected array $data = [];
 
 	private ?callable $submitHandler;
@@ -52,7 +53,7 @@ abstract class Form implements IForm {
 		$this->submitHandler = $callable;
 	}
 
-	public function handleResponse(Player $player, $data) : void {
+	public function handleResponse(Player $player, mixed $data) : void {
 		$this->processData($data);
 		$handler = $this->getSubmitHandler();
 		if ($handler !== null) {
@@ -60,10 +61,11 @@ abstract class Form implements IForm {
 		}
 	}
 
-	public function processData(&$data) : void {
+	public function processData(mixed &$data) : void {
 	}
 
-	public function jsonSerialize() : mixed {
+	/** @return array<string, mixed> */
+	public function jsonSerialize() : array {
 		return $this->data;
 	}
 }

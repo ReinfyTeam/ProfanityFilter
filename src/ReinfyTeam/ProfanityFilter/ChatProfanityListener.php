@@ -40,6 +40,7 @@ class ChatProfanityListener implements Listener {
 
 	private string $profanityProvider;
 
+	/** @var array{0: \DateTime, 1: string}|null */
 	private ?array $banDuration;
 
 	public function __construct(string $filterMode, string $profanityProvider) {
@@ -56,7 +57,9 @@ class ChatProfanityListener implements Listener {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
 
-		if (!$this->shouldFilter($player->hasPermission($this->pluginInstance->getConfig()->get("bypass-permission") ?? "profanityfilter.bypass"))) {
+		$rawBypass = $this->pluginInstance->getConfig()->get("bypass-permission");
+		$bypassPermission = is_string($rawBypass) ? $rawBypass : "profanityfilter.bypass";
+		if (!$this->shouldFilter($player->hasPermission($bypassPermission))) {
 			return;
 		}
 
@@ -74,13 +77,21 @@ class ChatProfanityListener implements Listener {
 		return !$hasBypass;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	private function resolveProfanityWords() : array {
 		if (strtolower($this->profanityProvider) === Loader::PROVIDER_CUSTOM) {
-			return (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
+			/** @var string[] $custom */
+			$custom = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
+			return $custom;
 		}
-		return (array) ($this->pluginInstance->getProvidedProfanityList() ?? ProfanityFilterService::getDefaultProfanityList());
+		return $this->pluginInstance->getProvidedProfanityList();
 	}
 
+	/**
+	 * @param string[] $words
+	 */
 	private function handleProfanity(PlayerChatEvent $event, Player $player, string $message, array $words) : void {
 		switch ($this->filterMode) {
 			case Loader::FILTER_MODE_BLOCK:
@@ -102,10 +113,15 @@ class ChatProfanityListener implements Listener {
 		$this->pluginInstance->getLogger()->warning($this->renderMessage("block-warning-message", $player, $player->getName()));
 	}
 
+	/**
+	 * @param string[] $words
+	 */
 	private function applyHide(PlayerChatEvent $event, string $message, array $words, Player $player) : void {
 		if ((bool) $this->pluginInstance->getConfig()->get("removeUnicode")) {
-			$replacementCharacter = ($this->pluginInstance->getConfig()->get("replacementCharacter") ?? ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER);
-			$blockType = (int) ($this->pluginInstance->getConfig()->get("remove-unicode") ?? ProfanityFilterService::UNICODE_BLOCK_LETTERS);
+			$replacementConfig = $this->pluginInstance->getConfig()->get("replacementCharacter");
+			$replacementCharacter = is_string($replacementConfig) ? $replacementConfig : ProfanityFilterService::DEFAULT_REPLACEMENT_CHARACTER;
+			$blockTypeConfig = $this->pluginInstance->getConfig()->get("remove-unicode");
+			$blockType = is_int($blockTypeConfig) ? $blockTypeConfig : ProfanityFilterService::UNICODE_BLOCK_LETTERS;
 			$useMultibyteLength = (bool) ($this->pluginInstance->getConfig()->get("mb-strlen") ?? false);
 			$event->setMessage(
 				ProfanityFilterService::sanitizeUnicode(
@@ -122,26 +138,32 @@ class ChatProfanityListener implements Listener {
 
 	private function handlePunishment(Player $player) : void {
 		$playerName = $player->getName();
-		if (($this->pluginInstance->violationCounts[$playerName] ?? 0) === $this->pluginInstance->getConfig()->get("max-violations")) {
-			$punishType = $this->pluginInstance->getConfig()->get("punishment-type");
+		$maxViolations = filter_var($this->pluginInstance->getConfig()->get("max-violations"), FILTER_VALIDATE_INT);
+		if (!is_int($maxViolations)) {
+			$maxViolations = 0;
+		}
+		if (($this->pluginInstance->violationCounts[$playerName] ?? 0) === $maxViolations) {
+			$punishConfig = $this->pluginInstance->getConfig()->get("punishment-type");
+			$punishType = is_string($punishConfig) ? $punishConfig : "kick";
+			$banExpires = $this->banDuration[0] ?? null;
 			switch ($punishType) {
 				case "ban":
-					$this->pluginInstance->violationCounts[$playerName] = isset($this->pluginInstance->violationCounts[$playerName]);
-					$player->getServer()->getNameBans()->addBan($playerName, "Profanity", $this->banDuration[0], $player->getServer()->getName());
+					$this->pluginInstance->violationCounts[$playerName] = 0;
+					$player->getServer()->getNameBans()->addBan($playerName, "Profanity", $banExpires, $player->getServer()->getName());
 					$player->kick($this->renderMessage("kick-message", $player, $playerName, [
 						"type" => $punishType . "ned",
 					]));
 					$this->pluginInstance->getLogger()->warning($this->renderMessage("ban-warning-message", $player, $playerName));
 					break;
 				case "kick":
-					$this->pluginInstance->violationCounts[$playerName] = isset($this->pluginInstance->violationCounts[$playerName]);
+					$this->pluginInstance->violationCounts[$playerName] = 0;
 					$player->kick($this->renderMessage("kick-message", $player, $playerName, [
 						"type" => $punishType . "ed",
 					]));
 					$this->pluginInstance->getLogger()->warning($this->renderMessage("kick-warning-message", $player, $playerName));
 					break;
 				case "command":
-					$this->pluginInstance->violationCounts[$playerName] = isset($this->pluginInstance->violationCounts[$playerName]);
+					$this->pluginInstance->violationCounts[$playerName] = 0;
 					$this->pluginInstance->getLogger()->warning($this->renderMessage("command-warning-message", $player, $playerName));
 					if ((bool) $this->pluginInstance->getConfig()->get("execute-as-player")) {
 						$this->pluginInstance->getServer()->dispatchCommand($player, $this->renderMessage("command", $player, $playerName));
@@ -155,11 +177,17 @@ class ChatProfanityListener implements Listener {
 			return;
 		}
 
-		$this->pluginInstance->violationCounts[$playerName] = isset($this->pluginInstance->violationCounts[$playerName]) ? $this->pluginInstance->violationCounts[$playerName] + 1 : 1;
+		$currentCount = $this->pluginInstance->violationCounts[$playerName] ?? 0;
+		$this->pluginInstance->violationCounts[$playerName] = $currentCount + 1;
 	}
 
+	/**
+	 * @param array<string, mixed> $extra
+	 */
 	private function renderMessage(string $configKey, ?\pocketmine\player\Player $player = null, ?string $playerName = null, array $extra = []) : string {
-		return InfoAPI::render($this->pluginInstance, PluginUtils::colorize($this->pluginInstance->getConfig()->get($configKey)), [
+		$configValue = $this->pluginInstance->getConfig()->get($configKey);
+		$messageTemplate = is_string($configValue) ? $configValue : "";
+		return InfoAPI::render($this->pluginInstance, PluginUtils::colorize($messageTemplate), [
 			"player" => $player,
 			"player_name" => $playerName ?? ($player?->getName() ?? ""),
 			...$extra,

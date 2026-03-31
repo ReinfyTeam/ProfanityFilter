@@ -5,6 +5,5 @@ branches:
 projects:
   ProfanityFilter:
     path: ""
-    icon: "assets/images/ProfanityFilter.png" 
-    lint: false
+    icon: "assets/images/ProfanityFilter.png"
 ...

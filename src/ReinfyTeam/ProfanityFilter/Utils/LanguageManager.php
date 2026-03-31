@@ -40,14 +40,15 @@ class LanguageManager {
 	}
 
 	public function getSelectedLanguage() : string {
-		return $this->plugin->getConfig()->get("lang");
+		$lang = $this->plugin->getConfig()->get("lang");
+		return is_string($lang) ? $lang : "eng";
 	}
 
 	/**
 	 * Translate Message from Language Configuration
 	 * Do not call it directly.
 	 */
-	public function translateMessage(mixed $option) : mixed {
+	public function translateMessage(string $option) : string {
 		$lang = $this->getLanguageConfig();
 
 		/** Check if selected language is missing. **/
@@ -60,7 +61,12 @@ class LanguageManager {
 			throw new \Exception("Trying to access on null.");
 		}
 
-		return PluginUtils::colorize($lang->get($option));
+		$value = $lang->get($option);
+		if (!is_string($value)) {
+			throw new \Exception("Trying to access non-string language value.");
+		}
+
+		return PluginUtils::colorize($value);
 	}
 
 	public function init() : void {

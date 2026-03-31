@@ -58,9 +58,11 @@ class Loader extends PluginBase {
 
 	public static bool $isFilterEnabled = true;
 
+	/** @var array<string, int> */
 	public array $violationCounts = [];
 
 	private ?Config $profanityConfig = null;
+	/** @var string[]|null */
 	private ?array $providedProfanityList = null;
 
 	public function onLoad() : void {
@@ -80,12 +82,24 @@ class Loader extends PluginBase {
 	private function ensureConfigIsCurrent() : void {
 		$log = $this->getLogger();
 		$pluginConfigResource = $this->getResource("config.yml");
+		if ($pluginConfigResource === null) {
+			$log->critical("Unable to read default config resource.");
+			$this->getServer()->getPluginManager()->disablePlugin($this);
+			return;
+		}
 		$lang = new LanguageManager();
-		$pluginConfig = yaml_parse(stream_get_contents($pluginConfigResource));
+		$pluginConfigContents = stream_get_contents($pluginConfigResource);
+		if ($pluginConfigContents === false) {
+			$log->critical("Unable to read default config contents.");
+			$this->getServer()->getPluginManager()->disablePlugin($this);
+			fclose($pluginConfigResource);
+			return;
+		}
+		$pluginConfig = yaml_parse($pluginConfigContents);
 		fclose($pluginConfigResource);
 		$config = $this->getConfig();
 
-		if ($pluginConfig == false) {
+		if (!is_array($pluginConfig)) {
 			$log->critical("Invalid Configuration Syntax, Please remove your update the plugin.");
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
@@ -110,17 +124,23 @@ class Loader extends PluginBase {
 	}
 
 	private function createChatListener() : ?ChatProfanityListener {
-		return match ($this->getConfig()->get("type")) {
-			self::FILTER_MODE_BLOCK => new ChatProfanityListener(self::FILTER_MODE_BLOCK, $this->getConfig()->get("profanity")),
-			self::FILTER_MODE_HIDE => new ChatProfanityListener(self::FILTER_MODE_HIDE, $this->getConfig()->get("profanity")),
-			default => $this->handleInvalidFilterType(),
-		};
+		$provider = $this->getConfig()->get("profanity");
+		$profanityProvider = is_string($provider) ? $provider : self::PROVIDER_CUSTOM;
+
+		switch ($this->getConfig()->get("type")) {
+			case self::FILTER_MODE_BLOCK:
+				return new ChatProfanityListener(self::FILTER_MODE_BLOCK, $profanityProvider);
+			case self::FILTER_MODE_HIDE:
+				return new ChatProfanityListener(self::FILTER_MODE_HIDE, $profanityProvider);
+			default:
+				$this->handleInvalidFilterType();
+				return null;
+		}
 	}
 
-	private function handleInvalidFilterType() : ?ChatProfanityListener {
+	private function handleInvalidFilterType() : void {
 		$this->getLogger()->critical("Invalid Profanity Type. Please check instruction on your configuration.");
 		$this->getServer()->getPluginManager()->disablePlugin($this);
-		return null;
 	}
 
 	private function registerCommands() : void {
@@ -168,8 +188,10 @@ class Loader extends PluginBase {
 	}
 
 	private function registerPermissions() : void {
-		$this->registerPermissionNode(($this->getConfig()->get("command-permission") ?? self::DEFAULT_COMMAND_PERMISSION));
-		$this->registerPermissionNode(($this->getConfig()->get("bypass-permission") ?? self::DEFAULT_BYPASS_PERMISSION));
+		$commandPermission = $this->getConfig()->get("command-permission");
+		$bypassPermission = $this->getConfig()->get("bypass-permission");
+		$this->registerPermissionNode(is_string($commandPermission) ? $commandPermission : self::DEFAULT_COMMAND_PERMISSION);
+		$this->registerPermissionNode(is_string($bypassPermission) ? $bypassPermission : self::DEFAULT_BYPASS_PERMISSION);
 	}
 
 	/**
@@ -182,9 +204,15 @@ class Loader extends PluginBase {
 		$permission = new Permission($permissionName);
 		$permissionManager = PermissionManager::getInstance();
 		$permissionManager->addPermission($permission);
-		$permissionManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission->getName(), true);
+		$root = $permissionManager->getPermission(DefaultPermissions::ROOT_OPERATOR);
+		if ($root !== null) {
+			$root->addChild($permission->getName(), true);
+		}
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getProvidedProfanityList() : array {
 		if ($this->providedProfanityList !== null) {
 			return $this->providedProfanityList;
@@ -192,7 +220,9 @@ class Loader extends PluginBase {
 
 		$path = $this->getDataFolder() . "profanity_filter.wlist";
 		if (file_exists($path)) {
-			$this->providedProfanityList = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+			$contents = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+			$strings = array_values(array_filter($contents, static fn($value) => is_string($value)));
+			$this->providedProfanityList = $strings;
 		} else {
 			$this->providedProfanityList = ProfanityFilterService::getDefaultProfanityList();
 		}

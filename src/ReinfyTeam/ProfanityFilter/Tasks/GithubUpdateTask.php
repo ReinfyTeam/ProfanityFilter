@@ -45,14 +45,18 @@ class GithubUpdateTask extends AsyncTask {
 
 	public function onCompletion() : void {
 		$lang = new LanguageManager();
-		[$highestVersion, $artifactUrl, $apiTo, $error, $apiFrom] = $this->getResult();
+		$result = $this->getResult();
+		if (!is_array($result) || count($result) !== 5) {
+			return;
+		}
+		[$highestVersion, $artifactUrl, $apiTo, $error, $apiFrom] = $result;
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
 		}
 
 		if ($error !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$error]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [(string) $error]));
 			//Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry-failed"));
 			return;
 		}
@@ -66,25 +70,28 @@ class GithubUpdateTask extends AsyncTask {
 		}
 	}
 
+	/**
+	 * @return array{0: string, 1: string, 2: string, 3: string|null, 4: string}
+	 */
 	private function fetchLatest() : array {
 		$error = null;
 		$json = Internet::getURL(self::GIT_URL, self::HTTP_TIMEOUT_SECONDS, [], $error);
-		if ($error !== null) {
-			return ["", "", "", $error, ""];
+		if ($error !== null || $json === null) {
+			return ["", "", "", (string) $error, ""];
 		}
 
 		$releases = json_decode($json->getBody(), true);
-		if ($releases === null) {
+		if (!is_array($releases)) {
 			$errorMessage = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
 			return ["", "", "", $errorMessage, ""];
 		}
 
 		return [
-			$releases["version"],
-			$releases["artifactUrl"],
-			$releases["api_to"],
+			(string) ($releases["version"] ?? ""),
+			(string) ($releases["artifactUrl"] ?? ""),
+			(string) ($releases["api_to"] ?? ""),
 			null,
-			$releases["api_from"],
+			(string) ($releases["api_from"] ?? ""),
 		];
 	}
 }

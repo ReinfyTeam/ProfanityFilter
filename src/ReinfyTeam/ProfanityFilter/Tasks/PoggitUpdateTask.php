@@ -48,19 +48,23 @@ class PoggitUpdateTask extends AsyncTask {
 	public function onCompletion() : void {
 		$lang = new LanguageManager();
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
-		if ($plugin === null) {
+		if (!$plugin instanceof Loader) {
 			return;
 		}
-		[$highestVersion, $artifactUrl, $apiFrom, $apiTo, $error] = $this->getResult();
+		$result = $this->getResult();
+		if (!is_array($result) || count($result) !== 5) {
+			return;
+		}
+		[$highestVersion, $artifactUrl, $apiFrom, $apiTo, $error] = $result;
 		if ($highestVersion === null || $artifactUrl === null || $apiFrom === null || $apiTo === null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
-			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
+			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($plugin->getDescription()->getName(), $plugin->getDescription()->getVersion()));
 			return;
 		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		if ($error !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$error]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [(string) $error]));
 			Server::getInstance()->getLogger()->notice($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry"));
-			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask(Loader::getInstance()->getDescription()->getName(), Loader::getInstance()->getDescription()->getVersion()));
+			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($plugin->getDescription()->getName(), $plugin->getDescription()->getVersion()));
 			return;
 		}
 
@@ -73,6 +77,9 @@ class PoggitUpdateTask extends AsyncTask {
 		}
 	}
 
+	/**
+	 * @return array{0: string|null, 1: string|null, 2: string|null, 3: string|null, 4: string|null}
+	 */
 	private function fetchReleases() : array {
 		$error = null;
 		$json = Internet::getURL(self::POGGIT_RELEASES_URL . $this->pluginName, self::HTTP_TIMEOUT_SECONDS, [], $error);
@@ -83,18 +90,22 @@ class PoggitUpdateTask extends AsyncTask {
 
 		if ($json !== null) {
 			$releases = json_decode($json->getBody(), true);
-			if ($releases === null) {
-				$error["json_decode() parse failed. Is the result is not json type or has a syntax error?"]; // v0.1.2 (json_decode() failes fix)
+			if (!is_array($releases)) {
+				$error = "json_decode() parse failed. Is the result is not json type or has a syntax error?"; // v0.1.2 (json_decode() failes fix)
 				return [null, null, null, null, $error];
 			} // Issue Fix: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 			foreach ($releases as $release) {
-				if (version_compare($highestVersion, $release["version"], ">=")) {
+				if (!is_array($release) || !isset($release["version"])) {
 					continue;
 				}
-				$highestVersion = $release["version"];
-				$artifactUrl = $release["artifact_url"];
-				$apiFrom = $release["api"][0]["from"];
-				$apiTo = $release["api"][0]["to"];
+				$releaseVersion = (string) $release["version"];
+				if (version_compare($highestVersion, $releaseVersion, ">=")) {
+					continue;
+				}
+				$highestVersion = $releaseVersion;
+				$artifactUrl = (string) ($release["artifact_url"] ?? $artifactUrl);
+				$apiFrom = isset($release["api"][0]["from"]) ? (string) $release["api"][0]["from"] : $apiFrom;
+				$apiTo = isset($release["api"][0]["to"]) ? (string) $release["api"][0]["to"] : $apiTo;
 			}
 		}
 

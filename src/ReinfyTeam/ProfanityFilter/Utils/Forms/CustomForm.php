@@ -36,8 +36,10 @@ use function is_string;
 class CustomForm extends Form {
 	private const UNSET_INDEX = -1;
 
+	/** @var array<int, string|int|null> */
 	private array $labelMap = [];
 
+	/** @var array<int, callable(mixed) : bool> */
 	private array $validationMethods = [];
 
 	public function __construct(?callable $callable) {
@@ -47,7 +49,7 @@ class CustomForm extends Form {
 		$this->data["content"] = [];
 	}
 
-	public function processData(&$data) : void {
+	public function processData(mixed &$data) : void {
 		if ($data !== null && !is_array($data)) {
 			throw new FormValidationException("Expected an array response, got " . gettype($data));
 		}
@@ -62,9 +64,10 @@ class CustomForm extends Form {
 					throw new FormValidationException("Invalid element " . $i);
 				}
 				if (!$validationMethod($v)) {
-					throw new FormValidationException("Invalid type given for element " . $this->labelMap[$i]);
+					throw new FormValidationException("Invalid type given for element " . ($this->labelMap[$i] ?? $i));
 				}
-				$new[$this->labelMap[$i]] = $v;
+				$label = $this->labelMap[$i] ?? $i;
+				$new[$label] = $v;
 			}
 			$data = $new;
 		}
@@ -75,7 +78,8 @@ class CustomForm extends Form {
 	}
 
 	public function getTitle() : string {
-		return $this->data["title"];
+		$title = $this->data["title"] ?? "";
+		return is_string($title) ? $title : "";
 	}
 
 	public function addLabel(string $text, ?string $label = null) : void {
@@ -101,6 +105,9 @@ class CustomForm extends Form {
 		$this->addElement($content, static fn($v) => (is_float($v) || is_int($v)) && $v >= $min && $v <= $max, $label);
 	}
 
+	/**
+	 * @param string[] $steps
+	 */
 	public function addStepSlider(string $text, array $steps, int $defaultIndex = self::UNSET_INDEX, ?string $label = null) : void {
 		$content = ["type" => "step_slider", "text" => $text, "steps" => $steps];
 		if ($defaultIndex !== self::UNSET_INDEX) {
@@ -109,6 +116,9 @@ class CustomForm extends Form {
 		$this->addElement($content, static fn($v) => is_int($v) && isset($steps[$v]), $label);
 	}
 
+	/**
+	 * @param string[] $options
+	 */
 	public function addDropdown(string $text, array $options, int $default = null, ?string $label = null) : void {
 		$this->addElement(["type" => "dropdown", "text" => $text, "options" => $options, "default" => $default], static fn($v) => is_int($v) && isset($options[$v]), $label);
 	}
@@ -117,10 +127,19 @@ class CustomForm extends Form {
 		$this->addElement(["type" => "input", "text" => $text, "placeholder" => $placeholder, "default" => $default], static fn($v) => is_string($v), $label);
 	}
 
+	/**
+	 * @param array<string, mixed> $content
+	 */
 	private function addContent(array $content) : void {
-		$this->data["content"][] = $content;
+		/** @var array<int, array<string, mixed>> $existing */
+		$existing = $this->data["content"];
+		$existing[] = $content;
+		$this->data["content"] = $existing;
 	}
 
+	/**
+	 * @param array<string, mixed> $content
+	 */
 	private function addElement(array $content, callable $validator, ?string $label = null) : void {
 		$this->addContent($content);
 		$this->labelMap[] = $label ?? count($this->labelMap);

@@ -36,6 +36,7 @@ class SimpleForm extends Form {
 
 	private string $content = "";
 
+	/** @var array<int, string|int|null> */
 	private array $labelMap = [];
 
 	public function __construct(?callable $callable) {
@@ -46,12 +47,14 @@ class SimpleForm extends Form {
 		$this->data["buttons"] = [];
 	}
 
-	public function processData(&$data) : void {
+	public function processData(mixed &$data) : void {
 		if ($data !== null) {
 			if (!is_int($data)) {
 				throw new FormValidationException("Expected an integer response, got " . gettype($data));
 			}
-			$count = count($this->data["buttons"]);
+			/** @var array<int, array<string, mixed>> $buttons */
+			$buttons = $this->data["buttons"];
+			$count = count($buttons);
 			if ($data >= $count || $data < 0) {
 				throw new FormValidationException("Button $data does not exist");
 			}
@@ -64,11 +67,13 @@ class SimpleForm extends Form {
 	}
 
 	public function getTitle() : string {
-		return $this->data["title"];
+		$title = $this->data["title"] ?? "";
+		return is_string($title) ? $title : "";
 	}
 
 	public function getContent() : string {
-		return $this->data["content"];
+		$content = $this->data["content"] ?? "";
+		return is_string($content) ? $content : "";
 	}
 
 	public function setContent(string $content) : void {
@@ -80,10 +85,16 @@ class SimpleForm extends Form {
 		if ($imageType !== self::IMAGE_TYPE_NONE) {
 			$content["image"] = $this->buildImage($imageType, $imagePath);
 		}
-		$this->data["buttons"][] = $content;
+		/** @var array<int, array<string, mixed>> $buttons */
+		$buttons = $this->data["buttons"];
+		$buttons[] = $content;
+		$this->data["buttons"] = $buttons;
 		$this->labelMap[] = $label ?? count($this->labelMap);
 	}
 
+	/**
+	 * @return array{type: string, data: string}
+	 */
 	private function buildImage(int $imageType, string $imagePath) : array {
 		return [
 			"type" => $imageType === self::IMAGE_TYPE_PATH ? "path" : "url",

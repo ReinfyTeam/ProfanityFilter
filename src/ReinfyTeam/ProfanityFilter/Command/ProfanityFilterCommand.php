@@ -59,7 +59,8 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 		$this->plugin = Loader::getInstance();
 		$this->language = new LanguageManager();
 		parent::__construct("profanityfilter", "ProfanityFilter Management", "/profanityfilter <help/subcommand>", ["pf"]);
-		$this->setPermission(($this->plugin->getConfig()->get("command-permission") ?? "profanityfilter.command"));
+		$permission = $this->plugin->getConfig()->get("command-permission");
+		$this->setPermission(is_string($permission) ? $permission : null);
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
@@ -111,7 +112,9 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 	private function handleHelp(CommandSender $sender) : void {
 		$this->sendLang($sender, "help-title");
 		$this->sendLang($sender, "help-subtitle");
-		foreach ($this->language->getLanguageConfig()->get("help-page") as $command) {
+		/** @var string[] $help */
+		$help = (array) $this->language->getLanguageConfig()->get("help-page");
+		foreach ($help as $command) {
 			$sender->sendMessage(PluginUtils::colorize("- " . $command));
 		}
 	}
@@ -141,7 +144,9 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 
 	private function handleList(CommandSender $sender) : void {
 		$this->sendLang($sender, "banned-words-description-1");
-		foreach ($this->plugin->getProfanityConfig()->get("banned-words") as $word) {
+		/** @var string[] $words */
+		$words = (array) $this->plugin->getProfanityConfig()->get("banned-words");
+		foreach ($words as $word) {
 			$sender->sendMessage("- " . $word);
 		}
 		$this->sendLang($sender, "banned-words-description-2");
@@ -158,6 +163,9 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 		$this->sendLang($sender, "ui-pf-manage-enabled-profanityfilter");
 	}
 
+	/**
+	 * @param array<int, string> $args
+	 */
 	private function handleRemove(CommandSender $sender, array $args) : void {
 		if ($this->shouldRejectCustom()) {
 			$this->sendLang($sender, "profanity-command-use-custom-pf-instead");
@@ -173,6 +181,9 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 		$this->sendLang($sender, "profanity-command-removed-word");
 	}
 
+	/**
+	 * @param array<int, string> $args
+	 */
 	private function handleAdd(CommandSender $sender, array $args) : void {
 		if ($this->shouldRejectCustom()) {
 			$this->sendLang($sender, "profanity-command-use-custom-pf-instead");
@@ -194,6 +205,9 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 		$this->sendLang($sender, "profanity-command-reload-complete");
 	}
 
+	/**
+	 * @param array<int, string> $args
+	 */
 	private function hasArg(array $args, int $index) : bool {
 		return isset($args[$index]) && $args[$index] !== "";
 	}
@@ -203,14 +217,15 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 	}
 
 	private function shouldRejectCustom() : bool {
-		return strtolower(Loader::getInstance()->getConfig()->get("profanity")) !== Loader::PROVIDER_CUSTOM;
+		$provider = Loader::getInstance()->getConfig()->get("profanity");
+		return strtolower(is_string($provider) ? $provider : "") !== Loader::PROVIDER_CUSTOM;
 	}
 
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function sendForm(Player $player, bool $added = false) {
-		$form = new SimpleForm(function (Player $player, $data) {
+	private function sendForm(Player $player, bool $added = false) : void {
+		$form = new SimpleForm(function (Player $player, mixed $data) {
 			if ($data === null) {
 				return;
 			}
@@ -258,8 +273,8 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 	/**
 	 * Profanity Form Interface.
 	 */
-	private function viewList(Player $player, bool $removed = false) {
-		$form = new SimpleForm(function (Player $player, $data) {
+	private function viewList(Player $player, bool $removed = false) : void {
+		$form = new SimpleForm(function (Player $player, mixed $data) {
 			if ($data === null) {
 				$this->sendForm($player);
 				return;
@@ -279,15 +294,20 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 		if ($removed) {
 			$form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
 		}
-		foreach ($this->plugin->getProfanityConfig()->get("banned-words") as $word) {
+		/** @var string[] $words */
+		$words = (array) $this->plugin->getProfanityConfig()->get("banned-words");
+		foreach ($words as $word) {
+			if (!is_string($word)) {
+				continue;
+			}
 			$form->addButton(T::DARK_RED . $word, SimpleForm::IMAGE_TYPE_PATH, "", $word);
 		}
 		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), SimpleForm::IMAGE_TYPE_NONE, "", self::BUTTON_RETURN_LABEL);
 		$player->sendForm($form);
 	}
 
-	public function viewActions(Player $player, $word) : void {
-		$form = new SimpleForm(function (Player $player, $data) use ($word) {
+	public function viewActions(Player $player, string $word) : void {
+		$form = new SimpleForm(function (Player $player, mixed $data) use ($word) {
 			if ($data === null) {
 				$this->viewList($player);
 				return;
@@ -312,7 +332,7 @@ class ProfanityFilterCommand extends Command implements PluginOwned {
 	}
 
 	public function addProfanityWordForm(Player $player, bool $nodata = false) : void {
-		$form = new CustomForm(function (Player $player, $data) use ($nodata) {
+		$form = new CustomForm(function (Player $player, ?array $data) {
 			if ($data === null) {
 				$this->viewList($player);
 				return;

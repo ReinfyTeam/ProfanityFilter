@@ -42,7 +42,7 @@ class ModalForm extends Form {
 		];
 	}
 
-	public function processData(&$data) : void {
+	public function processData(mixed &$data) : void {
 		if (!is_bool($data)) {
 			throw new FormValidationException("Expected a boolean response, got " . gettype($data));
 		}
@@ -53,11 +53,13 @@ class ModalForm extends Form {
 	}
 
 	public function getTitle() : string {
-		return $this->data["title"];
+		$title = $this->data["title"] ?? "";
+		return is_string($title) ? $title : "";
 	}
 
 	public function getContent() : string {
-		return $this->data["content"];
+		$content = $this->data["content"] ?? "";
+		return is_string($content) ? $content : "";
 	}
 
 	public function setContent(string $content) : void {
@@ -69,7 +71,8 @@ class ModalForm extends Form {
 	}
 
 	public function getButton1() : string {
-		return $this->data["button1"];
+		$button = $this->data["button1"] ?? "";
+		return is_string($button) ? $button : "";
 	}
 
 	public function setButton2(string $text) : void {
@@ -77,6 +80,7 @@ class ModalForm extends Form {
 	}
 
 	public function getButton2() : string {
-		return $this->data["button2"];
+		$button = $this->data["button2"] ?? "";
+		return is_string($button) ? $button : "";
 	}
 }
