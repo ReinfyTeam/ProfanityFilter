@@ -8,11 +8,11 @@ projects:
     icon: "assets/images/ProfanityFilter.png"
     libs:
       - src: Paroxity/Commando/Commando
-        version: ^3.2.0
+        version: ^3.3.0
       - src: muqsit/SimplePacketHandler/SimplePacketHandler
         version: ^0.1.5
       - src: dktapps-pm-pl/pmforms/pmforms
-        version: ^2.3.0
+        version: ^2.1.0
       - src: SOF3/InfoAPI/InfoAPI
         version: ^2.0.0-beta.1
 ...
