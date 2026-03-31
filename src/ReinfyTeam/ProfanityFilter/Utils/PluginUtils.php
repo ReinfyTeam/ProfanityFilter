@@ -32,6 +32,7 @@ use function array_diff;
 use function array_keys;
 use function array_values;
 use function count;
+use function is_array;
 use function is_string;
 use function ltrim;
 use function preg_match_all;
@@ -92,6 +93,9 @@ final class PluginUtils {
 	}
 
 	/**
+	 * Convert a duration string like "1d2h" into a DateTime and leftover text.
+	 * The leftover text is returned to preserve any trailing reason string.
+	 *
 	 * @return array{0: DateTime, 1: string}|null
 	 */
 	private static function parseDurationString(string $durationString) : ?array {
@@ -105,31 +109,34 @@ final class PluginUtils {
 			return null;
 		}
 
-		$matches[2] = preg_replace("/[^0-9]/", "", $matches[0]);
-		foreach ($matches[2] as $index => $amount) {
+		$amounts = preg_replace("/[^0-9]/", "", $matches[0]);
+		if (!is_array($amounts)) {
+			return null;
+		}
+		foreach ($amounts as $index => $amount) {
 			$unit = $matches[1][$index] ?? "";
-			switch ($unit) {
-				case "y":
-				case "w":
-				case "d":
-					$dateTime->add(new DateInterval("P" . $amount . strtoupper($unit)));
-					break;
-				case "mo":
-					$dateTime->add(new DateInterval("P" . $amount . strtoupper(substr($unit, 0, strlen($unit) - 1))));
-					break;
-				case "h":
-				case "m":
-				case "s":
-					$dateTime->add(new DateInterval("PT" . $amount . strtoupper($unit)));
-					break;
-				default:
-					$dateTime->add(new DateInterval("PT" . $amount . "S"));
-					break;
-			}
+			$dateTime->add(new DateInterval(self::buildIntervalSpec($amount, $unit)));
 			$durationString = str_replace($matches[0][$index], "", $durationString);
 		}
 
 		return [$dateTime, ltrim(str_replace($matches[0], "", $durationString))];
+	}
+
+	private static function buildIntervalSpec(string $amount, string $unit) : string {
+		switch ($unit) {
+			case "y":
+			case "w":
+			case "d":
+				return "P" . $amount . strtoupper($unit);
+			case "mo":
+				return "P" . $amount . strtoupper(substr($unit, 0, strlen($unit) - 1));
+			case "h":
+			case "m":
+			case "s":
+				return "PT" . $amount . strtoupper($unit);
+			default:
+				return "PT" . $amount . "S";
+		}
 	}
 
 	/**
@@ -159,38 +166,11 @@ final class PluginUtils {
 		$changed = false;
 
 		foreach ((array) $rawWords as $word) {
-			if (!is_string($word)) {
-				$changed = true;
-				continue;
-			}
-			$normalized = self::normalizeWord($word);
-			if ($normalized === "") {
-				$changed = true;
-				continue;
-			}
-			if (isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
-				$changed = true;
-				continue;
-			}
-			$seen[$normalized] = true;
-			$filtered[] = $word;
+			$changed = self::accumulateValidWord($word, $providedLookup, $seen, $filtered) || $changed;
 		}
 
 		if ($filtered === []) {
-			foreach ($fallbackWords as $fallback) {
-				if (!is_string($fallback)) {
-					continue;
-				}
-				$normalized = self::normalizeWord($fallback);
-				if ($normalized === "" || isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
-					continue;
-				}
-				$filtered[] = $fallback;
-				$seen[$normalized] = true;
-			}
-			if ($filtered !== []) {
-				$changed = true;
-			}
+			$changed = self::applyFallbackWords($fallbackWords, $providedLookup, $seen, $filtered) || $changed;
 		}
 
 		if ($changed) {
@@ -198,6 +178,52 @@ final class PluginUtils {
 			$config->save();
 			$config->reload();
 		}
+	}
+
+	/**
+	 * @param array<string, bool> $providedLookup
+	 * @param array<string, bool> $seen
+	 * @param string[] $filtered
+	 */
+	private static function accumulateValidWord(mixed $word, array $providedLookup, array &$seen, array &$filtered) : bool {
+		if (!is_string($word)) {
+			return true;
+		}
+		$normalized = self::normalizeWord($word);
+		if ($normalized === "") {
+			return true;
+		}
+		if (isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+			return true;
+		}
+
+		$seen[$normalized] = true;
+		$filtered[] = $word;
+		return false;
+	}
+
+	/**
+	 * @param string[] $fallbackWords
+	 * @param array<string, bool> $providedLookup
+	 * @param array<string, bool> $seen
+	 * @param string[] $filtered
+	 */
+	private static function applyFallbackWords(array $fallbackWords, array $providedLookup, array &$seen, array &$filtered) : bool {
+		$changed = false;
+		foreach ($fallbackWords as $fallback) {
+			if (!is_string($fallback)) {
+				continue;
+			}
+			$normalized = self::normalizeWord($fallback);
+			if ($normalized === "" || isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
+				continue;
+			}
+			$filtered[] = $fallback;
+			$seen[$normalized] = true;
+			$changed = true;
+		}
+
+		return $changed;
 	}
 
 	public static function removeProfanityWord(string $word) : bool {

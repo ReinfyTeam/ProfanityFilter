@@ -46,6 +46,9 @@ final class ProfanityPatternCompiler {
 	private const REPLACEMENT_LENGTH = 1;
 	private const PATTERN_CACHE_LIMIT = 32;
 
+	/** @var array<string, string> */
+	private static array $patternCache = [];
+
 	/**
 	 * Compile the profanity list into a single regex and cache the result.
 	 * Reduces repeated per-word regex compilation and keeps detection O(n) per message.
@@ -89,19 +92,18 @@ final class ProfanityPatternCompiler {
 			return null;
 		}
 		$key = md5($json);
-		static $cache = [];
 
-		if (isset($cache[$key])) {
-			return $cache[$key];
+		if (isset(self::$patternCache[$key])) {
+			return self::$patternCache[$key];
 		}
 
 		$escaped = array_map(static fn(string $word) => preg_quote($word, "/"), $normalized);
 		$pattern = "/(" . implode("|", $escaped) . ")/iu";
 
 		// Keep cache size bounded to avoid unbounded growth when lists change at runtime.
-		$cache[$key] = $pattern;
-		if (count($cache) > self::PATTERN_CACHE_LIMIT) {
-			array_shift($cache);
+		self::$patternCache[$key] = $pattern;
+		if (count(self::$patternCache) > self::PATTERN_CACHE_LIMIT) {
+			array_shift(self::$patternCache);
 		}
 
 		return $pattern;

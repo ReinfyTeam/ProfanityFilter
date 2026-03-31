@@ -39,6 +39,7 @@ use function strtolower;
 class ChatProfanityListener implements Listener {
 	private Loader $pluginInstance;
 
+	/** @var Loader::FILTER_MODE_* */
 	private string $filterMode;
 
 	private string $profanityProvider;
@@ -46,6 +47,9 @@ class ChatProfanityListener implements Listener {
 	/** @var array{0: \DateTime, 1: string}|null */
 	private ?array $banDuration;
 
+	/**
+	 * @param 'block'|'hide' $filterMode
+	 */
 	public function __construct(string $filterMode, string $profanityProvider) {
 		$this->pluginInstance = Loader::getInstance();
 		$this->filterMode = $filterMode;
@@ -60,9 +64,7 @@ class ChatProfanityListener implements Listener {
 		$message = $event->getMessage();
 		$player = $event->getPlayer();
 
-		$rawBypass = $this->pluginInstance->getConfig()->get("bypass-permission");
-		$bypassPermission = is_string($rawBypass) ? $rawBypass : "profanityfilter.bypass";
-		if (!$this->shouldFilter($player->hasPermission($bypassPermission))) {
+		if (!$this->shouldFilter($player)) {
 			return;
 		}
 
@@ -73,11 +75,17 @@ class ChatProfanityListener implements Listener {
 		$this->handleProfanity($event, $player, $message, $words);
 	}
 
-	private function shouldFilter(bool $hasBypass) : bool {
+	private function shouldFilter(Player $player) : bool {
 		if (!Loader::$isFilterEnabled) {
 			return false;
 		}
-		return !$hasBypass;
+
+		return !$player->hasPermission($this->getBypassPermission());
+	}
+
+	private function getBypassPermission() : string {
+		$rawBypass = $this->pluginInstance->getConfig()->get("bypass-permission");
+		return is_string($rawBypass) ? $rawBypass : "profanityfilter.bypass";
 	}
 
 	/**
@@ -128,47 +136,70 @@ class ChatProfanityListener implements Listener {
 
 	private function handlePunishment(Player $player) : void {
 		$playerName = $player->getName();
-		$maxViolations = filter_var($this->pluginInstance->getConfig()->get("max-violations"), FILTER_VALIDATE_INT);
-		if (!is_int($maxViolations)) {
-			$maxViolations = 0;
-		}
+		$maxViolations = $this->getMaxViolations();
 		if (($this->pluginInstance->violationCounts[$playerName] ?? 0) === $maxViolations) {
-			$punishConfig = $this->pluginInstance->getConfig()->get("punishment-type");
-			$punishType = is_string($punishConfig) ? $punishConfig : "kick";
-			$banExpires = $this->banDuration[0] ?? null;
-			switch ($punishType) {
-				case "ban":
-					$this->pluginInstance->violationCounts[$playerName] = 0;
-					$player->getServer()->getNameBans()->addBan($playerName, "Profanity", $banExpires, $player->getServer()->getName());
-					$player->kick($this->renderMessage("kick-message", $player, $playerName, [
-						"type" => $punishType . "ned",
-					]));
-					$this->pluginInstance->getLogger()->warning($this->renderMessage("ban-warning-message", $player, $playerName));
-					break;
-				case "kick":
-					$this->pluginInstance->violationCounts[$playerName] = 0;
-					$player->kick($this->renderMessage("kick-message", $player, $playerName, [
-						"type" => $punishType . "ed",
-					]));
-					$this->pluginInstance->getLogger()->warning($this->renderMessage("kick-warning-message", $player, $playerName));
-					break;
-				case "command":
-					$this->pluginInstance->violationCounts[$playerName] = 0;
-					$this->pluginInstance->getLogger()->warning($this->renderMessage("command-warning-message", $player, $playerName));
-					if ((bool) $this->pluginInstance->getConfig()->get("execute-as-player")) {
-						$this->pluginInstance->getServer()->dispatchCommand($player, $this->renderMessage("command", $player, $playerName));
-					} else {
-						$this->pluginInstance->getServer()->dispatchCommand(new ConsoleCommandSender($this->pluginInstance->getServer(), $this->pluginInstance->getServer()->getLanguage()), $this->renderMessage("command", $player, $playerName));
-					}
-					break;
-				default:
-					throw new Exception("Cannot Identify the type of punishment in config.yml!");
-			}
+			$this->pluginInstance->violationCounts[$playerName] = 0;
+			$this->applyConfiguredPunishment($player, $playerName);
 			return;
 		}
 
 		$currentCount = $this->pluginInstance->violationCounts[$playerName] ?? 0;
 		$this->pluginInstance->violationCounts[$playerName] = $currentCount + 1;
+	}
+
+	private function getMaxViolations() : int {
+		$maxViolations = filter_var($this->pluginInstance->getConfig()->get("max-violations"), FILTER_VALIDATE_INT);
+		return is_int($maxViolations) ? $maxViolations : 0;
+	}
+
+	private function applyConfiguredPunishment(Player $player, string $playerName) : void {
+		$punishConfig = $this->pluginInstance->getConfig()->get("punishment-type");
+		$punishType = is_string($punishConfig) ? $punishConfig : "kick";
+		$banExpires = $this->banDuration[0] ?? null;
+
+		switch ($punishType) {
+			case "ban":
+				$this->applyBan($player, $playerName, $banExpires);
+				return;
+			case "kick":
+				$this->applyKick($player, $playerName);
+				return;
+			case "command":
+				$this->applyCommandPunishment($player, $playerName);
+				return;
+			default:
+				throw new Exception("Cannot Identify the type of punishment in config.yml!");
+		}
+	}
+
+	private function applyBan(Player $player, string $playerName, ?\DateTime $banExpires) : void {
+		$player->getServer()->getNameBans()->addBan($playerName, "Profanity", $banExpires, $player->getServer()->getName());
+		$player->kick($this->renderMessage("kick-message", $player, $playerName, [
+			"type" => "banned",
+		]));
+		$this->pluginInstance->getLogger()->warning($this->renderMessage("ban-warning-message", $player, $playerName));
+	}
+
+	private function applyKick(Player $player, string $playerName) : void {
+		$player->kick($this->renderMessage("kick-message", $player, $playerName, [
+			"type" => "kicked",
+		]));
+		$this->pluginInstance->getLogger()->warning($this->renderMessage("kick-warning-message", $player, $playerName));
+	}
+
+	private function applyCommandPunishment(Player $player, string $playerName) : void {
+		$this->pluginInstance->getLogger()->warning($this->renderMessage("command-warning-message", $player, $playerName));
+		$command = $this->renderMessage("command", $player, $playerName);
+
+		if ((bool) $this->pluginInstance->getConfig()->get("execute-as-player")) {
+			$this->pluginInstance->getServer()->dispatchCommand($player, $command);
+			return;
+		}
+
+		$this->pluginInstance->getServer()->dispatchCommand(
+			new ConsoleCommandSender($this->pluginInstance->getServer(), $this->pluginInstance->getServer()->getLanguage()),
+			$command
+		);
 	}
 
 	/**

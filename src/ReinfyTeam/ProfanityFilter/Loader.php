@@ -39,16 +39,14 @@ use function array_filter;
 use function array_map;
 use function array_values;
 use function explode;
-use function fclose;
 use function file_exists;
+use function file_put_contents;
 use function is_array;
 use function is_string;
 use function mkdir;
 use function rename;
-use function stream_get_contents;
 use function trim;
 use function unlink;
-use function yaml_parse;
 
 class Loader extends PluginBase {
 	use SingletonTrait;
@@ -67,15 +65,18 @@ class Loader extends PluginBase {
 	/** @var array<string, int> */
 	public array $violationCounts = [];
 
+	private LanguageManager $language;
+
 	private ?Config $profanityConfig = null;
 	/** @var string[]|null */
 	private ?array $providedProfanityList = null;
 
 	public function onLoad() : void {
 		Loader::$instance = $this;
+		$this->language = new LanguageManager();
 		$this->ensureConfigIsCurrent();
 		$this->checkForUpdates();
-		(new LanguageManager())->init();
+		$this->language->init();
 		$this->initializeResources();
 		$this->registerPermissions();
 	}
@@ -88,22 +89,14 @@ class Loader extends PluginBase {
 
 	private function ensureConfigIsCurrent() : void {
 		$log = $this->getLogger();
-		$pluginConfigResource = $this->getResource("config.yml");
-		if ($pluginConfigResource === null) {
+		$pluginConfigContents = $this->getResourceContents("config.yml");
+		if ($pluginConfigContents === null) {
 			$log->critical("Unable to read default config resource.");
 			$this->getServer()->getPluginManager()->disablePlugin($this);
 			return;
 		}
-		$lang = new LanguageManager();
-		$pluginConfigContents = stream_get_contents($pluginConfigResource);
-		if ($pluginConfigContents === false) {
-			$log->critical("Unable to read default config contents.");
-			$this->getServer()->getPluginManager()->disablePlugin($this);
-			fclose($pluginConfigResource);
-			return;
-		}
-		$pluginConfig = yaml_parse($pluginConfigContents);
-		fclose($pluginConfigResource);
+
+		$pluginConfig = $this->parseYamlString($pluginConfigContents);
 		$config = $this->getConfig();
 
 		if (!is_array($pluginConfig)) {
@@ -116,7 +109,7 @@ class Loader extends PluginBase {
 			return;
 		}
 
-		$log->notice($lang->translateMessage("outdated-config"));
+		$log->notice($this->language->translateMessage("outdated-config"));
 		@rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "old-config.yml");
 		@unlink($this->getDataFolder() . "old-config.yml");
 		$this->saveResource("config.yml");
@@ -161,11 +154,10 @@ class Loader extends PluginBase {
 	}
 
 	private function checkForUpdates() : void {
-		$lang = new LanguageManager();
 		if ($this->getConfig()->get("check-updates")) {
 			$this->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($this->getDescription()->getName(), $this->getDescription()->getVersion()));
 		} else {
-			$this->getServer()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-warning"));
+			$this->getServer()->getLogger()->debug($this->language->translateMessage("new-update-prefix") . " " . $this->language->translateMessage("update-warning"));
 		}
 	}
 
@@ -187,13 +179,15 @@ class Loader extends PluginBase {
 	 * Initilize the resource in the context.
 	 */
 	private function initializeResources() : void {
-		if (!file_exists($this->getDataFolder() . "languages/")) {
-			@mkdir($this->getDataFolder() . "languages/");
+		$dataFolder = $this->getDataFolder();
+		$langFolder = $dataFolder . "languages/";
+		if (!file_exists($langFolder)) {
+			@mkdir($langFolder);
 		}
 		$this->saveResource("languages/eng.yml");
 		// Keep the default profanity wordlist immutable by resetting it on every load.
 		$this->saveResource("profanity_filter.wlist", true);
-		if (!file_exists($this->getDataFolder() . "banned-words.yml")) {
+		if (!file_exists($dataFolder . "banned-words.yml")) {
 			$this->saveResource("banned-words.yml");
 		}
 
@@ -206,10 +200,8 @@ class Loader extends PluginBase {
 	}
 
 	private function registerPermissions() : void {
-		$commandPermission = $this->getConfig()->get("command-permission");
-		$bypassPermission = $this->getConfig()->get("bypass-permission");
-		$this->registerPermissionNode(is_string($commandPermission) ? $commandPermission : self::DEFAULT_COMMAND_PERMISSION);
-		$this->registerPermissionNode(is_string($bypassPermission) ? $bypassPermission : self::DEFAULT_BYPASS_PERMISSION);
+		$this->registerPermissionNode($this->getConfigString("command-permission", self::DEFAULT_COMMAND_PERMISSION));
+		$this->registerPermissionNode($this->getConfigString("bypass-permission", self::DEFAULT_BYPASS_PERMISSION));
 	}
 
 	/**
@@ -236,25 +228,59 @@ class Loader extends PluginBase {
 			return $this->providedProfanityList;
 		}
 
-		$resource = $this->getResource("profanity_filter.wlist");
-		if ($resource !== null) {
-			$contents = stream_get_contents($resource);
-			fclose($resource);
-			if ($contents !== false) {
-				$lines = array_values(
-					array_filter(
-						array_map(static fn(string $line) : string => trim($line), explode("\n", $contents)),
-						static fn(string $value) : bool => $value !== ""
-					)
-				);
-				$this->providedProfanityList = $lines;
-				return $this->providedProfanityList;
-			}
+		$contents = $this->getResourceContents("profanity_filter.wlist");
+		if ($contents !== null) {
+			$lines = array_values(
+				array_filter(
+					array_map(static fn(string $line) : string => trim($line), explode("\n", $contents)),
+					static fn(string $value) : bool => $value !== ""
+				)
+			);
+			$this->providedProfanityList = $lines;
+			return $this->providedProfanityList;
 		}
 
 		// Fallback to the smaller built-in list when resource reading fails.
 		$this->providedProfanityList = ProfanityFilterService::getDefaultProfanityList();
 
 		return $this->providedProfanityList;
+	}
+
+	private function getResourceContents(string $filename) : ?string {
+		foreach ($this->getResources() as $resource) {
+			if ($resource->getFilename() !== $filename) {
+				continue;
+			}
+			$file = $resource->openFile("r");
+			$content = $file->fread($resource->getSize());
+			return $content === false ? null : $content;
+		}
+
+		return null;
+	}
+
+	/**
+	 * @return array<int|string, mixed>|null
+	 */
+	private function parseYamlString(string $yaml) : ?array {
+		$tempFile = $this->getDataFolder() . ".default-config.tmp.yml";
+		$written = file_put_contents($tempFile, $yaml);
+		if ($written === false) {
+			return null;
+		}
+
+		$parsed = (new Config($tempFile, Config::YAML))->getAll();
+		@unlink($tempFile);
+
+		return $parsed;
+	}
+
+	private function getConfigString(string $key, string $default) : string {
+		$value = $this->getConfig()->get($key);
+		if (!is_string($value)) {
+			return $default;
+		}
+
+		return $value;
 	}
 }
