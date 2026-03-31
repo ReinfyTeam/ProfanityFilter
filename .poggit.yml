@@ -10,7 +10,7 @@ projects:
       - src: Paroxity/Commando/Commando
         version: 3.3.0
       - src: muqsit/SimplePacketHandler/SimplePacketHandler
-        version: ^0.1.6
+        version: ^0.1.5
         branch: pm5
       - src: dktapps-pm-pl/pmforms/pmforms
         version: ^2.0.0
