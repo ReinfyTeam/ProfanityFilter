@@ -1,0 +1,37 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: ../../../src/AvailableCommandsPacket.php
+
+		-
+			message: '#^Expression "\(function \(\\pocketmine\\network\\mcpe\\protocol\\types\\command\\ChainedSubCommandData \.\.\.\$chainedSubCommandData\)\: void \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: ../../../src/types/command/CommandData.php
+
+		-
+			message: '#^Expression "\(function \(\\pocketmine\\network\\mcpe\\protocol\\types\\command\\CommandOverload \.\.\.\$overloads\)\: void \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: ../../../src/types/command/CommandData.php
+
+		-
+			message: '#^Expression "\(static function \(int \.\.\.\$_\)\: void \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: ../../../src/types/command/CommandEnumConstraint.php
+
+		-
+			message: '#^Expression "\(function \(\\pocketmine\\network\\mcpe\\protocol\\types\\command\\CommandParameter \.\.\.\$parameters\)\: void \{…" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: ../../../src/types/command/CommandOverload.php
+
+		-
+			message: '#^Parameter \#3 \$input of class pocketmine\\network\\mcpe\\protocol\\types\\recipe\\ShapedRecipe constructor expects list\<list\<pocketmine\\network\\mcpe\\protocol\\types\\recipe\\RecipeIngredient\>\>, array\<int\<0, max\>, non\-empty\-array\<int\<0, max\>, pocketmine\\network\\mcpe\\protocol\\types\\recipe\\RecipeIngredient\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../../src/types/recipe/ShapedRecipe.php

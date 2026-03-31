@@ -1,0 +1,9 @@
+includes:
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
+	- tests/phpstan/configs/baseline.neon
+
+parameters:
+	level: 8
+	paths:
+		- src
+	reportUnmatchedIgnoredErrors: false #enabling this makes build results too volatile when phpstan bugs get fixed

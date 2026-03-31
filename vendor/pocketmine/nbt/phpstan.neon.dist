@@ -1,0 +1,11 @@
+includes:
+	- tests/phpstan/configs/expected-test-errors.neon
+	- tests/phpstan/configs/impossible-mixed.neon
+	- tests/phpstan/configs/phpstan-bugs.neon
+
+parameters:
+	level: 10
+	treatPhpDocTypesAsCertain: false
+	paths:
+		- src
+		- tests

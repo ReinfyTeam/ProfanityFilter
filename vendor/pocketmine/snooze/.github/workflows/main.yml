@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    strategy:
+      matrix:
+        php: ["8.1.14", "8.2.1"]
+
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: pmmp/setup-php-action@fa2accea978a84097cf40ecc7d46b2d71f258bd5
+        with:
+          php-version: ${{ matrix.php }}
+          install-path: ${{ github.workspace}}/php
+          pm-version-major: "5"
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: "~/.cache/composer"
+          key: "php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "php-${{ matrix.php }}-composer-"
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Run PHPStan
+        run: ./vendor/bin/phpstan analyze --no-progress

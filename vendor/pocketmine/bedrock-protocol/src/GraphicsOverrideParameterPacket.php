@@ -1,0 +1,96 @@
+<?php
+
+/*
+ * This file is part of BedrockProtocol.
+ * Copyright (C) 2014-2022 PocketMine Team <https://github.com/pmmp/BedrockProtocol>
+ *
+ * BedrockProtocol is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ */
+
+declare(strict_types=1);
+
+namespace pocketmine\network\mcpe\protocol;
+
+use pmmp\encoding\Byte;
+use pmmp\encoding\ByteBufferReader;
+use pmmp\encoding\ByteBufferWriter;
+use pmmp\encoding\LE;
+use pmmp\encoding\VarInt;
+use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\serializer\CommonTypes;
+use pocketmine\network\mcpe\protocol\types\GraphicsOverrideParameterType;
+use pocketmine\network\mcpe\protocol\types\ParameterKeyframeValue;
+use function count;
+
+class GraphicsOverrideParameterPacket extends DataPacket implements ClientboundPacket{
+	public const NETWORK_ID = ProtocolInfo::GRAPHICS_OVERRIDE_PARAMETER_PACKET;
+
+	/** @var ParameterKeyframeValue[] */
+	private array $values = [];
+	private ?float $unknownFloat;
+	private ?Vector3 $unknownVector3;
+	private string $biomeIdentifier;
+	private GraphicsOverrideParameterType $parameterType;
+	private bool $reset;
+
+	/**
+	 * @generate-create-func
+	 * @param ParameterKeyframeValue[] $values
+	 */
+	public static function create(array $values, ?float $unknownFloat, ?Vector3 $unknownVector3, string $biomeIdentifier, GraphicsOverrideParameterType $parameterType, bool $reset) : self{
+		$result = new self;
+		$result->values = $values;
+		$result->unknownFloat = $unknownFloat;
+		$result->unknownVector3 = $unknownVector3;
+		$result->biomeIdentifier = $biomeIdentifier;
+		$result->parameterType = $parameterType;
+		$result->reset = $reset;
+		return $result;
+	}
+
+	/**
+	 * @return ParameterKeyframeValue[]
+	 */
+	public function getValues() : array{ return $this->values; }
+
+	public function getUnknownFloat() : ?float{ return $this->unknownFloat; }
+
+	public function getUnknownVector3() : ?Vector3{ return $this->unknownVector3; }
+
+	public function getBiomeIdentifier() : string{ return $this->biomeIdentifier; }
+
+	public function getParameterType() : GraphicsOverrideParameterType{ return $this->parameterType; }
+
+	public function isReset() : bool{ return $this->reset; }
+
+	protected function decodePayload(ByteBufferReader $in) : void{
+		$count = VarInt::readUnsignedInt($in);
+		for($i = 0; $i < $count; ++$i){
+			$this->values[] = ParameterKeyframeValue::read($in);
+		}
+		$this->unknownFloat = CommonTypes::readOptional($in, LE::readFloat(...));
+		$this->unknownVector3 = CommonTypes::readOptional($in, CommonTypes::getVector3(...));
+		$this->biomeIdentifier = CommonTypes::getString($in);
+		$this->parameterType = GraphicsOverrideParameterType::fromPacket(Byte::readUnsigned($in));
+		$this->reset = CommonTypes::getBool($in);
+	}
+
+	protected function encodePayload(ByteBufferWriter $out) : void{
+		VarInt::writeUnsignedInt($out, count($this->values));
+		foreach($this->values as $value){
+			$value->write($out);
+		}
+		CommonTypes::writeOptional($out, $this->unknownFloat, LE::writeFloat(...));
+		CommonTypes::writeOptional($out, $this->unknownVector3, CommonTypes::putVector3(...));
+		CommonTypes::putString($out, $this->biomeIdentifier);
+		Byte::writeUnsigned($out, $this->parameterType->value);
+		CommonTypes::putBool($out, $this->reset);
+	}
+
+	public function handle(PacketHandlerInterface $handler) : bool{
+		return $handler->handleGraphicsOverrideParameter($this);
+	}
+}
