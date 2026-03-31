@@ -33,6 +33,7 @@ use pocketmine\utils\SingletonTrait;
 use ReinfyTeam\ProfanityFilter\ChatProfanityListener;
 use ReinfyTeam\ProfanityFilter\Command\ProfanityFilterCommand;
 use ReinfyTeam\ProfanityFilter\Tasks\GithubUpdateTask;
+use ReinfyTeam\ProfanityFilter\ProfanityFilterService;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use function fclose;
 use function file;
@@ -60,6 +61,7 @@ class Loader extends PluginBase {
 	public array $violationCounts = [];
 
 	private ?Config $profanityConfig = null;
+	private ?array $providedProfanityList = null;
 
 	public function onLoad() : void {
 		Loader::$instance = $this;
@@ -184,6 +186,17 @@ class Loader extends PluginBase {
 	}
 
 	public function getProvidedProfanityList() : array {
-		return file($this->getDataFolder() . "profanity_filter.wlist");
+		if ($this->providedProfanityList !== null) {
+			return $this->providedProfanityList;
+		}
+
+		$path = $this->getDataFolder() . "profanity_filter.wlist";
+		if (file_exists($path)) {
+			$this->providedProfanityList = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		} else {
+			$this->providedProfanityList = ProfanityFilterService::getDefaultProfanityList();
+		}
+
+		return $this->providedProfanityList;
 	}
 }

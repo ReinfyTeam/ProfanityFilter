@@ -26,7 +26,10 @@ use Exception;
 use RuntimeException;
 use function mb_strlen;
 use function preg_match;
+use function preg_quote;
 use function preg_replace;
+use function array_shift;
+use function count;
 use function str_repeat;
 use function str_replace;
 use function strlen;
@@ -40,6 +43,7 @@ final class ProfanityFilterService {
 
 	public const DEFAULT_REPLACEMENT_CHARACTER = "#";
 	private const REPLACEMENT_LENGTH = 1;
+	private const PATTERN_CACHE_LIMIT = 32;
 
 	private const DEFAULT_PROFANITY_WORDS = [
 		"anal",
@@ -120,12 +124,8 @@ final class ProfanityFilterService {
 	 * Whether to detect message on provided words.
 	 */
 	public static function containsProfanity(string $message, array $words) : bool {
-		foreach ($words as $pattern) {
-			if (preg_match("/" . $pattern . "/iu", $message) > 0) {
-				return true;
-			}
-		}
-		return false;
+		$pattern = self::getCompiledPattern($words);
+		return $pattern !== null && preg_match($pattern, $message) === 1;
 	}
 
 	/**
@@ -136,10 +136,12 @@ final class ProfanityFilterService {
 		if (strlen($replacementCharacter) !== self::REPLACEMENT_LENGTH) {
 			throw new Exception("Replacement character must be exactly one character long.");
 		}
-		foreach ($words as $profanity) {
-			$message = preg_replace("/" . $profanity . "/i", str_repeat($replacementCharacter, mb_strlen($profanity)), $message);
+		$pattern = self::getCompiledPattern($words);
+		if ($pattern === null) {
+			return $message;
 		}
-		return $message;
+
+		return preg_replace_callback($pattern, static fn(array $match) => str_repeat($replacementCharacter, mb_strlen($match[0])), $message);
 	}
 
 	/**
@@ -265,6 +267,35 @@ final class ProfanityFilterService {
 
 	public static function getDefaultProfanityList() : array {
 		return self::DEFAULT_PROFANITY_WORDS;
+	}
+
+	/**
+	 * Compile the profanity list into a single regex and cache the result.
+	 * Reduces repeated per-word regex compilation and keeps detection O(n) per message.
+	 */
+	private static function getCompiledPattern(array $words) : ?string {
+		$normalized = array_values(array_filter($words, static fn($word) => $word !== ""));
+		if ($normalized === []) {
+			return null;
+		}
+
+		$key = md5(json_encode($normalized));
+		static $cache = [];
+
+		if (isset($cache[$key])) {
+			return $cache[$key];
+		}
+
+		$escaped = array_map(static fn(string $word) => preg_quote($word, "/"), $normalized);
+		$pattern = "/(" . implode("|", $escaped) . ")/iu";
+
+		// Keep cache size bounded to avoid unbounded growth when lists change at runtime.
+		$cache[$key] = $pattern;
+		if (count($cache) > self::PATTERN_CACHE_LIMIT) {
+			array_shift($cache);
+		}
+
+		return $pattern;
 	}
 }
 
