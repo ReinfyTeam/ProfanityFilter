@@ -24,23 +24,26 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
+use dktapps\pmforms\CustomForm as PmCustomForm;
+use dktapps\pmforms\element\Input;
+use dktapps\pmforms\element\Label;
+use dktapps\pmforms\MenuForm;
+use dktapps\pmforms\MenuOption;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat as T;
 use ReinfyTeam\ProfanityFilter\Loader;
-use ReinfyTeam\ProfanityFilter\Utils\Forms\CustomForm;
-use ReinfyTeam\ProfanityFilter\Utils\Forms\SimpleForm;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
+use function count;
 use function is_string;
+use function trim;
 
 class GuiSubCommand extends BaseProfanitySubCommand {
 	private const BUTTON_VIEW_LIST = 0;
 	private const BUTTON_TOGGLE = 1;
 	private const BUTTON_ADD_WORD = 2;
 	private const BUTTON_RELOAD = 3;
-	private const BUTTON_RETURN_LABEL = "return";
 	private const ACTION_REMOVE_WORD = 0;
-	private const WORD_FORM_INPUT_INDEX = 1;
 
 	protected function prepare() : void {
 	}
@@ -66,48 +69,48 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 	 * Profanity Form Interface.
 	 */
 	private function sendForm(Player $player, bool $added = false) : void {
-		$form = new SimpleForm(function (Player $player, mixed $data) {
-			if ($data === null) {
-				return;
-			}
+		$title = $this->language->translateMessage("ui-pf-manage-title");
+		$content = $added ? $this->language->translateMessage("ui-pf-manage-added-done") : $this->language->translateMessage("ui-pf-manage-description");
+		$options = [
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-1")),
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-2")),
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-3")),
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-4")),
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-exit")),
+		];
 
-			switch ($data) {
-				case self::BUTTON_VIEW_LIST:
-					$this->viewList($player);
-					break;
-				case self::BUTTON_TOGGLE:
-					if (Loader::$isFilterEnabled) {
-						$player->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
-						Loader::$isFilterEnabled = false;
-					} else {
-						Loader::$isFilterEnabled = true;
-						$player->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
-					}
-					break;
-				case self::BUTTON_ADD_WORD:
-					$this->addProfanityWordForm($player);
-					break;
-				case self::BUTTON_RELOAD:
-					$this->getLoader()->getProfanityConfig(true);
-					$this->getLoader()->getConfig()->reload();
-					$player->sendMessage($this->language->translateMessage("profanity-ui-reload-complete"));
-					break;
-				default:
-					break;
+		$form = new MenuForm(
+			$title,
+			$content,
+			$options,
+			function (Player $player, int $selected) : void {
+				switch ($selected) {
+					case self::BUTTON_VIEW_LIST:
+						$this->viewList($player);
+						return;
+					case self::BUTTON_TOGGLE:
+						if (Loader::$isFilterEnabled) {
+							$player->sendMessage($this->language->translateMessage("ui-pf-manage-disabled-profanityfilter"));
+							Loader::$isFilterEnabled = false;
+						} else {
+							Loader::$isFilterEnabled = true;
+							$player->sendMessage($this->language->translateMessage("ui-pf-manage-enabled-profanityfilter"));
+						}
+						return;
+					case self::BUTTON_ADD_WORD:
+						$this->addProfanityWordForm($player);
+						return;
+					case self::BUTTON_RELOAD:
+						$this->getLoader()->getProfanityConfig(true);
+						$this->getLoader()->getConfig()->reload();
+						$player->sendMessage($this->language->translateMessage("profanity-ui-reload-complete"));
+						return;
+					default:
+						return;
+				}
 			}
-		});
+		);
 
-		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		if ($added) {
-			$form->setContent($this->language->translateMessage("ui-pf-manage-added-done"));
-		} else {
-			$form->setContent($this->language->translateMessage("ui-pf-manage-description"));
-		}
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-1"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-2"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-3"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-4"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-exit"));
 		$player->sendForm($form);
 	}
 
@@ -115,86 +118,96 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 	 * Profanity Form Interface.
 	 */
 	private function viewList(Player $player, bool $removed = false) : void {
-		$form = new SimpleForm(function (Player $player, mixed $data) {
-			if ($data === null) {
-				$this->sendForm($player);
-				return;
+		$title = $this->language->translateMessage("ui-pf-manage-title");
+		$content = $removed ? $this->language->translateMessage("ui-pf-manage-remove-done") : $this->language->translateMessage("ui-pf-manage-description");
+		$words = [];
+		/** @var string[] $raw */
+		$raw = (array) $this->getLoader()->getProfanityConfig()->get("banned-words");
+		foreach ($raw as $word) {
+			if (is_string($word)) {
+				$words[] = $word;
 			}
-
-			switch ($data) {
-				case self::BUTTON_RETURN_LABEL:
-					$this->sendForm($player);
-					break;
-				default:
-					$this->viewActions($player, $data);
-					break;
-			}
-		});
-
-		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		if ($removed) {
-			$form->setContent($this->language->translateMessage("ui-pf-manage-remove-done"));
 		}
-		/** @var string[] $words */
-		$words = (array) $this->getLoader()->getProfanityConfig()->get("banned-words");
+
+		$options = [];
 		foreach ($words as $word) {
-			if (!is_string($word)) {
-				continue;
-			}
-			$form->addButton(T::DARK_RED . $word, SimpleForm::IMAGE_TYPE_PATH, "", $word);
+			$options[] = new MenuOption(T::DARK_RED . $word);
 		}
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"), SimpleForm::IMAGE_TYPE_NONE, "", self::BUTTON_RETURN_LABEL);
+		$options[] = new MenuOption($this->language->translateMessage("ui-pf-manage-button-return"));
+
+		$form = new MenuForm(
+			$title,
+			$content,
+			$options,
+			function (Player $player, int $selected) use ($words) : void {
+				if ($selected === count($words)) {
+					$this->sendForm($player);
+					return;
+				}
+				$word = $words[$selected] ?? null;
+				if ($word === null) {
+					$this->sendForm($player);
+					return;
+				}
+				$this->viewActions($player, $word);
+			},
+			function (Player $player) : void {
+				$this->sendForm($player);
+			}
+		);
+
 		$player->sendForm($form);
 	}
 
 	private function viewActions(Player $player, string $word) : void {
-		$form = new SimpleForm(function (Player $player, mixed $data) use ($word) {
-			if ($data === null) {
-				$this->viewList($player);
-				return;
-			}
-
-			switch ($data) {
-				case self::ACTION_REMOVE_WORD:
+		$options = [
+			new MenuOption($this->language->translateMessage("ui-pf-manage-actions-button-remove")),
+			new MenuOption($this->language->translateMessage("ui-pf-manage-button-return")),
+		];
+		$form = new MenuForm(
+			$this->language->translateMessage("ui-pf-manage-title"),
+			T::RED . "Manage: " . $word,
+			$options,
+			function (Player $player, int $selected) use ($word) : void {
+				if ($selected === self::ACTION_REMOVE_WORD) {
 					PluginUtils::removeProfanityWord($word);
 					$this->viewList($player, true);
-					break;
-				case self::BUTTON_VIEW_LIST:
-					$this->viewList($player);
-					break;
+					return;
+				}
+				$this->viewList($player);
+			},
+			function (Player $player) : void {
+				$this->viewList($player);
 			}
-		});
+		);
 
-		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		$form->setContent(T::RED . "Manage: " . $word);
-		$form->addButton($this->language->translateMessage("ui-pf-manage-actions-button-remove"));
-		$form->addButton($this->language->translateMessage("ui-pf-manage-button-return"));
 		$player->sendForm($form);
 	}
 
 	private function addProfanityWordForm(Player $player, bool $nodata = false) : void {
-		$form = new CustomForm(function (Player $player, ?array $data) {
-			if ($data === null) {
+		$title = $this->language->translateMessage("ui-pf-manage-title");
+		$elements = [
+			new Label("info", $nodata ? $this->language->translateMessage("ui-pf-addform-specify") : $this->language->translateMessage("ui-pf-addform-description")),
+			new Input("word", "", $this->language->translateMessage("ui-pf-addform-example")),
+		];
+
+		$form = new PmCustomForm(
+			$title,
+			$elements,
+			function (Player $player, \dktapps\pmforms\CustomFormResponse $response) : void {
+				$word = trim($response->getString("word"));
+				if ($word === "") {
+					$this->addProfanityWordForm($player, true);
+					return;
+				}
+				PluginUtils::addProfanityWord($word);
+				$this->sendForm($player, true);
+			},
+			function (Player $player) : void {
 				$this->viewList($player);
-				return;
 			}
+		);
 
-			if ($data[self::WORD_FORM_INPUT_INDEX] === "") {
-				$this->addProfanityWordForm($player, true);
-				return;
-			}
-
-			PluginUtils::addProfanityWord($data[self::WORD_FORM_INPUT_INDEX]);
-			$this->sendForm($player, true);
-		});
-
-		$form->setTitle($this->language->translateMessage("ui-pf-manage-title"));
-		if ($nodata) {
-			$form->addLabel($this->language->translateMessage("ui-pf-addform-specify"));
-		} else {
-			$form->addLabel($this->language->translateMessage("ui-pf-addform-description"));
-		}
-		$form->addInput("", $this->language->translateMessage("ui-pf-addform-example"));
 		$player->sendForm($form);
 	}
 }

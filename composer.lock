@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed27ea132983fd5712719d6b0eb747b8",
+    "content-hash": "95bacad5f8278f32c64df1b744b23479",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -119,6 +119,51 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "dktapps/pmforms",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dktapps-pm-pl/pmforms.git",
+                "reference": "70082f430c722b868dfdfeab7337ba6b944d21dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dktapps-pm-pl/pmforms/zipball/70082f430c722b868dfdfeab7337ba6b944d21dd",
+                "reference": "70082f430c722b868dfdfeab7337ba6b944d21dd",
+                "shasum": ""
+            },
+            "require": {
+                "pocketmine/pocketmine-mp": "^4.0.0 || ^5.0.0"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^1.2.0",
+                "phpstan/phpstan-strict-rules": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "virion": {
+                    "spec": "3.0",
+                    "namespace-root": "dktapps\\pmforms"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "description": "Form API library for PocketMine-MP plugins",
+            "support": {
+                "issues": "https://github.com/dktapps-pm-pl/pmforms/issues",
+                "source": "https://github.com/dktapps-pm-pl/pmforms/tree/2.3.0"
+            },
+            "time": "2025-03-27T17:10:08+00:00"
         },
         {
             "name": "muqsit/simple-packet-handler",
