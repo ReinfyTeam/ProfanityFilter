@@ -27,12 +27,12 @@ jobs:
      - name: Build the ProfanityFilter.phar using pharynx
        run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build"
      - name: Upload build artifact
-       uses: actions/upload-artifact@v4
+       uses: actions/upload-artifact@v7
        with:
           name: ProfanityFilter Build Phar
           path: ProfanityFilter.phar
      - name: Upload build information artifact.
-       uses: actions/upload-artifact@v4
+       uses: actions/upload-artifact@v7
        with:
           name: Build information
           path: build_info.json
