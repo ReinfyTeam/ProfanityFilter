@@ -6,7 +6,7 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - name: Checkout the repository.
-       uses: actions/checkout@v4
+       uses: actions/checkout@v7
      - name: Download php-binaries.
        run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
      - name: Extract php-binaries.
@@ -42,7 +42,7 @@ jobs:
      runs-on: ubuntu-latest
      steps:
        - name: Checkout the repository.
-         uses: actions/checkout@v4
+         uses: actions/checkout@v7
        - name: Download php-binaries.
          run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
        - name: Extract php-binaries.
