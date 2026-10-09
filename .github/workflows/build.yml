@@ -1,4 +1,4 @@
-name: Build
+name: Build and validate plugin
 run-name: Build phar package with build.php
 on:
  push:
@@ -9,6 +9,7 @@ permissions:
  contents: read
 jobs:
  build-phar:
+   name: Build and test plugin
    runs-on: ubuntu-latest
    steps:
      - name: Checkout the repository.
@@ -57,6 +58,7 @@ jobs:
      - name: Codespace Cleanup
        run: "rm -rf *"
  build-poggit:
+     name: Build Poggit package
      runs-on: ubuntu-latest
      permissions:
        contents: write
