@@ -1,4 +1,4 @@
-name: Build phar package.
+name: Build
 run-name: Build phar package with build.php
 on:
  push:
