@@ -24,11 +24,11 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
-use ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\CustomForm as PmCustomForm;
-use ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\element\Input;
-use ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\element\Label;
-use ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\MenuForm;
-use ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\MenuOption;
+use ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\CustomForm as PmCustomForm;
+use ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\element\Input;
+use ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\element\Label;
+use ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\MenuForm;
+use ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\MenuOption;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat as T;
@@ -131,7 +131,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 
 		$options = [];
 		foreach ($words as $word) {
-			$options[] = new MenuOption(T::DARK_RED . $word);
+			$options[] = new MenuOption(PluginUtils::formatWordForDisplay($word, T::DARK_RED));
 		}
 		$options[] = new MenuOption($this->language->translateMessage("ui-pf-manage-button-return"));
 
@@ -166,7 +166,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		];
 		$form = new MenuForm(
 			$this->language->translateMessage("ui-pf-manage-title"),
-			T::RED . "Manage: " . $word,
+			T::RED . "Manage: " . PluginUtils::formatWordForDisplay($word, T::RED),
 			$options,
 			function (Player $player, int $selected) use ($word) : void {
 				if ($selected === self::ACTION_REMOVE_WORD) {
@@ -194,7 +194,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$form = new PmCustomForm(
 			$title,
 			$elements,
-			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_7e64c1e197f1f235\dktapps\pmforms\CustomFormResponse $response) : void {
+			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_3c77a84f3f28197f\dktapps\pmforms\CustomFormResponse $response) : void {
 				$word = trim($response->getString("word"));
 				if ($word === "") {
 					$this->addProfanityWordForm($player, "ui-pf-addform-specify");
