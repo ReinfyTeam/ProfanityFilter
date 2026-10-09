@@ -37,6 +37,7 @@ use function is_string;
 use function ltrim;
 use function preg_match_all;
 use function preg_replace;
+use function preg_replace_callback;
 use function str_replace;
 use function strlen;
 use function strtolower;
@@ -90,6 +91,10 @@ final class PluginUtils {
 
 	public static function colorize(string $message) : string {
 		return str_replace(array_keys(self::COLOR_REPLACEMENTS), array_values(self::COLOR_REPLACEMENTS), $message);
+	}
+
+	public static function formatWordForDisplay(string $word, string $format) : string {
+		return preg_replace_callback("/§[0-9a-u](*SKIP)(*F)|\\X/u", static fn(array $match) : string => $format . $match[0], $word) ?? $format . $word;
 	}
 
 	/**

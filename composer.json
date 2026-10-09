@@ -4,6 +4,7 @@
     "type": "pocketmine-plugin",
     "scripts": {
         "analyze": "vendor/bin/phpstan",
+        "test": "@php tests/ui-word-display.php",
         "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=ProfanityFilter.phar",
         "build-source": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -o=./output/"
     },

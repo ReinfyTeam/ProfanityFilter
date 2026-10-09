@@ -131,7 +131,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 
 		$options = [];
 		foreach ($words as $word) {
-			$options[] = new MenuOption(T::DARK_RED . $word);
+			$options[] = new MenuOption(PluginUtils::formatWordForDisplay($word, T::DARK_RED));
 		}
 		$options[] = new MenuOption($this->language->translateMessage("ui-pf-manage-button-return"));
 
@@ -166,7 +166,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		];
 		$form = new MenuForm(
 			$this->language->translateMessage("ui-pf-manage-title"),
-			T::RED . "Manage: " . $word,
+			T::RED . "Manage: " . PluginUtils::formatWordForDisplay($word, T::RED),
 			$options,
 			function (Player $player, int $selected) use ($word) : void {
 				if ($selected === self::ACTION_REMOVE_WORD) {
