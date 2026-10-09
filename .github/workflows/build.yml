@@ -12,15 +12,15 @@ jobs:
    name: Build and test plugin
    runs-on: ubuntu-latest
    steps:
-     - name: Checkout the repository.
+     - name: Check out repository
        uses: actions/checkout@v7
-     - name: Download php-binaries.
+     - name: Download PHP binaries
        run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
-     - name: Extract php-binaries.
+     - name: Extract PHP binaries
        run: "tar -xvzf php.tar.gz"
-     - name: chmod the php-binaries.
+     - name: Configure PHP binary permissions
        run: "chmod +x ./bin/php7/bin/php"
-     - name: Fix opcache.so
+     - name: Configure PHP extension directory
        run: |
          EXTENSION_DIR=$(find "$(pwd)/bin" -type d -name "*debug-zts*")
          test -n "$EXTENSION_DIR"
@@ -29,33 +29,33 @@ jobs:
          else
            echo "extension_dir=\"$EXTENSION_DIR\"" >> bin/php7/bin/php.ini
          fi
-     - name: Install php-cs-fixer.
+     - name: Install PHP CS Fixer
        run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
-     - name: Run php-cs-fixer.
+     - name: Apply PHP CS Fixer
        run: "./bin/php7/bin/php php-cs-fixer.phar fix src"
-     - name: Install composer.phar
+     - name: Install Composer
        run: "curl -sL https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar"
-     - name: Install dependencies.
+     - name: Install Composer dependencies
        run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar install"
-     - name: Run regression tests.
+     - name: Run regression tests
        run: "./bin/php7/bin/php composer.phar test"
-     - name: Build the ProfanityFilter.phar using pharynx
+     - name: Build ProfanityFilter PHAR with Pharynx
        run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build"
-     - name: Test packaged UI forms.
+     - name: Test packaged UI forms
        run: "./bin/php7/bin/php tests/ui-word-display.php phar://ProfanityFilter.phar/src"
-     - name: Upload build artifact
+     - name: Upload verified build artifact
        uses: actions/upload-artifact@v7
        with:
           name: ProfanityFilter Build Phar
           path: ProfanityFilter.phar
           if-no-files-found: error
-     - name: Upload build information artifact.
+     - name: Upload build information artifact
        uses: actions/upload-artifact@v7
        with:
           name: Build information
           path: build_info.json
           if-no-files-found: error
-     - name: Codespace Cleanup
+     - name: Clean up workspace
        run: "rm -rf *"
  build-poggit:
      name: Build Poggit package
@@ -63,15 +63,15 @@ jobs:
      permissions:
        contents: write
      steps:
-       - name: Checkout the repository.
+       - name: Check out repository
          uses: actions/checkout@v7
-       - name: Download php-binaries.
+       - name: Download PHP binaries
          run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
-       - name: Extract php-binaries.
+       - name: Extract PHP binaries
          run: "tar -xvzf php.tar.gz"
-       - name: chmod the php-binaries.
+       - name: Configure PHP binary permissions
          run: "chmod +x ./bin/php7/bin/php"
-       - name: Fix opcache.so
+       - name: Configure PHP extension directory
          run: |
            EXTENSION_DIR=$(find "$(pwd)/bin" -type d -name "*debug-zts*")
            test -n "$EXTENSION_DIR"
@@ -80,19 +80,19 @@ jobs:
            else
              echo "extension_dir=\"$EXTENSION_DIR\"" >> bin/php7/bin/php.ini
            fi
-       - name: Install php-cs-fixer.
+       - name: Install PHP CS Fixer
          run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
-       - name: Run php-cs-fixer.
+       - name: Apply PHP CS Fixer
          run: "./bin/php7/bin/php php-cs-fixer.phar fix src"
-       - name: Install composer.phar
+       - name: Install Composer
          run: "curl -sL https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar"
-       - name: Install dependencies.
+       - name: Install Composer dependencies
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar install"
-       - name: Build with pharynx
+       - name: Build Poggit package with Pharynx
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build-source"
-       - name: Move .poggit.yml to output folder.
+       - name: Move Poggit metadata to output folder
          run: "mv .poggit.yml ./output/"
-       - name: Push build from other branch
+       - name: Publish Poggit build branch
          if: github.event_name == 'push' && github.ref == 'refs/heads/stable' && github.actor != 'dependabot[bot]'
          uses: s0/git-publish-subdir-action@develop
          env:
@@ -101,5 +101,5 @@ jobs:
           FOLDER: "./output/"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           MESSAGE: "ProfanityFilter Poggit Build: ({sha}) {msg}" 
-       - name: Codespace Cleanup
+       - name: Clean up workspace
          run: "rm -rf *"
