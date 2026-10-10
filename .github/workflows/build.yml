@@ -1,5 +1,4 @@
 name: Build and validate plugin
-run-name: Build phar package with build.php
 on:
  push:
    branches: [stable]
