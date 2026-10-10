@@ -19,7 +19,7 @@
     "require-dev": {
         "sof3/pharynx": "^0.3.0",
         "phpstan/phpstan": "^2.1",
-        "friendsofphp/php-cs-fixer": "^3.66"
+        "friendsofphp/php-cs-fixer": "^3.95"
     },
     "autoload": {
         "classmap": [

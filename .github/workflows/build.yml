@@ -28,14 +28,12 @@ jobs:
          else
            echo "extension_dir=\"$EXTENSION_DIR\"" >> bin/php7/bin/php.ini
          fi
-     - name: Install PHP CS Fixer
-       run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
-     - name: Apply PHP CS Fixer
-       run: "./bin/php7/bin/php php-cs-fixer.phar fix src"
      - name: Install Composer
        run: "curl -sL https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar"
      - name: Install Composer dependencies
        run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar install"
+     - name: Apply locked PHP CS Fixer
+       run: "./bin/php7/bin/php vendor/bin/php-cs-fixer fix src"
      - name: Run regression tests
        run: "./bin/php7/bin/php composer.phar test"
      - name: Build ProfanityFilter PHAR with Pharynx
@@ -79,14 +77,12 @@ jobs:
            else
              echo "extension_dir=\"$EXTENSION_DIR\"" >> bin/php7/bin/php.ini
            fi
-       - name: Install PHP CS Fixer
-         run: "curl -sL https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer.phar"
-       - name: Apply PHP CS Fixer
-         run: "./bin/php7/bin/php php-cs-fixer.phar fix src"
        - name: Install Composer
          run: "curl -sL https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar"
        - name: Install Composer dependencies
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar install"
+       - name: Apply locked PHP CS Fixer
+         run: "./bin/php7/bin/php vendor/bin/php-cs-fixer fix src"
        - name: Build Poggit package with Pharynx
          run: "./bin/php7/bin/php -dphar.readonly=0 composer.phar run-script --no-dev build-source"
        - name: Move Poggit metadata to output folder
