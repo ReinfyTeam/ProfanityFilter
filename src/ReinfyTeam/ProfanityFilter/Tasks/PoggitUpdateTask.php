@@ -31,6 +31,7 @@ use ReinfyTeam\ProfanityFilter\Loader;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use function count;
 use function is_array;
+use function is_string;
 use function json_decode;
 use function version_compare;
 use function vsprintf;
@@ -58,13 +59,16 @@ class PoggitUpdateTask extends AsyncTask {
 			return;
 		}
 		[$highestVersion, $artifactUrl, $apiFrom, $apiTo, $error] = $result;
+		if (($highestVersion !== null && !is_string($highestVersion)) || ($artifactUrl !== null && !is_string($artifactUrl)) || ($apiFrom !== null && !is_string($apiFrom)) || ($apiTo !== null && !is_string($apiTo)) || ($error !== null && !is_string($error))) {
+			return;
+		}
 		if ($highestVersion === null || $artifactUrl === null || $apiFrom === null || $apiTo === null) {
 			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), ["Trying to update on github..."]));
 			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($plugin->getDescription()->getName(), $plugin->getDescription()->getVersion()));
 			return;
 		} // Issue: https://github.com/ReinfyTeam/ProfanityFilter/issues/107
 		if ($error !== null) {
-			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [(string) $error]));
+			Server::getInstance()->getLogger()->critical($lang->translateMessage("new-update-prefix") . " " . vsprintf($lang->translateMessage("update-error"), [$error]));
 			Server::getInstance()->getLogger()->debug($lang->translateMessage("new-update-prefix") . " " . $lang->translateMessage("update-retry"));
 			$plugin->getServer()->getAsyncPool()->submitTask(new GithubUpdateTask($plugin->getDescription()->getName(), $plugin->getDescription()->getVersion()));
 			return;
@@ -100,14 +104,29 @@ class PoggitUpdateTask extends AsyncTask {
 				if (!is_array($release) || !isset($release["version"])) {
 					continue;
 				}
-				$releaseVersion = (string) $release["version"];
+				$releaseVersion = $release["version"];
+				if (!is_string($releaseVersion)) {
+					continue;
+				}
 				if (version_compare($highestVersion, $releaseVersion, ">=")) {
 					continue;
 				}
 				$highestVersion = $releaseVersion;
-				$artifactUrl = (string) ($release["artifact_url"] ?? $artifactUrl);
-				$apiFrom = isset($release["api"][0]["from"]) ? (string) $release["api"][0]["from"] : $apiFrom;
-				$apiTo = isset($release["api"][0]["to"]) ? (string) $release["api"][0]["to"] : $apiTo;
+				$artifactValue = $release["artifact_url"] ?? null;
+				if (is_string($artifactValue)) {
+					$artifactUrl = $artifactValue;
+				}
+				$api = $release["api"] ?? null;
+				if (is_array($api) && isset($api[0]) && is_array($api[0])) {
+					$from = $api[0]["from"] ?? null;
+					$to = $api[0]["to"] ?? null;
+					if (is_string($from)) {
+						$apiFrom = $from;
+					}
+					if (is_string($to)) {
+						$apiTo = $to;
+					}
+				}
 			}
 		}
 

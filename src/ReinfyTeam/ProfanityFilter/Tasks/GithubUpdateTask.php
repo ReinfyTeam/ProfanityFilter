@@ -30,6 +30,7 @@ use pocketmine\utils\Internet;
 use ReinfyTeam\ProfanityFilter\Utils\LanguageManager;
 use function count;
 use function is_array;
+use function is_string;
 use function json_decode;
 use function vsprintf;
 
@@ -52,6 +53,9 @@ class GithubUpdateTask extends AsyncTask {
 			return;
 		}
 		[$highestVersion, $artifactUrl, $apiTo, $error, $apiFrom] = $result;
+		if (!is_string($highestVersion) || !is_string($artifactUrl) || !is_string($apiTo) || ($error !== null && !is_string($error)) || !is_string($apiFrom)) {
+			return;
+		}
 		$plugin = Server::getInstance()->getPluginManager()->getPlugin($this->pluginName);
 		if ($plugin === null) {
 			return;
@@ -79,7 +83,7 @@ class GithubUpdateTask extends AsyncTask {
 		$error = null;
 		$json = Internet::getURL(self::GIT_URL, self::HTTP_TIMEOUT_SECONDS, [], $error);
 		if ($error !== null || $json === null) {
-			return ["", "", "", (string) $error, ""];
+			return ["", "", "", is_string($error) ? $error : "Unknown update error", ""];
 		}
 
 		$releases = json_decode($json->getBody(), true);
@@ -89,11 +93,15 @@ class GithubUpdateTask extends AsyncTask {
 		}
 
 		return [
-			(string) ($releases["version"] ?? ""),
-			(string) ($releases["artifactUrl"] ?? ""),
-			(string) ($releases["api_to"] ?? ""),
+			self::stringValue($releases["version"] ?? null),
+			self::stringValue($releases["artifactUrl"] ?? null),
+			self::stringValue($releases["api_to"] ?? null),
 			null,
-			(string) ($releases["api_from"] ?? ""),
+			self::stringValue($releases["api_from"] ?? null),
 		];
+	}
+
+	private static function stringValue(mixed $value) : string {
+		return is_string($value) ? $value : "";
 	}
 }

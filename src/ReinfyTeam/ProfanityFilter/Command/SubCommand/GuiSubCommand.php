@@ -24,11 +24,11 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
-use ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\CustomForm as PmCustomForm;
-use ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\element\Input;
-use ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\element\Label;
-use ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\MenuForm;
-use ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\MenuOption;
+use ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\CustomForm as PmCustomForm;
+use ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\element\Input;
+use ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\element\Label;
+use ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\MenuForm;
+use ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\MenuOption;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat as T;
@@ -121,7 +121,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$title = $this->language->translateMessage("ui-pf-manage-title");
 		$content = $removed ? $this->language->translateMessage("ui-pf-manage-remove-done") : $this->language->translateMessage("ui-pf-manage-description");
 		$words = [];
-		/** @var string[] $raw */
+		/** @var array<int, mixed> $raw */
 		$raw = (array) $this->getLoader()->getProfanityConfig()->get("banned-words");
 		foreach ($raw as $word) {
 			if (is_string($word)) {
@@ -194,7 +194,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$form = new PmCustomForm(
 			$title,
 			$elements,
-			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_929902ffe4735826\dktapps\pmforms\CustomFormResponse $response) : void {
+			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_1c80a14eabc36307\dktapps\pmforms\CustomFormResponse $response) : void {
 				$word = trim($response->getString("word"));
 				if ($word === "") {
 					$this->addProfanityWordForm($player, "ui-pf-addform-specify");

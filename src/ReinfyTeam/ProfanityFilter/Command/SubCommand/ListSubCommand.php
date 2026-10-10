@@ -37,7 +37,7 @@ class ListSubCommand extends BaseProfanitySubCommand {
 	 */
 	public function onRun(CommandSender $sender, string $aliasUsed, array $args) : void {
 		$this->sendLang($sender, "banned-words-description-1");
-		/** @var string[] $words */
+		/** @var array<int, mixed> $words */
 		$words = (array) $this->getLoader()->getProfanityConfig()->get("banned-words");
 		foreach ($words as $word) {
 			if (!is_string($word)) {
