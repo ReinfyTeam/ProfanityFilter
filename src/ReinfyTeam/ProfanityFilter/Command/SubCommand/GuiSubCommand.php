@@ -121,7 +121,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$title = $this->language->translateMessage("ui-pf-manage-title");
 		$content = $removed ? $this->language->translateMessage("ui-pf-manage-remove-done") : $this->language->translateMessage("ui-pf-manage-description");
 		$words = [];
-		/** @var string[] $raw */
+		/** @var array<int, mixed> $raw */
 		$raw = (array) $this->getLoader()->getProfanityConfig()->get("banned-words");
 		foreach ($raw as $word) {
 			if (is_string($word)) {

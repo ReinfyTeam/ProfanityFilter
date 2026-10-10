@@ -114,9 +114,12 @@ final class PluginUtils {
 			return null;
 		}
 
-		$amounts = preg_replace("/[^0-9]/", "", $matches[0]);
-		if (!is_array($amounts)) {
-			return null;
+		$amounts = [];
+		foreach ($matches[0] as $match) {
+			$amount = preg_replace("/[^0-9]/", "", $match);
+			if ($amount !== null) {
+				$amounts[] = $amount;
+			}
 		}
 		foreach ($amounts as $index => $amount) {
 			$unit = $matches[1][$index] ?? "";
@@ -216,9 +219,6 @@ final class PluginUtils {
 	private static function applyFallbackWords(array $fallbackWords, array $providedLookup, array &$seen, array &$filtered) : bool {
 		$changed = false;
 		foreach ($fallbackWords as $fallback) {
-			if (!is_string($fallback)) {
-				continue;
-			}
 			$normalized = self::normalizeWord($fallback);
 			if ($normalized === "" || isset($providedLookup[$normalized]) || isset($seen[$normalized])) {
 				continue;
@@ -232,26 +232,27 @@ final class PluginUtils {
 	}
 
 	public static function removeProfanityWord(string $word) : bool {
-		/** @var string[] $words */
 		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
-		$newArray = array_diff($words, [$word]);
-		Loader::getInstance()->getProfanityConfig()->set("banned-words", array_values($newArray));
+		$newArray = [];
+		foreach ($words as $existingWord) {
+			if (is_string($existingWord) && $existingWord === $word) {
+				continue;
+			}
+			$newArray[] = $existingWord;
+		}
+		Loader::getInstance()->getProfanityConfig()->set("banned-words", $newArray);
 		Loader::getInstance()->getProfanityConfig()->save();
 		Loader::getInstance()->getProfanityConfig()->reload();
 		return true;
 	}
 
 	public static function addProfanityWord(string $word) : bool {
-		/** @var string[] $words */
-		$words = (array) Loader::getInstance()->getProfanityConfig()->get("banned-words");
+		$words = array_values(array_filter((array) Loader::getInstance()->getProfanityConfig()->get("banned-words"), static fn(mixed $word): bool => is_string($word)));
 		$providedLookup = self::buildLookup(Loader::getInstance()->getProvidedProfanityList());
 
 		$filteredWords = [];
 		$customLookup = [];
 		foreach ($words as $existingWord) {
-			if (!is_string($existingWord)) {
-				continue;
-			}
 			$filteredWords[] = $existingWord;
 			$customLookup[self::normalizeWord($existingWord)] = true;
 		}
@@ -279,9 +280,6 @@ final class PluginUtils {
 	private static function buildLookup(array $words) : array {
 		$lookup = [];
 		foreach ($words as $word) {
-			if (!is_string($word)) {
-				continue;
-			}
 			$normalized = self::normalizeWord($word);
 			if ($normalized === "") {
 				continue;
