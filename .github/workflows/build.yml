@@ -12,7 +12,7 @@ jobs:
    runs-on: ubuntu-latest
    steps:
      - name: Check out repository
-       uses: actions/checkout@v7
+       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
      - name: Download PHP binaries
        run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
      - name: Extract PHP binaries
@@ -43,13 +43,13 @@ jobs:
      - name: Test packaged UI forms
        run: "./bin/php7/bin/php tests/ui-word-display.php phar://ProfanityFilter.phar/src"
      - name: Upload verified build artifact
-       uses: actions/upload-artifact@v7
+       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
        with:
           name: ProfanityFilter Build Phar
           path: ProfanityFilter.phar
           if-no-files-found: error
      - name: Upload build information artifact
-       uses: actions/upload-artifact@v7
+       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
        with:
           name: Build information
           path: build_info.json
@@ -63,7 +63,7 @@ jobs:
        contents: write
      steps:
        - name: Check out repository
-         uses: actions/checkout@v7
+         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
        - name: Download PHP binaries
          run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
        - name: Extract PHP binaries
@@ -93,7 +93,7 @@ jobs:
          run: "mv .poggit.yml ./output/"
        - name: Publish Poggit build branch
          if: github.event_name == 'push' && github.ref == 'refs/heads/stable' && github.actor != 'dependabot[bot]'
-         uses: s0/git-publish-subdir-action@develop
+         uses: s0/git-publish-subdir-action@ac113f6bfe8896e85a373534242c949a7ea74c98
          env:
           REPO: self
           BRANCH: build
