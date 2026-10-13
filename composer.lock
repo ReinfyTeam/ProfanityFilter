@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "107eaa05418bc8dacd74cbdf12f619be",
+    "content-hash": "fdacf122b8fd75698d84f5f9ad5c71fd",
     "packages": [
         {
             "name": "adhocore/json-comment",
@@ -554,18 +554,23 @@
         },
         {
             "name": "paroxity/commando",
-            "version": "3.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Paroxity/Commando.git",
-                "reference": "444746c53e593e7ed942b396d50e4dd072c6f810"
+                "url": "https://github.com/Paroxity/Commando",
+                "reference": "d8ade70ea521cac364c3013b4cbc72ada17f85aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Paroxity/Commando/zipball/444746c53e593e7ed942b396d50e4dd072c6f810",
-                "reference": "444746c53e593e7ed942b396d50e4dd072c6f810",
+                "url": "https://api.github.com/repos/Paroxity/Commando/zipball/d8ade70ea521cac364c3013b4cbc72ada17f85aa",
+                "reference": "d8ade70ea521cac364c3013b4cbc72ada17f85aa",
                 "shasum": ""
             },
+            "require": {
+                "muqsit/simple-packet-handler": "^0.1.5",
+                "pocketmine/pocketmine-mp": "^5.36.0"
+            },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "virion": {
@@ -580,16 +585,11 @@
                     ]
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0-only"
             ],
             "description": "A Command Framework virion for PocketMine-MP ",
-            "support": {
-                "issues": "https://github.com/Paroxity/Commando/issues",
-                "source": "https://github.com/Paroxity/Commando/tree/3.2.0"
-            },
-            "time": "2024-05-10T11:51:17+00:00"
+            "time": "2025-11-11T11:42:52+00:00"
         },
         {
             "name": "pocketmine/binaryutils",
@@ -4943,6 +4943,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "paroxity/commando": 20,
         "sof3/infoapi": 10
     },
     "prefer-stable": false,

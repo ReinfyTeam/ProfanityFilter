@@ -8,6 +8,11 @@
             "type": "vcs",
             "url": "https://github.com/axolotl-pm/PocketMine-MP",
             "no-api": true
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Paroxity/Commando",
+            "no-api": true
         }
     ],
     "scripts": {
@@ -26,7 +31,7 @@
     "require": {
         "axolotl-pm/pocketmine-mp": "5.49.1",
         "sof3/infoapi": "^2.0.0-beta.1",
-        "paroxity/commando": "3.2.0",
+        "paroxity/commando": "dev-master#d8ade70ea521cac364c3013b4cbc72ada17f85aa",
         "muqsit/simple-packet-handler": "0.1.5",
         "dktapps/pmforms": "^2.3"
     },
