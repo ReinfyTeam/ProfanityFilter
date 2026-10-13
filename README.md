@@ -46,7 +46,7 @@ Default command permission: `profanityfilter.command` (configurable). Bypass cha
 - You can manage words by accessing `plugin_data/ProfanityFilter/profanity.yml` under the `banned-words` section.
 
 # Changelog
-Current pre-release: `0.2.0-beta`. See `changelogs/v0.2.x.md` for the latest release notes.
+Current stable release: `0.2.0`. See `changelogs/v0.2.x.md` for the latest release notes.
 
 # Report a Issue/Bug
 You found a bug or a plugin issue?
