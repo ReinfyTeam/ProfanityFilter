@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
-use ReinfyTeam\ProfanityFilter\libs\_46c75b6cd523f8d7\CortexPE\Commando\args\RawStringArgument;
+use ReinfyTeam\ProfanityFilter\libs\_481ec56aa40bd3f4\CortexPE\Commando\args\RawStringArgument;
 use pocketmine\command\CommandSender;
 use ReinfyTeam\ProfanityFilter\Utils\PluginUtils;
 use function is_string;
