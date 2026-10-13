@@ -3,14 +3,28 @@
     "description": "PocketMine-MP plugin that filters profanity in chat and commands.",
     "license": "LGPL-3.0-only",
     "type": "pocketmine-plugin",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/axolotl-pm/PocketMine-MP",
+            "no-api": true
+        }
+    ],
     "scripts": {
         "analyze": "vendor/bin/phpstan",
         "test": "@php tests/ui-word-display.php",
-        "build": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=ProfanityFilter.phar",
-        "build-source": "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -o=./output/"
+        "prepare-pharynx": "@php tools/prepare-pharynx.php",
+        "build": [
+            "@prepare-pharynx",
+            "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -p=ProfanityFilter.phar"
+        ],
+        "build-source": [
+            "@prepare-pharynx",
+            "php -dphar.readonly=0 vendor/bin/pharynx -i=. -c -o=./output/"
+        ]
     },
     "require": {
-        "pocketmine/pocketmine-mp": "^5.0.0",
+        "axolotl-pm/pocketmine-mp": "5.49.1",
         "sof3/infoapi": "^2.0.0-beta.1",
         "paroxity/commando": "3.2.0",
         "muqsit/simple-packet-handler": "0.1.5",
