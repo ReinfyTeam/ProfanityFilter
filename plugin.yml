@@ -1,6 +1,6 @@
 ---
 name: ProfanityFilter
-version: 0.2.0
+version: 0.2.1
 main: ReinfyTeam\ProfanityFilter\Loader
 api: 5.36.0
 description: "PocketMine-MP plugin that filters configured profanity in chat and commands."
