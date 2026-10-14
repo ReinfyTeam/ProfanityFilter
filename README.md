@@ -1,9 +1,8 @@
 <p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="assets/images/ProfanityFilter.png"></a></p>
 <p align="center">
-  <b>A best profanity filter for pocketmine. Controls hate speech and blocks bad words in certain on the chat.</b><br><br>
-  Are you tired of someone always cursing, saying offensive words in the chat? Are the players too toxic? Do you want to punish them? <br>
-  Well, this plugin might help you. <b>ProfanityFilter</b> can destroy toxic players, punish them to your server! <br>
-  It's configurable and easy to use. You can manually add words easily at the game. <br><br>
+  <b>Configurable profanity filtering for PocketMine-MP.</b><br><br>
+  <b>ProfanityFilter</b> detects configured words in chat, can block or mask messages, and can apply configurable moderation actions. <br>
+  Administrators can manage custom words and filter settings in-game or through the plugin data files. <br><br>
   <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.state/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.api/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl.total/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl/ProfanityFilter"></a> <a href="https://gitlocalize.com/repo/8866/whole_project?utm_source=badge"> <img src="https://gitlocalize.com/repo/8866/whole_project/badge.svg" /> </a>
   <br>
   <b>
@@ -39,24 +38,26 @@ Default command permission: `profanityfilter.command` (configurable). Bypass cha
 - `lang`: `eng`, `vie`, or `custom` (create `languages/custom.yml`).
 - `check-updates`: enable/disable remote update checks.
 
-# How to Install?
-- Download this plugin on [poggit](https://poggit.pmmp.io/p/ProfanityFilter).
-- Just put this plugin in under your `plugins/` folder, and it should work!<br>
-- You can configure the plugin by accessing `plugin_data/ProfanityFilter/config.yml`
-- You can manage words by accessing `plugin_data/ProfanityFilter/profanity.yml` under the `banned-words` section.
+## Installation
+
+- Download a stable artifact from the [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) page or [Poggit](https://poggit.pmmp.io/p/ProfanityFilter).
+- Place `ProfanityFilter.phar` in the server's `plugins/` directory.
+- Start the server once, then configure `plugin_data/ProfanityFilter/config.yml`.
+- Manage custom words in `plugin_data/ProfanityFilter/profanity.yml` under the `banned-words` section, or use the in-game `/pf` commands.
 
 # Changelog
-Current stable release: `0.2.0`. See `changelogs/v0.2.x.md` for the latest release notes.
+See the [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) page for the current stable version and `changelogs/v0.2.x.md` for the release notes.
 
-# Report a Issue/Bug
+## Report an issue or bug
 You found a bug or a plugin issue?
 - Contact support in the [Discord Server](https://discord.gg/v2rNeHaptd)
 - Create an [Issue](https://github.com/ReinfyTeam/ProfanityFilter/issues)
 - Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.
 - Submit the issue and be patient for a response for a solution to your problem :D
 
-# Disclaimer
-**This plugin was designed and work in pocketmine. If you are using fork/spoon of PocketMine-MP. Your issues will automatically closed.**
+## Compatibility note
+
+This plugin targets the PocketMine-MP API declared in `plugin.yml`. If you use a fork, report its name, version and the complete error output so compatibility can be investigated accurately.
 
 # Screenshots
 [![](assets/images/chat-filter.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
