@@ -49,11 +49,11 @@ Default command permission: `profanityfilter.command` (configurable). Bypass cha
 See the [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) page for the current stable version and `changelogs/v0.2.x.md` for the release notes.
 
 ## Report an issue or bug
-You found a bug or a plugin issue?
+If you find a bug or another plugin issue:
 - Contact support in the [Discord Server](https://discord.gg/v2rNeHaptd)
 - Create an [Issue](https://github.com/ReinfyTeam/ProfanityFilter/issues)
-- Write your bug & the issue you are having with all informations including the crash or errors so I can track the issue.
-- Submit the issue and be patient for a response for a solution to your problem :D
+- Include the problem, crash or error details, and relevant logs so the issue can be investigated.
+- Submit the issue and wait for a response.
 
 ## Compatibility note
 
