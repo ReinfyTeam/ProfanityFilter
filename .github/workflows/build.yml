@@ -8,7 +8,7 @@ permissions:
  contents: read
 jobs:
  build-phar:
-   name: Build and test plugin
+   name: Build and test ProfanityFilter plugin
    runs-on: ubuntu-latest
    steps:
      - name: Check out repository
