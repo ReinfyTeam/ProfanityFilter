@@ -24,11 +24,11 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter\Command\SubCommand;
 
-use ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\CustomForm as PmCustomForm;
-use ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\element\Input;
-use ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\element\Label;
-use ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\MenuForm;
-use ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\MenuOption;
+use ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\CustomForm as PmCustomForm;
+use ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\element\Input;
+use ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\element\Label;
+use ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\MenuForm;
+use ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\MenuOption;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat as T;
@@ -194,7 +194,7 @@ class GuiSubCommand extends BaseProfanitySubCommand {
 		$form = new PmCustomForm(
 			$title,
 			$elements,
-			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_f273a3c140c75b7e\dktapps\pmforms\CustomFormResponse $response) : void {
+			function (Player $player, \ReinfyTeam\ProfanityFilter\libs\_0897b8ebec48800a\dktapps\pmforms\CustomFormResponse $response) : void {
 				$word = trim($response->getString("word"));
 				if ($word === "") {
 					$this->addProfanityWordForm($player, "ui-pf-addform-specify");
