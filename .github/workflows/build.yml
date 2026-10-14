@@ -9,10 +9,10 @@ permissions:
 jobs:
  build-phar:
    name: Build and test ProfanityFilter plugin
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-24.04
    steps:
      - name: Check out repository
-       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+       uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
      - name: Download PHP binaries
        run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
      - name: Extract PHP binaries
@@ -58,12 +58,12 @@ jobs:
        run: "rm -rf *"
  build-poggit:
      name: Build Poggit package
-     runs-on: ubuntu-latest
+     runs-on: ubuntu-24.04
      permissions:
        contents: write
      steps:
        - name: Check out repository
-         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+         uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
        - name: Download PHP binaries
          run: "curl -sL https://github.com/pmmp/PHP-Binaries/releases/download/pm5-php-8.4-latest/PHP-8.4-Linux-x86_64-PM5.tar.gz -o php.tar.gz"
        - name: Extract PHP binaries
