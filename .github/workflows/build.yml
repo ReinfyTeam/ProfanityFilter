@@ -96,7 +96,7 @@ jobs:
           REPO: self
           BRANCH: build
           FOLDER: "./output/"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          MESSAGE: "ProfanityFilter Poggit Build: ({sha}) {msg}" 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "ProfanityFilter Poggit Build: ({sha}) {msg}"
        - name: Clean up workspace
          run: "rm -rf *"
