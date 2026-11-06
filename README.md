@@ -1,83 +1,140 @@
-<p align="center"><a href="https://poggit.pmmp.io/p/ProfanityFilter/"><img src="assets/images/ProfanityFilter.png"></a></p>
-<p align="center">
-  <b>Configurable profanity filtering for PocketMine-MP.</b><br><br>
-  <b>ProfanityFilter</b> detects configured words in chat, can block or mask messages, and can apply configurable moderation actions. <br>
-  Administrators can manage custom words and filter settings in-game or through the plugin data files. <br><br>
-  <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.state/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.api/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl.total/ProfanityFilter"></a> <a href="https://poggit.pmmp.io/p/ProfanityFilter"><img src="https://poggit.pmmp.io/shield.dl/ProfanityFilter"></a> <a href="https://gitlocalize.com/repo/8866/whole_project?utm_source=badge"> <img src="https://gitlocalize.com/repo/8866/whole_project/badge.svg" /> </a>
-  <br>
-  <b>
-  <a href="https://github.com/ReinfyTeam/ProfanityFilter/wiki">Wiki/Documentation</a> | <a href="https://poggit.pmmp.io/p/ProfanityFilter">Poggit</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/">Github Repository</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/issues">Create an issue.</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/discussions">Discussions</a> | <a href="https://github.com/ReinfyTeam/ProfanityFilter/pulls">Create a pull request.</a>
-  </b>
-</p>
+# ProfanityFilter
 
+ProfanityFilter filters configured profanity in PocketMine-MP chat and command
+messages. It can block a message, hide matched words, and apply a moderation
+action after repeated violations.
 
+[![Build](https://github.com/ReinfyTeam/ProfanityFilter/actions/workflows/build.yml/badge.svg)](https://github.com/ReinfyTeam/ProfanityFilter/actions/workflows/build.yml)
+[![Latest release](https://img.shields.io/github/v/release/ReinfyTeam/ProfanityFilter)](https://github.com/ReinfyTeam/ProfanityFilter/releases/latest)
+[![License](https://img.shields.io/github/license/ReinfyTeam/ProfanityFilter)](LICENSE)
 
-# Features
-- Commando-based `/pf` command suite with pmforms GUI (view/add/remove/toggle/reload) for in-game management.
-- Choose between the bundled profanity list (`profanity: provided`) or your own custom list in `plugin_data/ProfanityFilter/profanity.yml` (`banned-words` section); the provided list is refreshed and kept immutable on startup.
-- Two filter modes: `block` (cancel the message) or `hide` (mask with a replacement character) with customizable warning text.
-- Punishment pipeline with violation counter supporting kick, timed ban (`ban-duration`), or custom commands (console or player) after `max-violations`.
-- Configurable permissions (`command-permission`, `bypass-permission`), update checker toggle, and language system (English & Vietnamese, or add your own).
+## Features
 
-# Commands
-- `/pf help` - show available subcommands.
-- `/pf ui` - open the management UI (in-game only).
-- `/pf list` - list banned words (custom list).
-- `/pf add <word>` - add a word to the custom list.
-- `/pf remove <word>` - remove a word.
-- `/pf toggle` - enable/disable filtering until reload.
-- `/pf reload` - reload plugin and profanity configs.
+- Block a message or replace matched words with a configured character.
+- Use the bundled profanity list or maintain a server-specific list.
+- Manage custom words from the `/profanityfilter` command or its `/pf` alias.
+- Open a PMForms management UI in-game.
+- Count violations and kick, ban, or run a configured command at the limit.
+- Configure command and bypass permissions.
+- Use the English or Vietnamese language resources, or provide a custom locale.
+- Keep the bundled word list immutable while allowing custom words in plugin data.
 
-Default command permission: `profanityfilter.command` (configurable). Bypass chat filtering with `profanityfilter.bypass`.
+## Requirements
 
-# Configuration highlights
-- `profanity`: `custom` to use `banned-words.yml`, or `provided` to use the bundled list.
-- `type`: `block` to cancel profane messages, `hide` to mask them with `replacementCharacter`.
-- `replacementCharacter`: single character used when hiding profanities.
-- `max-violations`, `punishment-type` (`kick`|`ban`|`command`), `ban-duration`, `execute-as-player`, `command`: tune the punishment pipeline.
-- `lang`: `eng`, `vie`, or `custom` (create `languages/custom.yml`).
-- `check-updates`: enable/disable remote update checks.
+| Requirement | Supported scope |
+| --- | --- |
+| PocketMine-MP or Axolotl-PM | API `5.36.0` or newer within the API 5 line |
+| PHP | `8.4` in the build workflow |
+| Runtime dependency | The PHAR contains the required dependencies |
+
+The repository build pins Axolotl-PM `5.51.1` for analysis and packaging. A
+passing build does not certify every API 5 server revision or every Bedrock
+client version.
 
 ## Installation
 
-- Download a stable artifact from the [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) page or [Poggit](https://poggit.pmmp.io/p/ProfanityFilter).
-- Place `ProfanityFilter.phar` in the server's `plugins/` directory.
-- Start the server once, then configure `plugin_data/ProfanityFilter/config.yml`.
-- Manage custom words in `plugin_data/ProfanityFilter/profanity.yml` under the `banned-words` section, or use the in-game `/pf` commands.
+1. Download `ProfanityFilter.phar` from [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) or the [Poggit project page](https://poggit.pmmp.io/p/ProfanityFilter).
+2. Copy the PHAR to the server's `plugins/` directory.
+3. Start the server once so it creates the data files.
+4. Edit `plugin_data/ProfanityFilter/config.yml` and
+   `plugin_data/ProfanityFilter/profanity.yml`.
+5. Restart the server after changing configuration.
 
-# Changelog
-See the [GitHub Releases](https://github.com/ReinfyTeam/ProfanityFilter/releases) page for the current stable version and `changelogs/v0.2.x.md` for the release notes.
+The plugin has no mandatory external runtime plugin. Its PHAR includes the
+dependencies required by the active code path.
 
-## Report an issue or bug
-If you find a bug or another plugin issue:
-- Contact support in the [Discord Server](https://discord.gg/v2rNeHaptd)
-- Create an [Issue](https://github.com/ReinfyTeam/ProfanityFilter/issues)
-- Include the problem, crash or error details, and relevant logs so the issue can be investigated.
-- Submit the issue and wait for a response.
+## Filtering modes
 
-## Compatibility note
+Set `type` in `config.yml` to one of these values:
 
-This plugin targets the PocketMine-MP API declared in `plugin.yml`. If you use a fork, report its name, version and the complete error output so compatibility can be investigated accurately.
+| Mode | Behavior |
+| --- | --- |
+| `block` | Cancel the message and send `block-message` to the player |
+| `hide` | Replace each matched word with `replacementCharacter` and keep the message flow |
 
-# Screenshots
-[![](assets/images/chat-filter.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+Set `profanity` to `custom` to use the editable list in
+`plugin_data/ProfanityFilter/profanity.yml`. Set it to `provided` to use the
+bundled list. Custom words are managed by the plugin and can also be edited
+manually while the server is stopped.
 
-[![](assets/images/punish-from-player.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+Matching is case-insensitive and can find a configured word inside a longer
+word. The filter processes outgoing chat and command-related text after other
+plugins may already have changed it. It cannot restore text removed by an
+earlier plugin.
 
-[![](assets/images/console.jpg)](https://poggit.pmmp.io/p/ProfanityFilter)
+## Commands and permissions
 
-[![](assets/images/ui-main.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+The command permission is configurable through `command-permission` and is
+`profanityfilter.command` by default. The bypass permission is configurable
+through `bypass-permission` and is `profanityfilter.bypass` by default.
 
-[![](assets/images/ui-add-words.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+| Command | Purpose |
+| --- | --- |
+| `/profanityfilter help` | Show the localized command help |
+| `/profanityfilter ui` | Open the management form in-game |
+| `/profanityfilter info` | Show credits and plugin information |
+| `/profanityfilter list` | List words from the active custom list |
+| `/profanityfilter add <word>` | Add a word to the custom list |
+| `/profanityfilter remove <word>` | Remove a word from the custom list |
+| `/profanityfilter toggle` | Enable or disable filtering until reload |
+| `/profanityfilter reload` | Reload plugin configuration and word data |
+| `/pf <subcommand>` | Alias for `/profanityfilter` |
 
-[![](assets/images/ui-word-actions.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+The UI subcommand is available only to a player. Console operators can use the
+command subcommands that do not require a player form.
 
-[![](assets/images/ui-profanitylist.png)](https://poggit.pmmp.io/p/ProfanityFilter)
+## Configuration
 
-# Contributors and Collaborators
-| Name                                        | Contributors                                                                                     |
-|---------------------------------------------|--------------------------------------------------------------------------------------------------|
-| [NhanAZ](https://github.com/NhanAZ)         | Maintained this Plugin and helped me alot of things like syntax, languages and code improvement. |
-| [KanadeDev](https://github.com/KanadeDev)   | Helped me alot of language files, and fixed alot of couple things in first release.              |
-| [Reinfy](https://github.com/Reinfy)         | He implemented some things and fixing and adjusting features, suggesting some improvements.      |
-| [kotyaralih](https://github.com/kotyaralih) | Made more translation to the language files.                                                     |
+The main settings in `plugin_data/ProfanityFilter/config.yml` are:
+
+| Key | Purpose |
+| --- | --- |
+| `type` | Select `block` or `hide` |
+| `replacementCharacter` | Character used by `hide` mode |
+| `block-message` | Message sent when a message is blocked |
+| `lang` | Select `eng`, `vie`, or `custom` |
+| `punishment-type` | Select `kick`, `ban`, or `command` |
+| `max-violations` | Violation count needed for moderation |
+| `ban-duration` | Duration used by native ban handling |
+| `execute-as-player` | Run the custom punishment command as the player when true |
+| `command` | Command used when `punishment-type` is `command` |
+| `command-permission` | Permission for the management command |
+| `bypass-permission` | Permission that skips filtering |
+| `profanity` | Select `custom` or `provided` |
+| `check-updates` | Enable or disable update checks |
+
+The `config-version` value is managed by the plugin. Do not edit it manually.
+When the default configuration changes, the loader keeps the old file and
+creates the current resource version.
+
+## Languages
+
+The repository includes English and Vietnamese resources. To add a custom
+language, set `lang: custom` and create a language file in
+`plugin_data/ProfanityFilter/languages/`. Use an ISO 639-2 code when adding a
+language that may be contributed back to the project.
+
+## Build and verification
+
+The `stable` branch workflow runs PHP linting through the build tools, PHPStan
+at maximum level, the regression test, a PHAR build, and a packaged UI check.
+The build also creates the Poggit package on pushes to `stable`.
+
+Local checks use the locked dependencies:
+
+```sh
+composer install
+composer analyze
+composer test
+composer build
+```
+
+The packaged UI test is separate from a live Bedrock client test. A green
+source or PHAR check does not prove that every client version renders a label
+or form the same way.
+
+## License and attribution
+
+See [LICENSE](LICENSE) for the repository's LGPL license text. The project
+credits ReinfyTeam, NhanAZ and the other listed contributors in the source
+history. Report bugs through [GitHub Issues](https://github.com/ReinfyTeam/ProfanityFilter/issues) and include the server version, plugin version and relevant logs.
