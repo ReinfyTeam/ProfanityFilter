@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace ReinfyTeam\ProfanityFilter;
 
-use ReinfyTeam\ProfanityFilter\libs\_32fa5677ce3a8ef6\CortexPE\Commando\PacketHooker;
+use ReinfyTeam\ProfanityFilter\libs\_f16b118ce632fcf1\CortexPE\Commando\PacketHooker;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
